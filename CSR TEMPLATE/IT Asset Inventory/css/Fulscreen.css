@@ -1,0 +1,28 @@
+﻿#sideNavBox {
+  display: none;
+}
+#contentBox {
+  margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox {
+  margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.TrainingHeight {
+  height: auto !important;
+}
+
+
+.s4-workspace{
+  display: none !important;
+}

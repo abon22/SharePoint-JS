@@ -1,0 +1,283 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script>
+<script src="/SiteAssets/sputility.min.js"></script>
+<script
+  type="text/javascript"
+  src="/SiteAssets/Scripts/jquery.timeago.js"
+></script>
+<script
+  type="text/javascript"
+  src="../LND%20Point%20System/_layouts/15/sp.runtime.js"
+></script>
+<script
+  type="text/javascript"
+  src="../LND%20Point%20System/_layouts/15/sp.js"
+></script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="text/html; charset=utf-8"
+      x-undefined=""
+    />
+    <title>QA or Department Head</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/SiteAssets/Scripts/Scorecard System/css/qa_or_department_head.css"
+    />
+
+    <!--
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css"
+      />
+    -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.css"
+    />
+
+    <!-- SEMANTIC UI -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link
+      href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+  </head>
+  <body>
+    <div class="ui basic clearing segment">
+      <div
+        onclick="ShowModal_Erros()"
+        class="ui right floated button"
+        data-inverted=""
+        data-tooltip="Corrective Action Plan"
+        data-position="top center"
+      >
+        ERRORS
+      </div>
+    </div>
+    <div class="ui basic segment">
+      <div class="ui stackable grid">
+        <div class="row">
+          <div class="column">
+            <div class="ui raised segment">
+              <div class="ui basic segment">
+                <canvas id="CHART_MINOR" height="40%"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column">
+            <div class="ui raised segment">
+              <div class="ui basic segment">
+                <canvas id="CHART_MAJOR" height="40%"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column">
+            <div class="ui raised segment">
+              <div class="ui basic segment">
+                <canvas id="CHART_OVERALL" height="40%"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="ui fullscreen modal ENTRIES "
+      id="MODAL_ENTRIES"
+      style="height: 100vh !important"
+    >
+      <i class="large close icon"></i>
+      <div class="header">INFRACTION ENTRIES</div>
+      <div class=" content">
+        <!-- -------- ERRORS TABLE---------------------------------- -->
+        <div id="DIV_TABLE_ENTRIES">
+          <div id="context2">
+            <div class="ui  menu clearing basic top attached segment">
+              <a class="item yellow active" data-tab="Minor">MINOR</a>
+              <a class="item red " data-tab="Major">MAJOR</a>
+
+              <div class="ui right menu">
+                <a class="item">
+                  <i class="icon file alternate outline"></i> Pending CAP
+                  <div class="floating ui red label">22</div>
+                </a>
+              </div>
+            </div>
+            <div
+              class="ui active tab bottom attached basic segment"
+              data-tab="Minor"
+            >
+              <table
+                class="ui striped table raised segment  order-table-entries"
+                id="TABLE_MINOR"
+              >
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>TEAM</th>
+                    <th>ERROR CLASSIFICATION</th>
+                    <th>TICKET NUMBER</th>
+                    <th>DESCRIPTION</th>
+                    <th>INFRACTION DATE</th>
+                  </tr>
+                </thead>
+                <tbody id="TBODY_TABLE_MINOR"></tbody>
+              </table>
+            </div>
+            <div class="ui tab bottom attached basic segment" data-tab="Major">
+              <table
+                class="ui striped raised segment table order-table-entries"
+                id="TABLE_MAJOR"
+              >
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>TEAM</th>
+                    <th>TICKET NUMBER</th>
+                    <th>DESCRIPTION</th>
+                    <th>INFRACTION DATE</th>
+                    <th>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CAP
+                    </th>
+                    <th>CAP STATUS</th>
+                  </tr>
+                </thead>
+                <tbody id="TBODY_TABLE_MAJOR"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!--
+          CAP --------------------------------------------------------------
+        -->
+        <div class="ui three column grid" id="DIV_CAP" style="display:none;">
+          <div class="two wide column"></div>
+          <div class="twelve wide column">
+            <div class="ui raised segments">
+              <div class="ui clearing segment">
+                <h3 class="ui left floated header">
+                  <div class=" content">
+                    Corrective Action Plan
+                    <div class="sub header">(CAP)</div>
+                  </div>
+                </h3>
+                <a
+                  class="ui right floated right labeled icon button"
+                  onclick="Hide_CAP()"
+                >
+                  <i class="right arrow icon"></i> Back
+                </a>
+              </div>
+              <div class="ui segment">
+                <div class="ui grid">
+                  <div class="row">
+                    <div class="column">
+                      <div class="ui fluid form">
+                        <div class="field">
+                          <label>DESCRIPTION OF ISSUE</label>
+                          <table
+                            cellspacing="0"
+                            class="ms-rteTable-default"
+                            style="width: 100%; height: 150px;"
+                            id="TABLE_RCA"
+                          >
+                            <tbody>
+                              <tr class="ms-rteTableOddRow-default">
+                                <td
+                                  class="ms-rteTableEvenCol-default"
+                                  id="ISSUE_DESCRIPTION"
+                                  style="width: 4%; text-align: left;"
+                                >
+                                  <strong></strong>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="field">
+                          <label>ROOT CAUSE ANALYSIS (RCA)</label>
+                          <div
+                            class="ms-rtestate-field ms-rtefield ms-inputBox"
+                            id=""
+                            style="border:none !important"
+                          >
+                            <div
+                              class="ms-rtestate-write ms-rteflags-0 ms-rtestate-field"
+                              id="INPUT_RCA"
+                              style="min-height:168px"
+                              aria-labelledby=""
+                              contenteditable="true"
+                              role="textbox"
+                              aria-autocomplete="both"
+                              aria-multiline="true"
+                              rtedirty="false"
+                            ></div>
+                            <div style="clear : both;"></div>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label>CORRECTIVE ACTION STEPS (CAS)</label>
+                          <textarea id="INPUT_CORRECTIVE_STEPS"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="column" style="text-align: right !important">
+                      <div
+                        class="ui primary button"
+                        id="BUTTON_SUBMIT_CAP"
+                        onclick="handle_Submit_CAP()"
+                      >
+                        Submit
+                      </div>
+                      <div class="ui button" onclick="">Cancel</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="five wide column"></div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"></script>
+    -->
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- SEMANTIC UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+
+    <script src="/SiteAssets/CSR TEMPLATE/IT Infraction Tracker/IT_INFRACTION_TRACKER_EE.js"></script>
+  </body>
+</html>

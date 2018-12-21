@@ -1,0 +1,628 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script>
+<script src="/SiteAssets/sputility.min.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script>
+<script type="text/javascript" src="../../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta name="layout" />
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"
+        media="screen,projection" />
+
+    <!-- SEMANTIC UI -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- SWEET ALERT -->
+    <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet" />
+
+    <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+    <style type="text/css">
+        .AlignButtonRight {
+            float: right;
+        }
+
+        .AlignButtonLeft {
+            float: left;
+        }
+
+        .ModalTopDistance {
+            top: 2% !important;
+        }
+
+        i.icon-blue {
+            color: #03a9f4;
+        }
+
+        .myChartDiv {
+            max-height: 540px;
+        }
+
+        #sideNavBox {
+            display: none;
+        }
+
+        #contentBox {
+            margin-left: 20px;
+        }
+
+        .ms-fullscreenmode #contentBox {
+            margin-left: 0;
+        }
+
+        .CenterTextInSpan {
+            text-align: center !important;
+        }
+
+        .spancenter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .TrainingHeight {
+            height: auto !important;
+        }
+    </style>
+
+
+    <!-- ----------------------------------------------------------------------------------------------------------------- -->
+
+    <body>
+
+        <div id="DIV_CONTAINER">
+
+            <div class="ui grid">
+                <div class="four wide column"></div>
+                <div class="ui centered seven wide column raised segment">
+                    <h4 class="ui right floated header">PROJECT RESOURCE PURCHASING REQUEST</h4>
+                    <div class="ui clearing divider"></div>
+                    <div class="row">
+                        <table class="table">
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">PROJECT NAME :</label>
+                                </td>
+                                <td>
+                                    <div class="ui right action input col s12">
+                                        <div class="ui selection dropdown item_status col s12 PROJECT_NAME" id="DIV_INPUT_PROJECT_NAME">
+                                            <input type="hidden" name="Status" id="INPUT_PROJECT_NAME">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Select Project</div>
+                                            <div class="menu" id="MENU_PROJECT_NAME">
+                                            </div>
+                                        </div>
+                                        <a class="ui icon primary button" id="BTN_PROJECTS" onclick="Open_Modal_Projects()">
+                                            <i class="external alternate icon"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+<!--                             <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700" readOnly>PROJECT TYPE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12 ">
+                                        <input type="text2" placeholder="Project Type" id="INPUT_PROJECT_TYPE" readOnly class="grey lighten-3">
+                                    </div>
+                                </td>
+
+                            </tr> -->
+                                <tr>
+                                    <td width="110px">
+                                        <label class="grey-text text-darken-2" style="font-weight: 700" readOnly>PROJECT TYPE :</label>
+                                    </td>
+                                    <td>
+                                        <div class="ui input col s12">
+                                            <div class="ui selection dropdown col s12 INPUT_PROJECT_TYPE" id="DIV_INPUT_PROJECT_TYPE">
+                                                <input type="hidden" name="Status" id="INPUT_PROJECT_TYPE">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text">Select Project Type</div>
+                                                <div class="menu">
+                                                    <div class="item" data-value="Fiber Optic">Fiber Optic</div>
+                                                    <div class="item" data-value="CCTV">CCTV</div>
+                                                    <div class="item" data-value="Biometrics">Biometrics</div>
+                                                    <div class="item" data-value="Fiber Optic, CCTV, Biometrics">Fiber Optic, CCTV, Biometrics</div>
+                                                    <div class="item" data-value="Maintenance">Maintenance</div>
+                                                    <div class="item" data-value="Ethernet Cable">Ethernet Cable</div>
+                                                    <div class="item" data-value="Fiber Cable">Fiber Cable</div>
+                                                    <div class="item" data-value="Ethernet, Fiber Cable">Ethernet, Fiber Cable</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700" readOnly>PROJECT CODE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12 ">
+                                        <input type="text2" placeholder="Project Code" id="INPUT_PROJECT_CODE" readOnly class="grey lighten-3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">REQUESTOR :</label>
+                                </td>
+                                <td>
+                                    <div class="ui  input col s12">
+                                        <input type="text2" placeholder="Requestor" id="INPUT_REQUESTOR" readOnly class="grey lighten-3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">DEPARTMENT :</label>
+                                </td>
+                                <td>
+                                    <div class="ui  input col s12">
+                                        <input type="text2" placeholder="Department" id="INPUT_DEPARTMENT" readOnly class="grey lighten-3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">DESCRIPTION :</label>
+                                </td>
+                                <td>
+                                    <div class="ui form col s12">
+                                        <div class="field">
+                                            <!-- <textarea id="INPUT_DESCRIPTION"></textarea> -->
+
+                                            <div class="ms-rtestate-field ms-rtefield ms-inputBox" id="" style="border:none !important">
+                                                <div id="" style="display:none">Rich text editor Description Required Field</div>
+                                                <div class="ms-rtestate-write ms-rteflags-0 ms-rtestate-field"
+                                                    id="INPUT_DESCRIPTION" style="min-height:168px" aria-labelledby="" contenteditable="false"
+                                                    role="textbox" aria-autocomplete="both" aria-multiline="true" rtedirty="false">
+                                                    <p>&#8203;
+                                                        <br>
+                                                    </p>
+                                                </div>
+                                                <div style="clear : both;"></div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">TOTAL PRICE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="00.00" id="INPUT_TOTAL_PRICE">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">CHEQUE/CASH ISSUED TO:</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Indicate To whom the cheque/cash will be issued" id="INPUT_ISSUED_TO">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">PURPOSE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui form col s12">
+                                        <div class="field">
+                                            <textarea id="INPUT_PURPOSE"></textarea>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">DATE NEEDED :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" class="datepicker" placeholder="Select Date" id="INPUT_DATE_DEEDED">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">INITIAL APPROVER :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input">
+                                        <div id="DIV_INITIAL_APPROVER_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_INITIAL_APPROVER" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_INITIAL_APPROVER">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">AVP-IT / AVP-SALES</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="AVP-IT">AVP-IT</div>
+                                                <div class="item" data-value="AVP-SALES">AVP-SALES</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="TR_EXECUTIVE_APPROVAL">
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">EXECUTIVE APPROVAL :</label>
+                                </td>
+                                <td>
+                                    <span id="SPAN_EXECUTIVE_APPROVED" class="ui green tag label" style="display: none; width: 140px">Approved</span>
+
+                                    <span id="SPAN_EXECUTIVE_REJECTED" class="ui red tag label" style="display: none; width: 140px">Rejected</span>
+
+                                    <div class="ui input" id="DIV_APPROVAL">
+                                        <div id="DIV_APPROVAL_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_EXECUTIVE_APPROVAL" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_APPROVAL">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Approved/Rejected</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="Approved">Approved</div>
+                                                <div class="item" data-value="Rejected">Rejected</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- <tr id="TR_FINANCE_APPROVAL">
+                                    <td width="110px">
+                                        <label class="grey-text text-darken-2" style="font-weight: 700">FINANCE APPROVAL :</label>
+                                    </td>
+                                    <td>
+                                        <div class="ui input" >
+                                            <div id="DIV_CEO_APPROVAL_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_CEO_APPROVAL" style="margin-left: 10px !important;" >
+                                                <input type="hidden" name="Status" id="INPUT_FINANCE_APPROVAL">
+                                                <i class="dropdown icon"></i>
+                                                <div class="default text">Budgeted/Unbudgeted</div>
+                                                <div class="menu">
+                                                  <div class="item" data-value="Budgeted">Budgeted</div>
+                                                  <div class="item" data-value="Unbudgeted">Unbudgeted</div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </td>
+                                </tr> -->
+                            <tr id="TR_EXPENSE_TYPE">
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">EXPENSE TYPE :</label>
+                                </td>
+                                <td>
+                                    <span id="SPAN_BUDGETED" class="ui teal tag label" style="display: none; width: 140px">Budgeted</span>
+
+                                    <span id="SPAN_UNBUDGETED" class="ui orange tag label" style="display: none; width: 140px">Unbudgeted</span>
+
+
+                                    <div class="ui input" id="DIV_EXEPENSE_TYPE_CONTAINER">
+                                        <div id="DIV_EXPENSE_TYPE_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_EXEPENSE_TYPE" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_EXEPENSE_TYPE">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Budgeted/Unbudgeted</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="Budgeted">Budgeted</div>
+                                                <div class="item" data-value="Unbudgeted">Unbudgeted</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="TR_SET_APPROVER">
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">SET APPROVER :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input">
+                                        <div id="DIV_SET_APPROVER_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_SET_APPROVER" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_SET_APPROVER">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Approver</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="CEO">CEO</div>
+                                                <div class="item" data-value="VP Back Office">VP Back Office</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="TR_CEO_APPROVAL">
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">CEO APPROVAL :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input">
+                                        <div id="DIV_CEO_APPROVAL_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_CEO_APPROVAL" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_CEO_APPROVAL">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Approved/Rejected</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="Approved">Approved</div>
+                                                <div class="item" data-value="Rejected">Rejected</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="TR_VP_APPROVAL">
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">VP APPROVAL :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input">
+                                        <div id="DIV_VP_APPROVAL_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_VP_APPROVAL" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_VP_APPROVAL">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Approved/Rejected</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="Approved">Approved</div>
+                                                <div class="item" data-value="Rejected">Rejected</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="TR_REQUEST_STATUS">
+                                <td width="110px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">REQUEST STATUS :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input">
+                                        <div id="DIV_REQUEST_STATUS_DROPDOWN" class="ui selection dropdown item_status col s12 DIV_REQUEST_STATUS" style="margin-left: 10px !important;">
+                                            <input type="hidden" name="Status" id="INPUT_REQUEST_STATUS">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">CLOSED</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="CLOSED">CLOSED</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="floated right">
+                                        <a class="ui primary button" onclick="Validate_Inputs()" id="BTN_SAVE">
+                                            Submit
+                                        </a>
+                                        <a class="ui button" href="https://intranet.houseofit.com.au/Lists/Project%20Resources%20Purchasing%20Request/My%20Requests.aspx">
+                                            Cancel
+                                        </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+                <div class="four wide column"></div>
+            </div>
+
+        </div>
+
+        <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+        <!-- MODAL PROJECTS-->
+        <div class="ui small modal" id="MODAL_MANAGE_PROJECTS">
+            <div class="header">
+                PROJECTS
+                <a onclick="Close_Modal_Projects()">
+                    <i class="close icon right"></i>
+                </a>
+
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="ui segment hidden" style="display: none" id="DIV_PROJECT_FORM">
+                        <table>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">PROJECT NAME :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Project Name" id="INPUT_NEWPROJECT_NAME">
+                                    </div>
+                                </td>
+                            </tr>
+<!--                             <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">PROJECT TYPE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <div class="ui selection dropdown col s12 INPUT_NEWPROJECT_TYPE">
+                                            <input type="hidden" name="Status" id="INPUT_NEWPROJECT_TYPE">
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">Select Input Type</div>
+                                            <div class="menu">
+                                                <div class="item" data-value="Fiber Optic">Fiber Optic</div>
+                                                <div class="item" data-value="CCTV">CCTV</div>
+                                                <div class="item" data-value="Biometrics">Biometrics</div>
+                                                <div class="item" data-value="Maintenance">Maintenance</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">PROJECT CODE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Project Code" id="INPUT_NEWPROJECT_CODE" readOnly class="grey lighten-3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="floated right">
+                                        <a class="ui primary button" onclick="Validate_Add_Edit_ProjectForm()">
+                                            Save
+                                        </a>
+                                        <a class="ui button" onclick="Close_ProjectForm()">
+                                            Cancel
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="ui segment">
+                        <div class="row" id="DIV_NEWPROJECT_BTN">
+                            <a class="ui button left green right" onclick="New_Project()">
+                                <i class="icon plus "></i>
+                                New
+                            </a>
+                        </div>
+                        <table class="ui three column table" id="TABLE_PROJECTS">
+                            <thead>
+                                <tr>
+                                    <th>NAME</th>
+                                    <!-- <th>TYPE</th> -->
+                                    <th>CODE</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="TBODY_PROJECTS">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------------------------------------------------------------------------------------------------------------------- -->
+        <!-- MODAL ITEMS-->
+        <div class="ui tiny modal" id="MODAL_ITEMS">
+            <div class="header">
+                PROJECTS
+                <a onclick="Close_Modal_Items()">
+                    <i class="close icon right"></i>
+                </a>
+
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div>
+                        <table>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">ITEM :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Enter Item Name" id="INPUT_ITEM">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">QUANTITY :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Enter Quantity" id="INPUT_ITEM_QUANTITY" onkeypress="return isNumberKey(this, event);">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">UNIT :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Enter Unit Name" id="INPUT_ITEM_UNIT">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">PRICE :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Enter Price" id="INPUT_ITEM_PRICE" onkeypress="return isNumberKey(this, event);">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="115px">
+                                    <label class="grey-text text-darken-2" style="font-weight: 700">TOTAL :</label>
+                                </td>
+                                <td>
+                                    <div class="ui input col s12">
+                                        <input type="text2" placeholder="Total" id="INPUT_ITEM_TOTAL" readOnly class="grey lighten-3">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <div class="floated right">
+                                        <a class="ui primary button" onclick="Append_To_Table_Items('Add')">
+                                            Ok
+                                        </a>
+                                        <a class="ui button" onclick="Close_Modal_Items()">
+                                            Cancel
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+        <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+        <!--SCRIPT-->
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+        <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+        <!-- SEMANTIC UI -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+        <!-- CHARTS JS -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+        <script type="text/javascript" src="/SiteAssets/CSR TEMPLATE/Project Resources Purchasing Request/ProjectResourcePurchaseRequest_EditForm.js"></script>
+
+    </body>
+
+</html>

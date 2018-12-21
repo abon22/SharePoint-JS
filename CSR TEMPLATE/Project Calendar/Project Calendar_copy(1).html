@@ -1,0 +1,1681 @@
+<div id="calendar-wrapper">
+    <div class="sidebar left">
+        <h2>
+            <div id="calendar-search">
+                <input type="text" class="form-control" placeholder="To be replaced by bucket search">
+            </div>
+            <div id="sidebar-toggle">
+                <div class="burger burger1"><span></span></div>
+            </div>
+        </h2>
+        <hr />
+        <label class="filter leave">
+            Leave
+            <input type="checkbox" checked id="filter-leave">
+        </label>
+        <label class="filter attendance">
+            Attendance
+            <input type="checkbox" checked id="filter-attendance">
+        </label>
+        <label class="filter holiday">
+            Holidays
+            <input type="checkbox" checked id="filter-holiday">
+        </label>
+        <label class="filter birthday">
+            Birthdays
+            <input type="checkbox" checked id="filter-birthday">
+        </label>
+        <br />
+        <br />
+        <br />
+        <p>Proposal</p>
+        <label class="filter">
+            [Attendance]Overtime
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Attendance]Overtime (Pending)
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Attendance]Present
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Attendance]Late
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Attendance]Absent
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Attendance]Undertime
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Leave]Approved
+            <input type="checkbox">
+        </label>
+        <label class="filter">
+            [Leave]Pending
+            <input type="checkbox">
+        </label>
+    </div>
+    <h2>
+        CALENDAR
+    </h2>
+    <div id="calendar"></div>
+    <p class="note"><span style="color:red; font-size: 16px">*</span> - contains atleast 1 entry that requires approval</p>
+</div>
+<div class="card-wrapper">
+    <div class="card" style="opacity: 0; transform: scale(0.8) rotateY(0deg);">
+        <div class="front-panel">
+            <div class="event-title"></div>
+            <p class="event-date"></p>
+            <div class="sk-cube-grid event-loader">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+            <div class="entries"></div>
+        </div>
+        <div class="back-panel">
+            <div class="sk-cube-grid event-loader">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+            <div class="event-detail" data-type="">
+                <!-- SAMPLE DATA -->
+                <p class="emp-name">John Doe</p>
+                <p class="event-date"></p>
+                <br />
+                <br />
+                <p>THIS IS A SAMPLE DATA</p>
+                <p>THIS WILL BE REPLACED</p>
+                <p>AFTER UI HAS BEEN DESIGNED AND APPROVED</p>
+                <!-- SAMPLE DATA END -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<style type="text/css">
+
+@import 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=latin-ext';
+
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
+#calendar-wrapper {
+	margin: 2% 4%;
+	position: relative;
+	overflow:hidden;
+}
+
+#calendar-wrapper > h2 {
+	text-align: center;
+	margin: 0;
+	padding: 10px 0;
+	background: whitesmoke;
+	font-weight: 200;
+	font-family: 'Roboto', sans-serif;
+}
+
+#calendar-wrapper > h2 > #filter {
+	float: left;
+	margin-left: 10px;
+	color: #999;
+}
+
+#calendar {
+	background: white;
+}
+.fc-toolbar {
+	border: 1px solid #ddd;
+	border-bottom: none;
+	margin-bottom: 0;
+	padding: 10px 20px;
+}
+.fc-toolbar h2 {
+	padding-top: 4px;
+    font-weight: 200;
+    font-family: 'Roboto', sans-serif;
+    color: #666;
+}
+
+.fc-today {
+	background: #cfdeff !important;
+}
+
+.fc-view-container *, .fc-view-container :after, .fc-view-container :before {
+	font-weight: 300;
+}
+
+.event {
+	color: #333 !important;
+	background: #ebebfb;
+	border: #ebebfb;
+	border-radius: 0;
+	margin: 2px 0;
+	padding: 3px 0 0 20px;
+	cursor: pointer;
+}
+.filter {
+	padding-left: 20px;
+	position: relative;
+}
+.event:after, .filter:after {
+	content: '';
+	position: absolute;
+	width: 11px;
+	height: 11px;
+	top: 4px;
+	left: 4px;
+}
+
+.fc-content-skeleton td {
+	position: relative;
+}
+
+.event.leave:after, .filter.leave:after {
+	background: #ff6c00;
+}
+
+.event.birthday:after, .filter.birthday:after {
+	background: #00a4e5;
+}
+
+.event.holiday:after, .filter.holiday:after {
+	background: #ff38ad;
+}
+
+.event.absent:after {
+	background: #F20909;
+}
+
+.event.late:after {
+	background: #FFD966;
+}
+
+.event.undertime:after {
+	background: #FFB266;
+}
+
+.event.ontime:after {
+	background: #00BA71;
+}
+
+.filter.attendance:after {
+	background: #00ba71;
+}
+
+.sidebar.left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    background: whitesmoke;
+}
+
+.sidebar {
+	opacity: 0.95;
+    position: absolute;
+    color: #666;
+    padding: 10px;
+	z-index: 999;
+	-webkit-transition: box-shadow 0.2s linear;
+	transition: box-shadow 0.2s linear;
+}
+
+#sidebar-toggle {
+	position: absolute;
+	top: 17px;
+	right: -50px;
+	cursor: pointer;
+}
+
+.sidebar > h2 {
+	margin-top: 0;
+}
+.sidebar label {
+	width: 100%;
+	cursor: pointer;
+}
+.sidebar label > input {
+	float: right;
+}
+
+.burger {
+  width: 40px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  position: relative;
+  cursor: pointer;
+}
+.burger:focus {
+  outline: none;
+}
+.burger.burger1:after, .burger.burger1:before,
+.burger.burger1 span {
+  width: 100%;
+  height: 4px;
+  border-radius: 100px;
+  position: absolute;
+  left: 0px;
+  background: #ccc;
+}
+.burger.burger1:after, .burger.burger1:before {
+  content: "";
+}
+.burger.burger1:after {
+  top: 0px;
+  margin-top: 0px;
+  -webkit-transition: 0.2s all 0.4s, -webkit-transform 0.2s;
+  transition: 0.2s all 0.4s, -webkit-transform 0.2s;
+  transition: transform 0.2s, 0.2s all 0.4s;
+  transition: transform 0.2s, 0.2s all 0.4s, -webkit-transform 0.2s;
+}
+.burger.burger1:before {
+  bottom: 0px;
+  margin-bottom: 0px;
+  -webkit-transition: 0.2s all 0.4s, -webkit-transform 0.2s;
+  transition: 0.2s all 0.4s, -webkit-transform 0.2s;
+  transition: transform 0.2s, 0.2s all 0.4s;
+  transition: transform 0.2s, 0.2s all 0.4s, -webkit-transform 0.2s;
+}
+.burger.burger1 span {
+  top: 50%;
+  margin-top: -2px;
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity 0.2s, svisibility 0.2s;
+  transition: opacity 0.2s, svisibility 0.2s;
+}
+.burger.burger1.on:after {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  top: 50%;
+  margin-top: -2px;
+  -webkit-transition: all 0.2s, 0.2s transform 0.4s;
+  transition: all 0.2s, 0.2s transform 0.4s;
+}
+.burger.burger1.on:before {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  bottom: 50%;
+  margin-bottom: -2px;
+  -webkit-transition: all 0.2s, 0.2s transform 0.4s;
+  transition: all 0.2s, 0.2s transform 0.4s;
+}
+.burger.burger1.on span {
+  visibility: hidden;
+  -webkit-transition: opacity 0.4s, visibility 0.4s;
+  transition: opacity 0.4s, visibility 0.4s;
+  opacity: 0;
+}
+
+.fc-toolbar button {
+	margin-top: 5px;
+	margin-left: 0 !important;
+    position: relative;
+    background: #00a5e5;
+    color: white;
+    border: 1px solid transparent;
+    border-color: rgba(0,0,0,.07) rgba(0,0,0,.1) rgba(0,0,0,.18);
+    border-radius: 0 !important;
+}
+
+.fc-state-default {
+	text-shadow: none;
+	box-shadow: none;
+}
+
+.fc-ltr .fc-basic-view .fc-day-top .fc-day-number {
+    float: left;
+}
+
+.waves-effect {
+	z-index: 0;
+}
+
+.card-wrapper {
+	position: absolute;
+	perspective: 700;
+	-webkit-perspective: 700;
+	top: 0;
+	left:  0;
+	z-index: 10;
+	display: none;
+	transition: all 0.3s ease;
+}
+
+
+.card {
+	position: relative;
+	margin: 0;
+	width: 200px;
+	height: 300px;
+	transition: all 0.3s ease;
+	transform-style: preserve-3d;
+	background: #fff;
+	-webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+}
+
+.back-panel {
+	transform: rotateY(180deg);
+}
+
+.front-panel,
+.back-panel, .front-panel:before,
+.back-panel:before,
+.front-panel:after,
+.back-panel:after {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	top: 0;
+	left: 0;
+	backface-visibility: hidden;
+	padding: 10px;
+}
+
+.front-panel *,
+.back-panel *, .front-panel *:before,
+.back-panel *:before,
+.front-panel *:after,
+.back-panel *:after {
+	backface-visibility: hidden;
+}
+
+.note {
+	font-size: 11px;
+	font-style: italic;
+	color: ccc;
+	font-weight: 300;
+	text-align: right;
+}
+
+.filter-shadow {
+	-webkit-box-shadow: 3px 0px 1px -1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 3px 0px 1px -1px rgba(0,0,0,0.2);
+	box-shadow: 3px 0px 1px -1px rgba(0,0,0,0.2);
+}
+.event-title {
+	text-align: left;
+	backface-visibility: hidden;
+	padding-left: 20px;
+	font-weight: 400;
+    letter-spacing: 3px;
+}
+.event-title > span:before {
+	content: '';
+	position: fixed;
+	width: 12px;
+	height: 12px;
+	top: 13px;
+	left: 10px;
+	border-radius: 50%;
+	backface-visibility: hidden;
+}
+
+.event-title > .leave:before {
+	background: #ff6c00;
+}
+.event-title > .ontime:before {
+	background: #00BA71;
+}
+.event-title > .late:before {
+	background: #FFD966;
+}
+.event-title > .absent:before {
+	background: #F20909;
+}
+.event-title > .undertime:before {
+	background: #FFB266;
+}
+
+.event-title > .holiday:before {
+	background: #ff38ad;
+}
+.event-title > .birthday:before {
+	background: #00a4e5;
+}
+
+.event-date {
+	font-weight: 300;
+	font-size: 12px;
+	font-style: italic;
+	border-bottom: 1px solid #ccc;
+	padding: 4px 0 4px 0;
+	color: #aaa;
+}
+
+/* SPINNER */
+
+.sk-cube-grid {
+  width: 40px;
+  height: 40px;
+  margin: 100px auto;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: #ccc;
+  float: left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s; }
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+  }
+}
+
+
+/* CARD ENTRY STYLES */
+.entries {
+	overflow: auto;
+    height: 220px;
+}
+.entry:hover {
+	background: #cfdeff;
+}
+
+.entry {
+	cursor: pointer;
+	margin: 4px 0;
+}
+
+.entry-image {
+	vertical-align: sub;
+	height: 30px;
+	display: inline-block;
+	border: 2px solid #ddd;
+}
+
+.entry-details {
+	display: inline-block;
+	width: calc(100% - 50px);
+	margin-left: 6px;
+}
+
+.entry-details > * {
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	letter-spacing: 1px;
+	font-weight: 300;
+}
+
+.entry-name {
+    font-size: 14px;
+}
+
+.entry-status {
+	font-size: 11px;
+    color: #aaa;
+}
+
+.event-detail {
+	display: none;
+}
+
+.event-detail > p {
+	margin: 0;
+}
+
+.event-detail .emp-name {
+	text-align: left;
+    padding-left: 20px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.event-detail > .emp-name:before {
+	content: '';
+	position: fixed;
+	width: 12px;
+	height: 12px;
+	top: 13px;
+	left: 10px;
+	border-radius: 50%;
+	backface-visibility: hidden;
+}
+
+.event-detail[data-type="leave"] > .emp-name:before {
+	background: #ff6c00;
+}
+
+.event-detail[data-type="ontime"] > .emp-name:before {
+	background: #00BA71;
+}
+.event-detail[data-type="late"] > .emp-name:before {
+	background: #FFD966;
+}
+.event-detail[data-type="absent"] > .emp-name:before {
+	background: #F20909;
+}
+.event-detail[data-type="undertime"] > .emp-name:before {
+	background: #FFB266;
+}
+
+.event-detail[data-type="holiday"] > .emp-name:before {
+	background: #ff38ad;
+}
+.event-detail[data-type="birthday"] > .emp-name:before {
+	background: #00a4e5;
+}
+
+</style>
+
+
+<script >
+        var calendar = {
+            events: {
+                leave: {
+                    events: [],
+                    className: ['event', 'leave'],
+                    allDayDefault: true
+                },
+                holiday: {
+                    events: [],
+                    className: ['event', 'holiday'],
+                    allDayDefault: true
+                },
+                attendance: {
+                    absent: {
+                        events: [],
+                        className: ['event', 'attendance', 'absent'],
+                        allDayDefault: true
+                    },
+                    late: {
+                        events: [],
+                        className: ['event', 'attendance', 'late'],
+                        allDayDefault: true
+                    },
+                    ontime: {
+                        events: [],
+                        className: ['event', 'attendance', 'ontime'],
+                        allDayDefault: true
+                    },
+                    undertime: {
+                        events: [],
+                        className: ['event', 'attendance', 'undertime'],
+                        allDayDefault: true
+                    }
+                },
+                birthday: {
+                    events: [],
+                    className: ['event', 'birthday'],
+                    allDayDefault: true
+                    // rendering: 'background'
+                }
+            },
+            eventsOnView : [],
+            fetching: false,
+            getLeaveEvents: function() {
+                // FETCH DATA [[TO BE REPLACED BY AJAX REQUEST AND MODIFY BASED ON RESPONSE STRUCTURE]]
+                // **note: AJAX SHOULD NOT BE ASYNC
+        
+                // TEST DATA TO BE REPLACED BY AJAX REQUEST
+                var leaveData  = [
+                    {
+                        eventType: 'leave',
+                        title: 'On Leave: 2',
+                        start: moment().add(13, 'days'),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'John Doe',
+                                status: 'Approved'
+                            },
+                            {
+                                id: '002',
+                                name: 'Jane Does',
+                                status: 'Approved'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'leave',
+                        title: 'Employee Name',
+                        start: moment(),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'John Doe',
+                                status: 'Approved'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'leave',
+                        title: 'Employee Name',
+                        start: moment().add(1, 'days'),
+                        entries: [
+                            {
+                                id: '002',
+                                name: 'Jane Does',
+                                status: 'Approved'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'leave',
+                        title: 'On Leave: 3 *',
+                        start: moment().add(7, 'days'),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'John Doe',
+                                status: 'Approved'
+                            },
+                            {
+                                id: '002',
+                                name: 'Jane Does',
+                                status: 'Pending'
+                            },
+                            {
+                                id: '003',
+                                name: 'Jack Did',
+                                status: 'Approved'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'leave',
+                        title: 'On Leave: 2 *',
+                        start: moment().add(2, 'days'),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'John Doe',
+                                status: 'Approved'
+                            },
+                            {
+                                id: '002',
+                                name: 'Jane Does',
+                                status: 'Pending'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'leave',
+                        title: 'Employee Name',
+                        start: moment().add(5, 'days'),
+                        entries: [
+                            {
+                                id: '002',
+                                name: 'Jane Does',
+                                status: 'Approved'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.leave.events = leaveData;
+            },
+            getBirthdayEvents: function() {
+                // FETCH DATA [[TO BE REPLACED BY AJAX REQUEST AND MODIFY BASED ON RESPONSE STRUCTURE]]
+                // **note: AJAX SHOULD NOT BE ASYNC
+        
+                // TEST DATA TO BE REPLACED BY AJAX REQUEST
+                var birthdayData  = [
+                    {
+                        eventType: 'birthday',
+                        title: 'Birthdays: 3',
+                        start: moment().add(16, 'days'),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'Jane Does',
+                                status: 'Celebrant'
+                            },
+                            {
+                                id: '002',
+                                name: 'John Doe',
+                                status: 'Celebrant'
+                            },
+                            {
+                                id: '003',
+                                name: 'Jack Did',
+                                status: 'Celebrant'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'birthday',
+                        title: 'Celebrant',
+                        start: moment().add(3, 'days'),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'Jane Does',
+                                status: 'Celebrant'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'birthday',
+                        title: 'Birthdays: 2',
+                        start: moment().add(12, 'days'),
+                        entries: [
+                            {
+                                id: '001',
+                                name: 'Jane Does',
+                                status: 'Celebrant'
+                            },
+                            {
+                                id: '003',
+                                name: 'Jack Did',
+                                status: 'Celebrant'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'birthday',
+                        title: 'Celebrant',
+                        start: moment().add(8, 'days'),
+                        entries: [
+                            {
+                                id: '003',
+                                name: 'Jack Did',
+                                status: 'Celebrant'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.birthday.events = birthdayData;
+            },
+            getHolidayEvents: function() {
+                // FETCH DATA [[TO BE REPLACED BY AJAX REQUEST AND MODIFY BASED ON RESPONSE STRUCTURE]]
+                // **note: AJAX SHOULD NOT BE ASYNC
+        
+                // TEST DATA TO BE REPLACED BY AJAX REQUEST
+                var holidayData  = [
+                    {
+                        eventType: 'holiday',
+                        title: 'Awesome Day',
+                        start: moment().add(1, 'days'),
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Awesome Day',
+                                status: 'Non-Working'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'holiday',
+                        title: 'Holiday Today',
+                        start: moment(),
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Holiday Today',
+                                status: 'Special'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'holiday',
+                        title: 'Holiday Name',
+                        start: moment().add(10, 'days'),
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Super Holiday',
+                                status: 'Non-Working'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'holiday',
+                        title: 'Holiday Name',
+                        start: moment().add(12, 'days'),
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Everyday Holiday',
+                                status: 'Special'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.holiday.events = holidayData;
+            },
+            getAttendanceEvents: function() {
+                // FETCH DATA [[TO BE REPLACED BY AJAX REQUEST AND MODIFY BASED ON RESPONSE STRUCTURE]]
+                // **note: AJAX SHOULD NOT BE ASYNC
+        
+                // TEST DATA TO BE REPLACED BY AJAX REQUEST
+                var lateData  = [
+                    {
+                        eventType: 'late',
+                        title: 'Late: 2',
+                        start: '2016/09/02',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'late',
+                        title: 'Employee Name',
+                        start: '2016/09/05',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'late',
+                        title: 'Late: 3',
+                        start: '2016/09/08',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'late',
+                        title: 'Late: 2',
+                        start: '2016/09/01',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'late',
+                        title: 'Employee Name',
+                        start: '2016/09/07',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'late',
+                        title: 'Late: 4',
+                        start: '2016/09/06',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.attendance.late.events = lateData;
+        
+                var absentData  = [
+                    {
+                        eventType: 'absent',
+                        title: 'Employee Name',
+                        start: '2016/09/07',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'absent',
+                        title: 'Employee Name',
+                        start: '2016/09/08',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'absent',
+                        title: 'Absent: 2',
+                        start: '2016/09/06',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'absent',
+                        title: 'Employee Name',
+                        start: '2016/09/02',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'absent',
+                        title: 'Absent: 4',
+                        start: '2016/09/01',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.attendance.absent.events = absentData;
+        
+                var undertimeData  = [
+                    {
+                        eventType: 'undertime',
+                        title: 'Undertime: 2',
+                        start: '2016/09/08',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'undertime',
+                        title: 'Employee Name',
+                        start: '2016/09/07',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'undertime',
+                        title: 'Undertime: 2',
+                        start: '2016/09/05',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'undertime',
+                        title: 'Employee Name',
+                        start: '2016/09/02',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.attendance.undertime.events = undertimeData;
+        
+                var ontimeData = [
+                    {
+                        eventType: 'ontime',
+                        title: 'On time: 6',
+                        start: '2016/09/08',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'ontime',
+                        title: 'On Time: 11',
+                        start: '2016/09/07',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'ontime',
+                        title: 'On time: 8',
+                        start: '2016/09/06',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'ontime',
+                        title: 'On time: 11',
+                        start: '2016/09/05',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'ontime',
+                        title: 'On Time: 10',
+                        start: '2016/09/02',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    },
+                    {
+                        eventType: 'ontime',
+                        title: 'On time: 8',
+                        start: '2016/09/01',
+                        entries: [
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            },
+                            {
+                                id: '101',
+                                name: 'Last Name',
+                                status: 'First Name'
+                            }
+                        ]
+                    }
+                ];
+        
+                calendar.events.attendance.ontime.events = ontimeData;
+            },
+            closeCard: function(){
+                $('.card').css({'opacity': 0, 'transform': 'scale(0.8) rotateY(0deg)'});
+                setTimeout(function(){
+                    $('.card-wrapper').css({'display': 'none'});
+                    $('.back-panel .event-loader').show();
+                    $('.back-panel .event-detail').hide();
+                }, 300);
+            },
+            fetchEvents: function(){
+                calendar.eventsOnView = [];
+                // CHECK FILTERS
+                var includeLeave = $('#filter-leave').prop('checked'),
+                    includeAttendance = $('#filter-attendance').prop('checked'),
+                    includeHoliday = $('#filter-holiday').prop('checked'),
+                    includeBirthday = $('#filter-birthday').prop('checked');
+        
+                // [[TODO]] ADD QUERY FOR EMPLOYEE/DEPARTMENT SEARCH
+        
+                if (includeLeave) {
+                    calendar.getLeaveEvents();
+                    calendar.eventsOnView.push(calendar.events.leave);
+                };
+        
+                if (includeAttendance) {
+                    calendar.getAttendanceEvents();
+                    calendar.eventsOnView.push(calendar.events.attendance.absent);
+                    calendar.eventsOnView.push(calendar.events.attendance.late);
+                    calendar.eventsOnView.push(calendar.events.attendance.ontime);
+                    calendar.eventsOnView.push(calendar.events.attendance.undertime);
+                };
+        
+                if (includeHoliday) {
+                    calendar.getHolidayEvents();
+                    calendar.eventsOnView.push(calendar.events.holiday);
+                };
+        
+                if (includeBirthday) {
+                    calendar.getBirthdayEvents();
+                    calendar.eventsOnView.push(calendar.events.birthday);
+                };
+                calendar.render();
+            },
+            listEvents: function(type, entries, date) {
+                if (!calendar.fetching) {		
+                    calendar.fetching = true;
+        
+                    $('.front-panel .event-loader').show();
+                    $('.front-panel .entries').html('');
+                    // 	FOR NOW PLACED INSIDE setTimeout to simulate ajax fetching. SHOULD be replaced by actual fetching of data.
+                    setTimeout(function(){
+                        for (var i = 0; i < entries.length; i++) {
+                            var avatar = entries[i].avatar || 'https://app-a.salarium.com/assets/img/placeholder.png';
+                            var entryTemplate = 
+                            '<div class="entry" data-type="'+ type +'" data-id="'+ entries[i].id +'" data-date="'+ date +'">' +
+                                '<img src="' + avatar + '" class="entry-image img-circle" />' +
+                                '<div class="entry-details">' +
+                                    '<p class="entry-name">' + entries[i].name + '</p>' +
+                                    '<p class="entry-status">' + entries[i].status + '</p>' +
+                                '</div>' +
+                            '</div>';
+        
+                            $('.front-panel .entries').append(entryTemplate);
+                        };
+                        $('.front-panel .event-loader').hide();
+                        calendar.fetching = false;
+                    }, 1200);
+                };
+            },
+            showDetail: function(type, date, id) {
+                $('.back-panel .event-detail').hide();
+                $('.back-panel .event-loader').show();
+        
+                $('.event-detail').attr('data-type', type);
+                
+                $('.back-panel .emp-name').html('Entry Title');
+                $('.back-panel .event-date').html(date);
+        
+                setTimeout(function(){
+                    $('.back-panel .event-loader').hide();
+                    $('.back-panel .event-detail').show();
+                }, 1200);
+            },
+            render: function() {
+                $('#calendar').fullCalendar( 'destroy' );
+                $('#calendar').fullCalendar({
+                    eventClick: function(calEvent, jsEvent, view) {
+                        var target = $(jsEvent.currentTarget);
+                        var parent = $(jsEvent.currentTarget).parent();
+                        $('.card-wrapper').css({
+                            top: parent.offset().top + 2,
+                            left: target.offset().left + parent.width() + 4,
+                            display: 'block'
+                        });
+                        // IF MULTIPLE ENTRIES
+                        if (calEvent.entries.length > 1) {
+                            // GENERATE CARD TITLE
+                            var eventTitle = '';
+                            switch (calEvent.eventType) {
+                                case 'leave':
+                                    eventTitle = '<span class="leave">LEAVE</span>';
+                                    break;
+                                case 'ontime':
+                                    eventTitle = '<span class="ontime">ATTENDANCE</span>';
+                                    break;
+                                case 'late':
+                                    eventTitle = '<span class="late">ATTENDANCE</span>';
+                                    break;
+                                case 'undertime':
+                                    eventTitle = '<span class="undertime">ATTENDANCE</span>';
+                                    break;
+                                case 'absent':
+                                    eventTitle = '<span class="absent">ATTENDANCE</span>';
+                                    break;
+                                case 'holiday':
+                                    eventTitle = '<span class="holiday">HOLIDAY</span>';
+                                    break;
+                                case 'birthday':
+                                    eventTitle = '<span class="birthday">BIRTHDAY</span>';
+                                    break;
+                            }
+                            // Update Card Titles
+                            var eventDate = calEvent.start._i;
+                            $('.front-panel .event-title').html(eventTitle);
+                            $('.front-panel .event-date').html(moment(eventDate).format("dddd, MMMM Do YYYY"));
+                            // Generate Event List
+                            calendar.listEvents(calEvent.eventType, calEvent.entries, eventDate);
+                            $('.card').css({'opacity': 1, 'transform': 'scale(1) rotateY(0deg)'});
+                        } else {
+                            // IF SINGLE ENTRY
+                            calendar.showDetail(calEvent.eventType, moment(calEvent.start._i).format("dddd, MMMM Do YYYY"), calEvent.entries[0].id);
+                            $('.card').css({'opacity': 1, 'transform': 'scale(1) rotateY(180deg)'});
+                            // $('.card').css({'transform': ''});
+                        };
+                    },
+                    eventLimit: 5,
+                    header: {
+                        left: 'title',
+                        center: '',
+                        right: 'prev, today, next'
+                    },
+                    eventSources: calendar.eventsOnView
+                });
+            }
+        }
+        
+        $(document).ready(function() {
+            // INITIALIZE SIDEBAR FILTER FOR CALENDAR
+            $(".sidebar.left").sidebar();
+        
+            // GENERATE CALENDAR EVENTS
+            calendar.fetchEvents();
+        
+            // BIND EVENTS
+            $('#sidebar-toggle').on('click', function(){
+                $(".sidebar.left").trigger("sidebar:toggle").toggleClass('filter-shadow');
+            });
+        
+            $('.sidebar label > input').on('change', function(){
+                calendar.closeCard();
+                calendar.fetchEvents();
+            });
+        
+            $('#calendar').on('click', function(event) {
+                if (!$(event.target).closest(".event").length) {
+                    calendar.closeCard();
+                }
+            });
+        
+            $('.entries').on('click', '.entry', function(){
+                $('.card').css({'transform': 'rotateY(180deg)'});
+                var type = $(this).attr('data-type'),
+                    date = $(this).attr('data-date'),
+                    id = $(this).attr('data-id');
+                calendar.showDetail(type, moment(date).format("dddd, MMMM Do YYYY"), id);
+            });
+        });
+        
+        (function () {
+            var burger1;
+            burger1 = document.querySelector('.burger1');
+            burger1.addEventListener('click', function () {
+                return burger1.classList.toggle('on');
+            });
+        }.call(this));
+</script>

@@ -1,0 +1,362 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script><script src="/SiteAssets/jquery.SPServices-2013.02a.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+ 
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+  
+  .AlignButtonRight{
+  float: right;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+
+</style>
+
+ <script type="text/javascript">
+  
+  $(document).ready(function() {
+
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  // $(".button-collapse").sideNav();
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker  
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+// var CurrentTime =  new Date().toLocaleTimeString('en-US', { hour12: true, 
+//                                              hour: "numeric", 
+//                                              minute: "numeric"});
+
+
+document.getElementById('ctl00_PlaceHolderLeftNavBar_QuickLaunchNavigationManager').style.display = 'none';
+document.getElementById('Ribbon').style.display = 'none';
+document.getElementById('s4-ribbonrow').style.display = 'none';
+
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+
+
+
+ var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+
+ExecuteOrDelayUntilScriptLoaded(init,'sp.js');
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+
+
+var userProfileProperties;
+
+var targetUser;
+//---------------------> GET CURRENT USER <---------------------------------------------------------
+
+  function onSuccess(data, request){
+    var Name = data.d.Title;
+    document.getElementById('Requestors_Name').innerText = Name;
+
+    // if(loginName != "Scott Osgood" && loginName != "Artem Soukhomlinov" && loginName != "Matthew Milner" && loginName != "Fernando Durano Singson Jr."){
+    //   document.getElementById("div_Entries").remove();
+    //   document.getElementById("div_NewEntry").remove();
+    // }
+
+  }
+  function onError(error) {
+    alert("error");
+  }
+
+  // IF EMPTY OR WHITE SPACE ----------------------------------------------------------------------------------------------
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+
+
+
+//  function get_query_immediate_head(){
+//  itemId = GetUrlKeyValue("ID", false, location.href);
+
+//          //Get the current context
+//          var context = new SP.ClientContext();
+//          //Get the Announcements list. Alter this code to match the name of your list
+//          var list = context.get_web().get_lists().getByTitle('HR Timekeeping Forms');
+//          //Create a new CAML query
+//          var caml = new SP.CamlQuery();
+//          //Create the CAML that will return only items with the titles that begin with 'T'
+//         caml.set_viewXml("<Query><Where><Eq><FieldRef Name='ID' /><Value Type='Counter'>"+itemId+"</Value></Eq></Where></Query>");
+//          //Specify the query and load the list oject
+//         returnedItems = list.getItems(caml);
+//          context.load(returnedItems);
+//          //Run the query asynchronously, passing the functions to call when a response arrives
+//          context.executeQueryAsync(onSucceededCallback, onFailedCallback);
+//  }
+// var get_immediate;
+
+//     function onSucceededCallback(sender, args) {
+//          var enumerator = returnedItems.getEnumerator();
+//          while (enumerator.moveNext()) {
+
+//         var listItem = enumerator.get_current();
+
+//       var id = listItem.get_item('ID')
+
+//         if(itemId==id){//if
+
+//       get_immediate= listItem.get_item('Immediate_x0020_Head').get_lookupValue();
+//      // alert("From DB: "+get_immediate);
+
+//         }//end if
+
+//       }  //en
+
+
+ function init(){
+
+ 
+
+    this.clientContext2 = new SP.ClientContext.get_current();
+    this.oWeb = clientContext2.get_web();
+    targetUser = this.oWeb.get_currentUser();
+    this.clientContext2.load(targetUser);
+   
+    this.clientContext2.executeQueryAsync(Function.createDelegate(this,this.onQuerySucceeded), Function.createDelegate(this,this.onQueryFailed));
+    
+
+
+ }
+ 
+ function onQuerySucceeded() {
+
+    var account = targetUser.get_loginName();
+    targetUser_temp = account.substring(account.indexOf("|") + 10);
+    targetUser = targetUser_temp;
+  
+  
+    SP.SOD.executeOrDelayUntilScriptLoaded(getUserProperties, 'SP.UserProfiles.js');
+}
+
+function onRequestFail(sender, args) {
+    document.getElementById('Requestor_x0027_s_x0020_Name_4e37bb2d-02b9-4ea3-a01c-25d5f580defc_$TextField').value = "Error: " + args.get_message();
+    document.getElementById('Department_x002f_Section_aa1d5da4-b183-40dd-b7e0-c3d5e2de85b3_$TextField').value = "Error: " + args.get_message();
+}
+
+
+function getUserProperties() {
+
+targetUser = 'hoitcebu\\'+targetUser;
+    // Replace the placeholder value with the target user's credentials.
+     //alert(targetUser);
+     
+    // Get the current client context and PeopleManager instance.
+    var clientContext = new SP.ClientContext.get_current();
+    var peopleManager = new SP.UserProfiles.PeopleManager(clientContext);
+  
+    // Specify the properties to retrieve and target user for the 
+    // UserProfilePropertiesForUser object.
+    var profilePropertyNames = ["PreferredName", "Department", "Manager"];
+    var userProfilePropertiesForUser = 
+        new SP.UserProfiles.UserProfilePropertiesForUser(
+            clientContext,
+            targetUser,
+            profilePropertyNames);
+
+    // Get user profile properties for the target user.
+    // To get the value for only one user profile property, use the
+    // getUserProfilePropertyFor method.
+    userProfileProperties = peopleManager.getUserProfilePropertiesFor(
+        userProfilePropertiesForUser);
+//alert(userProfileProperties );
+    // Load the UserProfilePropertiesForUser object and send the request.
+    clientContext.load(userProfilePropertiesForUser);
+    clientContext.executeQueryAsync(onRequestSuccess, onRequestFail);
+}
+
+var immediate_head_var;
+// This function runs if the executeQueryAsync call succeeds.
+function onRequestSuccess() {
+    var requestorName = userProfileProperties[0];
+    var department =  userProfileProperties[1];
+    var manager =  userProfileProperties[2];
+    //alert(manager);
+    document.getElementById('Requestors_Department').innerText = department;
+    document.getElementById('Requestors_DepartmentHead').innerText = manager;
+
+   immediate_head_var = manager;
+  // alert(immediate_head_var);
+  alert(department + " : " + manager);
+
+}
+
+
+
+ </script>
+
+<body>
+
+<main>
+
+   <div class="row">
+    <h2> </h2>
+    </div>
+
+    <div class="row">
+        <div class="row">
+          <div class="col s3"></div>
+            <div class="col s4">
+                  <div class="card-panel z-depth-2">
+                      <div class="row">
+                          <a class="btn-floating red AlignButtonRight" href="https://intranet.houseofit.com.au/Lists/IT%20Hardware%20Software%20Request"><i class=" material-icons">close</i></a>
+                      </div>                      
+
+                      <div class="input-field row">
+                           <h5 id="Requestors_Name" class="CenterHeader"></h5><br>
+                           <h6 id="Requestors_Department" class="CenterHeader"></h6><br>
+                           <h6 id="Requestors_DepartmentHead" class="CenterHeader"></h6>
+                      </div>
+
+                      <div class="row">
+                        <h2> </h2>
+                      </div>                    
+
+                      <div class="input-field row">
+                          <select id="DP_Section" >
+                            <option value="" disabled selected>Choose a Section</option>
+                            <option value="Manage Office">Manage Office</option>
+                            <option value="Internal Tech">Internal Tech</option>
+                            <option value="Fiber Tech">Fiber Tech</option>
+                            <option value="SharePoint Developer">SharePoint Developer</option>
+                          </select>
+                          <label>Section</label>
+                      </div>
+                      <div class="input-field row">
+                          <select id="DP_EntryType" >
+                            <option value="" disabled selected>Choose a Type</option>
+                            <option value="Error">Error</option>
+                            <option value="Rework">Rework</option>
+                          </select>
+                          <label>Type</label>
+                      </div>                     
+                      <div class="input-field row">
+                            <input id="TB_Points" type="text" disabled placeholder="">
+                            <label for="TB_Points">Points</label>
+                      </div>
+                      <div class="input-field row">
+                            <label>Date</label>
+                            <input type = "text" class = "datepicker" id="Date_EntryDate" placeholder="">    
+                      </div>
+                      <div class="input-field row">
+                            <input id="TB_TicketNumber" type="text"  placeholder="">
+                            <label for="TB_TicketNumber">Ticket Number</label>
+                      </div>                  
+                      <div class="input-field row">
+                        <textarea id="Txt_Description" class="materialize-textarea" placeholder=""></textarea>
+                        <label for="Txt_Description">Description</label>
+                      </div>                  
+                      <div class="row">
+                        <a class="waves-effect waves-light btn light-blue darken-1 AlignButtonRight hoverable" onclick="">Submit</a>
+                      </div>
+                  </div>      
+            </div>         
+        </div>
+      </div>
+
+
+</main>
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+ 
+</html>

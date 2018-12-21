@@ -1,0 +1,950 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script>
+<script src="/SiteAssets/sputility.min.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.js"></script>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta name="layout" />
+    <link rel="stylesheet" href="/SiteAssets/CSR TEMPLATE/Fiber Techs Time Tracker/custom_full_calendar.css">
+
+    <!--Import Google Icon Font-->
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+
+    <!--Import materialize.css-->
+    <!-- <link rel="stylesheet" href="/SiteAssets/CSR TEMPLATE/MaterialDesign/css/materialize.css" /> -->
+
+    <!-- SWEET ALERT -->
+    <link href="https://intranet.houseofit.com.au/SiteAssets/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet" />
+
+    <!-- SCRIPTS ------------------------------------------------------------------------ -->
+
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- SEMANTIC UI -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+
+
+    <!-- MOMENTS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+
+    <!-- FULL CALENDAR JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.0/fullcalendar.min.js"></script>
+
+
+
+
+    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css"
+        rel="stylesheet" type="text/css" />
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+
+
+    <style type="text/css">
+        .AlignButtonRight {
+            float: right;
+        }
+
+        .AlignButtonLeft {
+            float: left;
+        }
+
+
+        i.icon-blue {
+            color: #03a9f4;
+        }
+
+        #sideNavBox {
+            display: none;
+        }
+
+        #contentBox {
+            margin-left: 20px;
+        }
+
+        .ms-fullscreenmode #contentBox {
+            margin-left: 0;
+        }
+
+        .CenterTextInSpan {
+            text-align: center !important;
+        }
+
+        .RightContents {
+            text-align: right !important;
+        }
+
+        .spancenter {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* -------------------------------------------------------------------------- */
+
+
+        .fc-day {
+            border: 1px solid !important;
+            border-color: #9e9e9e !important;
+        }
+
+        .fc-widget-content {
+            padding: 0px !important;
+            border-color: #9e9e9e !important;
+        }
+
+        .fc-head-container.fc-widget-header {
+            border: 1px solid !important;
+            border-color: #03a9f4 !important;
+            padding: 0px !important;
+        }
+
+        .fc-widget-header {
+            text-align: center !important;
+            border: 5px !important;
+            background: #616161 !important;
+            color: white !important;
+        }
+
+        .fc-content {
+            text-align: center !important;
+            font-size: 14px !important;
+        }
+
+        .fc-day-grid {
+            z-index: none !important;
+        }
+
+
+        .fc-content {
+            overflow: visible !important;
+            font-weight: 500 !important;
+        }
+
+        .fc-scroller.fc-day-grid-container {
+            overflow: visible !important;
+        }
+
+        .fc-title {
+            font-size: 16px !important;
+        }
+
+        .fc-row .fc-bg {
+            z-index: 0 !important;
+        }
+
+        .fc-toolbar h2 {
+            padding-top: 4px;
+            font-weight: 200;
+            font-family: 'Roboto', sans-serif;
+            color: #666;
+        }
+
+        .fc-button-group{
+            z-index:0 !important;
+        }
+
+
+        /* -------------------------------------------------------------------------- */
+
+   
+   .waves-effect {
+	z-index: 0;
+}
+
+.card-wrapper {
+	position: absolute;
+	perspective: 700;
+	-webkit-perspective: 700;
+	top: 0;
+	left:  0;
+	z-index: 10;
+	display: none;
+	transition: all 0.3s ease;
+}
+
+
+.card {
+	position: relative;
+	margin: 0;
+	width: 200px;
+	height: 300px;
+	transition: all 0.3s ease;
+	transform-style: preserve-3d;
+	background: #fff;
+	-webkit-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+}
+
+.back-panel {
+	transform: rotateY(180deg);
+}
+
+.front-panel,
+.back-panel, .front-panel:before,
+.back-panel:before,
+.front-panel:after,
+.back-panel:after {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	top: 0;
+	left: 0;
+	backface-visibility: hidden;
+	padding: 10px;
+}
+
+.front-panel *,
+.back-panel *, .front-panel *:before,
+.back-panel *:before,
+.front-panel *:after,
+.back-panel *:after {
+	backface-visibility: hidden;
+}
+
+.note {
+	font-size: 11px;
+	font-style: italic;
+	color: ccc;
+	font-weight: 300;
+	text-align: right;
+}
+
+.filter-shadow {
+	-webkit-box-shadow: 3px 0px 1px -1px rgba(0,0,0,0.2);
+	-moz-box-shadow: 3px 0px 1px -1px rgba(0,0,0,0.2);
+	box-shadow: 3px 0px 1px -1px rgba(0,0,0,0.2);
+}
+.event-title {
+	text-align: left;
+	backface-visibility: hidden;
+	padding-left: 20px;
+	font-weight: 400;
+    letter-spacing: 3px;
+}
+.event-title > span:before {
+	content: '';
+	position: fixed;
+	width: 12px;
+	height: 12px;
+	top: 13px;
+	left: 10px;
+	border-radius: 50%;
+	backface-visibility: hidden;
+}
+
+.event-title > .leave:before {
+	background: #ff6c00;
+}
+.event-title > .ontime:before {
+	background: #00BA71;
+}
+.event-title > .late:before {
+	background: #FFD966;
+}
+.event-title > .absent:before {
+	background: #F20909;
+}
+.event-title > .undertime:before {
+	background: #FFB266;
+}
+
+.event-title > .holiday:before {
+	background: #ff38ad;
+}
+.event-title > .birthday:before {
+	background: #00a4e5;
+}
+
+.event-date {
+	font-weight: 300;
+	font-size: 12px;
+	font-style: italic;
+	border-bottom: 1px solid #ccc;
+	padding: 4px 0 4px 0;
+	color: #aaa;
+}
+
+/* SPINNER */
+
+.sk-cube-grid {
+  width: 40px;
+  height: 40px;
+  margin: 100px auto;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: #ccc;
+  float: left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s; }
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+  }
+}
+
+
+/* CARD ENTRY STYLES */
+.entries {
+	overflow: auto;
+    height: 220px;
+}
+.entry:hover {
+	background: #cfdeff;
+}
+
+.entry {
+	cursor: pointer;
+	margin: 4px 0;
+}
+
+.entry-image {
+	vertical-align: sub;
+	height: 30px;
+	display: inline-block;
+	border: 2px solid #ddd;
+}
+
+.entry-details {
+	display: inline-block;
+	width: calc(100% - 50px);
+	margin-left: 6px;
+}
+
+.entry-details > * {
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	letter-spacing: 1px;
+	font-weight: 300;
+}
+
+.entry-name {
+    font-size: 14px;
+}
+
+.entry-status {
+	font-size: 11px;
+    color: #aaa;
+}
+
+.event-detail {
+	display: none;
+}
+
+.event-detail > p {
+	margin: 0;
+}
+
+.event-detail .emp-name {
+	text-align: left;
+    padding-left: 20px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.event-detail > .emp-name:before {
+	content: '';
+	position: fixed;
+	width: 12px;
+	height: 12px;
+	top: 13px;
+	left: 10px;
+	border-radius: 50%;
+	backface-visibility: hidden;
+}
+
+.event-detail[data-type="leave"] > .emp-name:before {
+	background: #ff6c00;
+}
+
+.event-detail[data-type="ontime"] > .emp-name:before {
+	background: #00BA71;
+}
+.event-detail[data-type="late"] > .emp-name:before {
+	background: #FFD966;
+}
+.event-detail[data-type="absent"] > .emp-name:before {
+	background: #F20909;
+}
+.event-detail[data-type="undertime"] > .emp-name:before {
+	background: #FFB266;
+}
+
+.event-detail[data-type="holiday"] > .emp-name:before {
+	background: #ff38ad;
+}
+.event-detail[data-type="birthday"] > .emp-name:before {
+	background: #00a4e5;
+}
+
+    </style>
+
+
+
+
+</head>
+
+<body>
+
+    <div class="ui three column grid">
+        <div class="two wide column"></div>
+
+        <div class="twelve wide column">
+            <table class="ui raised segment table">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="ui grid">
+                                <div class="three wide column">
+                                    <h3 class="ui header grey">
+                                        <i class="circular calendar alternate icon"></i>
+                                        Project Calendar
+                                    </h3>
+
+                                </div>
+
+                                <div class="thirteen wide column RightContents">
+
+                                    <a class="ui  button" onclick="New_Entry()" id="BTN_NEW_ENTRY">
+                                        <i class="plus green icon"></i>
+                                        ADD ENTRY
+                                    </a>
+                                    <a class="ui  button" onclick="Open_Modal_Projects()">
+                                        <i class="settings blue icon"></i>
+                                        PROJECTS
+                                    </a>
+                                </div>
+
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="ui three column grid" id="FORM_CONTAINER" style="display:none">
+                                <div class="four wide column"></div>
+                                <div class="eight wide column">
+                                    <div class="ui segments">
+                                        <div class="ui segment">
+                                            <h3 class="ui header">
+                                                <i class="wpforms icon"></i>
+                                                <div class="content">
+                                                    Entry Form
+                                                    <div class="sub header">Fill in the fields below</div>
+                                                </div>
+                                            </h3>
+                                        </div>
+                                        <div class="ui segment">
+                                            <div class="ui padded grid">
+                                                <div class="two column row">
+                                                    <div class="four wide column">
+                                                        <label>CREATED BY:</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui right icon input fluid" style="background: #e0e0e0 ">
+                                                            <input type="text" placeholder="User who created" id="INPUT_CREATEDBY"
+                                                                readOnly tabIndex="-1" style="background: #eeeeee">
+                                                            <i class="user grey icon"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row">
+                                                    <div class="four wide column">
+                                                        <label>PROJECT :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui right action input fluid">
+                                                            <div class="ui selection dropdown fluid" id="DIV_INPUT_PROJECT_NAME">
+                                                                <input type="hidden" name="Status" id="INPUT_PROJECT_NAME"
+                                                                    onchange=" Remove_Error_Class(this)">
+                                                                <i class="dropdown icon"></i>
+                                                                <div class="default text">Select Project</div>
+                                                                <div class="menu" id="MENU_PROJECT_NAME">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row">
+                                                    <div class="four wide column">
+                                                        <label>STATUS :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui selection dropdown fluid" id="DIV_INPUT_STATUS">
+                                                            <input type="hidden" id="INPUT_STATUS" onchange=" Remove_Error_Class(this)">
+                                                            <i class="dropdown icon"></i>
+                                                            <div class="default text">Status</div>
+                                                            <div class="menu">
+                                                                <div class="item" data-value="To Be Done">
+                                                                    <div class="ui red empty circular label"></div>To
+                                                                    Be
+                                                                    Done
+                                                                </div>
+                                                                <div class="item" data-value="In Progress">
+                                                                    <div class="ui orange empty circular label"></div>In
+                                                                    Progress
+                                                                </div>
+                                                                <div class="item" data-value="Completed">
+                                                                    <div class="ui green empty circular label"></div>Completed
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row">
+                                                    <div class="four wide column">
+                                                        <label>DAYS/HOURS :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui selection dropdown fluid" id="DIV_INPUT_DAYS_HOURS">
+                                                            <input type="hidden" id="INPUT_DAYS_HOURS" onchange=" Remove_Error_Class(this)">
+                                                            <i class="dropdown icon"></i>
+                                                            <div class="default text">Duration</div>
+                                                            <div class="menu">
+                                                                <div class="item" data-value="Less than a day">Less
+                                                                    than a day</div>
+                                                                <div class="item" data-value="One day">One day</div>
+                                                                <div class="item" data-value="More than a day">More
+                                                                    than a day</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row hidden" id="ROW_DATE" style="display:none">
+                                                    <div class="four wide column">
+                                                        <label>DATE :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui calendar DATE">
+                                                            <div class="ui input right icon fluid" id="CONTAINER_PROJECT_DATE">
+                                                                <i class="calendar alternate outline icon"></i>
+                                                                <input type="text" placeholder="Date" id="INPUT_PROJECT_DATE">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row" id="ROW_START_TIME" style="display:none">
+                                                    <div class="four wide column">
+                                                        <label>START TIME :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui calendar TIME" id="CALENDAR_START_TIME">
+                                                            <div class="ui input fluid right icon" id="CONTAINER_START_TIME">
+                                                                <i class="clock outline icon"></i>
+                                                                <input type="text" placeholder="Time" id="INPUT_START_TIME">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row" id="ROW_END_TIME" style="display:none">
+                                                    <div class="four wide column">
+                                                        <label>END TIME :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui calendar TIME" id="CALENDAR_END_TIME">
+                                                            <div class="ui input fluid right icon" id="CONTAINER_END_TIME">
+                                                                <i class="clock outline icon"></i>
+                                                                <input type="text" placeholder="Time" id="INPUT_END_TIME">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row" id="ROW_START_DATE" style="display:none">
+                                                    <div class="four wide column">
+                                                        <label>START DATE :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui calendar DATE">
+                                                            <div class="ui input right icon fluid" id="CONTAINER_START_DATE">
+                                                                <i class="calendar alternate outline icon"></i>
+                                                                <input type="text" placeholder="Date" id="INPUT_START_DATE">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row" id="ROW_END_DATE" style="display:none">
+                                                    <div class="four wide column">
+                                                        <label>END DATE :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui calendar DATE">
+                                                            <div class="ui input right icon fluid" id="CONTAINER_END_DATE">
+                                                                <i class="calendar alternate outline icon"></i>
+                                                                <input type="text" placeholder="Date" id="INPUT_END_DATE">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="two column row">
+                                                    <div class="four wide column">
+                                                        <label>DESCRIPTION :</label>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <div class="ui fluid form">
+                                                            <div class="field">
+                                                                <textarea placeholder="Enter project description here..."
+                                                                    id="INPUT_DESCRIPTION"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="column" style="text-align: right !important">
+                                                        <div class="ui primary button" onclick="Validate_Add_Edit_Entry()">Submit</div>
+                                                        <div class="ui button" onclick="Close_EntryForm()">Cancel</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="four wide column"></div>
+                            </div>
+
+                            <div class="ui segments" id="CALENDAR_CONTAINER">
+
+                                <div class="ui padded grid">
+                                    <div class="three wide column">
+                                        <div class="ui floating dropdown labeled icon button" id="DROPDOWN_FILTERBYTAGS">
+                                            <i class="filter icon"></i>
+                                            <span class="text">FILTER BY STATUS</span>
+                                            <div class="menu">
+                                                <div class="header">
+                                                    <i class="tags icon"></i>
+                                                    Choose Status
+                                                </div>
+                                                <div class="scrolling menu">
+                                                    <div class="item">
+                                                        <div class="ui red empty circular label"></div>
+                                                        To Be Done
+                                                    </div>
+                                                    <div class="item">
+                                                        <div class="ui orange empty circular label"></div>
+                                                        In Progress
+                                                    </div>
+                                                    <div class="item">
+                                                        <div class="ui green empty circular label"></div>
+                                                        Completed
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="six wide column "></div>
+                                    <div class="six wide column ">
+                                        <div class="ui search">
+                                            <div class="ui left icon fluid input">
+                                                <input class="prompt SearchEntry" type="text" data-content="Enter entry details"
+                                                    placeholder="Search countries...">
+                                                <i class="search icon"></i>
+                                            </div>
+                                            <div class="results"></div>
+                                        </div>
+                                    </div>
+                                    <div class="one wide column">
+                                        <a class="circular ui icon button ReloadListBelow" data-content="Reload All Projects">
+                                            <i class="icon blue redo"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ui segment">
+                                    <div id='calendar'></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="two wide column"></div>
+    </div>
+
+
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- MODAL ENTRIES-->
+    <div class="ui large modal" id="MODAL_ENTRIES">
+
+        <div class="header">
+            ENTRIES
+            <a class="ui icon small red button right" onclick="Close_Modal_Entries()">
+                <i class="close icon"></i>
+            </a>
+        </div>
+        <div class="content">
+            <div class="ui grid">
+                <div class="eight wide column">
+                    <div class="ui fluid search ">
+                        <div class="ui fluid icon input">
+                            <input class="prompt entries-table-filter" type="text2" placeholder="Search..." data-table="order-table-entries">
+                            <i class="search icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="four wide column">
+                    <div class="ui input col s12">
+                        <input type="text2" class="datepicker" placeholder="Select Date" id="INPUT_FILTER_DATE">
+                    </div>
+
+                </div>
+            </div>
+            <table class="ui striped table raised segment order-table-entries" id="TABLE_ENTRIES">
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>ID #</th>
+                        <th>PROJECT</th>
+                        <th>DATE</th>
+                        <th>TIME FROM</th>
+                        <th>TIME TO</th>
+                        <th>DESCRIPTION</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="TBODY_TABLE_ENTRIES">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- MODAL PROJECTS-->
+    <div class="ui small modal" id="MODAL_MANAGE_PROJECTS">
+        <div class="header">
+            <div class="ui grid">
+                <div class="two wide column ">
+                    PROJECTS
+                </div>
+                <div class="fourteen wide column ">
+                    <div class="ui right aligned container">
+                        <a onclick="Close_Modal_Projects()" class="ui floated right" style="font-size: 24px !important;cursor:pointer">
+                            <i class="close icon right red"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui segment hidden" style="display: none" id="DIV_PROJECT_FORM">
+
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="two wide column">
+                            <label style="font-weight: 700; color:#616161  !important">NAME :</label>
+                        </div>
+                        <div class="fourteen wide column">
+                            <div class="ui input fluid">
+                                <input type="text" placeholder="Project Name" id="INPUT_NEWPROJECT_NAME">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="two wide column">
+                            <label style="font-weight: 700;color:#616161  !important">CODE :</label>
+                        </div>
+                        <div class="fourteen wide column">
+                            <div class="ui input fluid">
+                                <input type="text" placeholder="Project Code" style="background:#eeeeee !important" id="INPUT_NEWPROJECT_CODE"
+                                    readOnly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="column RightContents">
+                            <a class="ui primary button" onclick="Validate_Add_Edit_ProjectForm()">
+                                Save
+                            </a>
+                            <a class="ui button" onclick="Close_ProjectForm()">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="ui segment">
+                    <div class="ui fluid RightContents container" id="DIV_NEWPROJECT_BTN">
+                        <a class="ui button green floated right" onclick="New_Project()">
+                            <i class="icon plus "></i>
+                            New
+                        </a>
+                    </div>
+                    <table class="ui three column table" id="TABLE_PROJECTS">
+                        <thead>
+                            <tr>
+                                <th>CODE</th>
+                                <th>NAME</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="TBODY_PROJECTS">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
+    </div>
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+<!-- 
+    <div class="ui custom wide popup" id="POPUP" >
+        <div class="ui fluid grid">
+            <div class="row">
+                <div class="three wide column" style="text-align: left !important"><label>Created By:</label></div>
+                <div class="ten wide column" style="text-align: left !important"><label id="LBL_CREATED_BY"></label></div>
+            </div>
+            <div class="row">
+                <div class="three wide column" style="text-align: left !important"><label>Modified By:</label></div>
+                <div class="ten wide column" style="text-align: left !important"><label id="LBL_MODIFIED_BY"></label></div>
+            </div>
+            <div class="row">
+                <div class="three wide column" style="text-align: left !important"><label>Start:</label></div>
+                <div class="ten wide column" style="text-align: left !important"><label id="LBL_START"></label></div>
+            </div>
+            <div class="row">
+                <div class="three wide column" style="text-align: left !important"><label>End:</label></div>
+                <div class="ten wide column" style="text-align: left !important"><label id="LBL_END"></label></div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+    <div class="card-wrapper">
+            <div class="card" style="opacity: 0; transform: scale(0.8) rotateY(0deg);">
+                <div class="front-panel">
+                    <div class="event-title"></div>
+                    <p class="event-date"></p>
+                    <div class="sk-cube-grid event-loader">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                    <div class="entries"></div>
+                </div>
+                <div class="back-panel">
+                    <div class="sk-cube-grid event-loader">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                    <div class="event-detail" data-type="">
+                        <!-- SAMPLE DATA -->
+                        <p class="emp-name">John Doe</p>
+                        <p class="event-date"></p>
+                        <br />
+                        <br />
+                        <p>THIS IS A SAMPLE DATA</p>
+                        <p>THIS WILL BE REPLACED</p>
+                        <p>AFTER UI HAS BEEN DESIGNED AND APPROVED</p>
+                        <!-- SAMPLE DATA END -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- MATERIALIZE CDN JS-->
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR TEMPLATE/MaterialDesign/js/materialize.min.js"></script>
+
+    <!-- SWEET ALERT JS -->
+    <script src="https://intranet.houseofit.com.au/SiteAssets/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+    <!-- SEMANTIC UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+
+    <!-- USER EXPERIENCE JS -->
+    <!-- <script src="/SiteAssets/CSR TEMPLATE/Project Calendar/Project Calendar UX Script.js"></script> -->
+
+    <!-- DATABASE TRANSACTIONS JS (CRUD) -->
+    <!-- <script src="/SiteAssets/CSR TEMPLATE/Project Calendar/Project Calendar CRUD Script.js"></script> -->
+
+    <script src="/SiteAssets/CSR TEMPLATE/Project Calendar/Project Calendar.js"></script>
+
+</body>
+
+</html>

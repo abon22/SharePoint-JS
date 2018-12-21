@@ -1,0 +1,149 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script>
+<script src="/SiteAssets/sputility.min.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta name="layout" />
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"
+    media="screen,projection" />
+
+  <!-- SEMANTIC UI -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+
+  <!-- SWEET ALERT -->
+  <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet" />
+
+  <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+  <!--SCRIPT-->
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+  <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+  <!-- SEMANTIC UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+  <!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+  <!-- <script type="text/javascript" src="/SiteAssets/CSR TEMPLATE/Users Report/Users Permission Report.js"></script> -->
+  <script type="text/javascript" src="/SiteAssets/CSR TEMPLATE/Users Report/Retrieve Users and Lists - REST.js"></script>
+  <!--    <script type="text/javascript" src="/SiteAssets/CSR TEMPLATE/Users Report/Get Users.js"></script>-->
+
+
+
+  <style type="text/css">
+    #sideNavBox {
+      display: none;
+    }
+
+    #contentBox {
+      margin-left: 20px;
+    }
+
+    .ms-fullscreenmode #contentBox {
+      margin-left: 0;
+    }
+
+    .CenterTextInSpan {
+      text-align: center !important;
+    }
+
+    .spancenter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .TrainingHeight {
+      height: auto !important;
+    }
+  </style>
+
+  <body>
+
+    <main>
+      <!-- <div class="ui indicating progress" id="example2">
+        <div class="bar">
+            <div class="progress"></div>
+        </div>
+
+      </div> -->
+
+
+      <div class="ui segment" id="DIV_CONTAINER">
+        <!-- 	<div class="ui list" id="DIV_LIST">
+	</div> -->
+      </div>
+
+    </main>
+
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- MODAL REPORTS-->
+    <div class="ui modal tiny" id="MODAL_GROUP_MEMBERS">
+      <div class="header">
+        GROUP MEMBERS
+        <a onclick="Close_Group_Members_Modal()">
+          <i class="close icon right"></i>
+        </a>
+
+      </div>
+      <div class="content row">
+        <div class="ui segment" id="DIV_GROUP_MEMBERS">
+          <!--
+        <table class="ui table " id="TABLE_GROUP_MEMBERS">
+          <thead>
+            <th class="CenterTextInSpan">NAME</th>
+          </thead>
+          <tbody id="TBODY_GROUP_MEMBERS">
+          </tbody>
+        </table>
+-->
+          <p id="message">
+            initializing ....
+          </p>
+          <p>
+            <b>Users From Group</b>
+            <br />
+            <select style="height:300px;width:310px;" multiple="multiple" id="RetrieveUsers"></select>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+    <!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+
+  </body>
+
+</html>

@@ -1,0 +1,2118 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script><script src="/SiteAssets/jquery.SPServices-2013.02a.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+ 
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+  
+  .AlignButtonRight{
+  float: right;
+}
+
+  .AlignButtonLeft{
+  float: left;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+</style>
+
+ <script type="text/javascript">
+  
+  $(document).ready(function() {
+
+    // setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  // $(".button-collapse").sideNav();
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker  
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+// var CurrentTime =  new Date().toLocaleTimeString('en-US', { hour12: true, 
+//                                              hour: "numeric", 
+//                                              minute: "numeric"});
+
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+//---------------------------------------------------------------------------------------------------
+
+
+  $('#Modal_FirstWarningForDismissal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { 
+        $('select').material_select();
+       } // Callback for Modal close
+    }
+  );
+
+  $('#Modal_FinalWarningForDismissal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { 
+        $('select').material_select();
+       } // Callback for Modal close
+    }
+  );
+
+  $('#Modal_Dismissal').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { 
+        $('select').material_select();
+       } // Callback for Modal close
+    }
+  );
+
+
+  $('.button-collapse').sideNav({
+      menuWidth: 350, // Default is 300
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+      draggable: true, // Choose whether you can drag to open on touch screens,
+      onOpen: function(el) {  
+      	chart_EmployeePerDepartment.destroy();
+      }, // A function to be called when sideNav is opened
+      onClose: function(el) {  }, // A function to be called when sideNav is closed
+    }
+  );
+
+
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];   
+
+
+
+
+//-------------------------------------------------------------------------------------------
+
+ExecuteOrDelayUntilScriptLoaded(Get_MonthlyInfractions,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_BreachType,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Departments,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Infractions_NoticeOfDecision,'sp.js');
+
+document.getElementById("Div_Departmental_Infractions").style.display = "none";
+
+Chart.defaults.global.defaultFontSize = 15;
+
+ExecuteOrDelayUntilScriptLoaded(Get_AccumulatedPoiints,'sp.js');
+
+// document.getElementById("s4-workspace").style.overflow = 'hidden';
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+
+// ARRAY MONTHS
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];   
+
+var CurrentYear = (new Date()).getFullYear();
+
+  var current_date = new Date();
+  var current_month = months[current_date.getMonth()];
+
+// CHART VARIABLES
+
+var chart_PerMonth;
+var chart_BreachType;
+var chart_ByDepartment;
+var chart_Sanctions;
+var chart_EmployeePerDepartment;
+
+var ctx_chart_PerMonth;
+var ctx_chart_BreachType;
+var ctx_chart_ByDepartment;
+var ctx_chart_Sanctions;
+var ctx_chart_EmployeePerDepartment;
+
+//---------------------------------------------------------------------------------------------------------------------
+// OPEN MODALS
+
+function AddEntry_Clicked(){
+  Entry_Function = "Add";
+  OpenNewEntry_Modal();
+}
+
+function Open_FirstWaringForDismissal_Modal(){
+  $('#Modal_FirstWarningForDismissal').modal('open');
+}
+function Close_FirstWaringForDismissal_Modal(){
+  $('#Modal_FirstWarningForDismissal').modal('close');
+}
+
+function Open_FinalWarningForDismissal_Modal(){
+  $('#Modal_FinalWarningForDismissal').modal('open');
+}
+function Close_FinalWarningForDismissal_Modal(){
+  $('#Modal_FinalWarningForDismissal').modal('close');
+}
+
+function Open_Dismissal_Modal(){
+  $('#Modal_Dismissal').modal('open');
+}
+function Close_Dismissal_Modal(){
+  $('#Modal_Dismissal').modal('close');
+}
+
+function Open_SideNav(){
+  $('.button-collapse').sideNav('show')
+}
+function Close_SideNav(){
+  $('.button-collapse').sideNav('hide');
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+
+function Date_Today(){
+	  var today = new Date();
+	  var dd = today.getDate();
+	  var mm = today.getMonth()+1; //January is 0!
+
+	  var yyyy = today.getFullYear();
+	  if(dd<10){
+	      dd='0'+dd;
+	  } 
+	  if(mm<10){
+	      mm='0'+mm;
+	  } 
+
+	  var today = yyyy+'-'+mm+'-'+dd;  
+
+	  return today;
+}
+
+// CHART NA GEATAY NA LISOD NA PART HAHAHAHAHAH
+
+var Get_By_BreachType_Items;
+var Selected_Department;
+
+function Get_BreachType(){
+
+	  // 2018-03-16T17:49:05Z
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_By_BreachType_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_By_BreachType_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_BreachType_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+
+}
+
+
+
+function Get_BreachType_Succeeded(){
+
+    var Minor;
+    var Major;
+    var Serious;
+    var Extreme;
+
+    var January_Minor = 0;
+    var January_Major = 0;
+    var January_Serious = 0;
+    var January_Extreme = 0;
+
+    var February_Minor = 0;
+    var February_Major = 0;
+    var February_Serious = 0;
+    var February_Extreme = 0;
+
+    var March_Minor = 0;
+    var March_Major = 0;
+    var March_Serious = 0;
+    var March_Extreme = 0;
+
+    var April_Minor = 0;
+    var April_Major = 0;
+    var April_Serious = 0;
+    var April_Extreme = 0;
+
+    var May_Minor = 0;
+    var May_Major = 0;
+    var May_Serious = 0;
+    var May_Extreme = 0;
+
+    var June_Minor = 0;
+    var June_Major = 0;
+    var June_Serious = 0;
+    var June_Extreme = 0;
+
+    var July_Minor = 0;
+    var July_Major = 0;
+    var July_Serious = 0;
+    var July_Extreme = 0;
+
+    var August_Minor = 0;
+    var August_Major = 0;
+    var August_Serious = 0;
+    var August_Extreme = 0;
+
+    var September_Minor = 0;
+    var September_Major = 0;
+    var September_Serious = 0;
+    var September_Extreme = 0;
+
+    var October_Minor = 0;
+    var October_Major = 0;
+    var October_Serious = 0;
+    var October_Extreme = 0;
+
+    var November_Minor = 0;
+    var November_Major = 0;
+    var November_Serious = 0;
+    var November_Extreme = 0;
+
+    var December_Minor = 0;
+    var December_Major = 0;
+    var December_Serious = 0;
+    var December_Extreme = 0;
+
+    var listItemEnumerator = Get_By_BreachType_Items.getEnumerator();
+        
+    while (listItemEnumerator.moveNext()) {
+        var oListItem = listItemEnumerator.get_current();
+        var BreachtType = oListItem.get_item('LI_BreachType')
+        var Month = oListItem.get_item('LI_EntryMonth')
+
+        if(Month == "January"){
+          if(BreachtType == "Minor Breach"){
+            January_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            January_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            January_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            January_Extreme++;
+          }  
+        }
+        else if(Month == "February"){
+          if(BreachtType == "Minor Breach"){
+            February_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            February_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            February_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            February_Extreme++;
+          }  
+        }
+        else if(Month == "March"){
+          if(BreachtType == "Minor Breach"){
+            March_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            March_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            March_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            March_Extreme++;
+          }  
+        }
+        else if(Month == "April"){
+          if(BreachtType == "Minor Breach"){
+            April_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            April_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            April_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            April_Extreme++;
+          }  
+        }
+        else if(Month == "May"){
+          if(BreachtType == "Minor Breach"){
+            May_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            May_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            May_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            May_Extreme++;
+          }  
+        }
+        else if(Month == "June"){
+          if(BreachtType == "Minor Breach"){
+            June_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            June_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            June_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            June_Extreme++;
+          }  
+        }
+        else if(Month == "July"){
+          if(BreachtType == "Minor Breach"){
+            July_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            July_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            July_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            July_Extreme++;
+          }  
+        }
+        else if(Month == "August"){
+          if(BreachtType == "Minor Breach"){
+            August_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            August_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            August_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            August_Extreme++;
+          }  
+        }
+        else if(Month == "September"){
+          if(BreachtType == "Minor Breach"){
+            September_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            September_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            September_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            September_Extreme++;
+          }  
+        }
+        else if(Month == "October"){
+          if(BreachtType == "Minor Breach"){
+            October_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            October_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            October_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            October_Extreme++;
+          }  
+        }
+        else if(Month == "November"){
+          if(BreachtType == "Minor Breach"){
+            November_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            November_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            November_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            November_Extreme++;
+          }  
+        }
+        else if(Month == "December"){
+          if(BreachtType == "Minor Breach"){
+            December_Minor++;
+          }
+          else if(BreachtType == "Major Breach"){
+            December_Major++;
+          }   
+          else if(BreachtType == "Serious Breach"){
+            December_Serious++;
+          }    
+          else if(BreachtType == "Extreme Breach"){
+            December_Extreme++;
+          }  
+        }
+
+    }
+
+    Minor = [January_Minor,February_Minor,March_Minor,April_Minor,May_Minor,June_Minor,July_Minor,August_Minor,September_Minor,October_Minor,November_Minor,December_Minor];
+
+    Major = [January_Major,February_Major,March_Major,April_Major,May_Major,June_Major,July_Major,August_Major,September_Major,October_Major,November_Major,December_Major];
+
+    Serious = [January_Serious,February_Serious,March_Serious,April_Serious,May_Serious,June_Serious,July_Serious,August_Serious,September_Serious,October_Serious,November_Serious,December_Serious];
+
+    Extreme = [January_Extreme,February_Extreme,March_Extreme,April_Extreme,May_Extreme,June_Extreme,July_Extreme,August_Extreme,September_Extreme,October_Extreme,November_Extreme,December_Extreme];
+
+    // console.log("Breach Type -----------------------------------------");
+    // console.log("Minor :"+Minor);
+    // console.log("Major :"+Major);
+    // console.log("Serious :"+Serious);
+    // console.log("Extreme :"+Extreme);
+
+ chart_BreachType = new Chart(document.getElementById("cvs_BreachType"), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "Minor",
+          backgroundColor: "#3e95cd",
+          data: Minor
+        }, {
+          label: "Major",
+          backgroundColor: "#8e5ea2 ",
+          data: Major
+        }, {
+          label: "Serious",
+          backgroundColor: "#3cba9f ",
+          data: Serious
+        }, {
+          label: "Extreme",
+          backgroundColor: "#c45850  ",
+          data: Extreme
+        }
+
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Number of Infractions Per Breach Type'
+      },
+      scales: {
+	            yAxes: [{
+	                ticks: {
+	                  stepSize: 1,
+	                    beginAtZero:true,
+	                    // max:10
+	                }
+	            }]
+	        },
+    }
+});
+
+}
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MONTHLY INFRACTIONS
+
+var Get_MonthlyInfractions_Items;
+function Get_MonthlyInfractions(){
+  
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_MonthlyInfractions_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_MonthlyInfractions_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_MonthlyInfractions_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+
+function Get_MonthlyInfractions_Succeeded(){
+
+    var January = 0;
+    var February = 0;
+    var March = 0;
+    var April = 0;
+    var May = 0;
+    var June = 0;
+    var July = 0;
+    var August = 0;
+    var September = 0;
+    var October = 0;
+    var November = 0;
+    var December = 0;
+
+    var Array_Months;
+
+    var listItemEnumerator = Get_MonthlyInfractions_Items.getEnumerator();
+        
+    while (listItemEnumerator.moveNext()) {
+        var oListItem = listItemEnumerator.get_current();
+        var Month = oListItem.get_item('LI_EntryMonth')
+
+        if(Month == "January"){
+          January++;
+        }
+        else if(Month == "February"){
+          February++;
+        }
+        else if(Month == "March"){
+          March++;
+        }
+        else if(Month == "April"){
+          April++;
+        }
+        else if(Month == "May"){
+          May++;
+        }
+        else if(Month == "June"){
+          June++;
+        }
+        else if(Month == "July"){
+          July++;
+        }
+        else if(Month == "August"){
+          August++;
+        }
+        else if(Month == "September"){
+          September++;
+        }
+        else if(Month == "October"){
+          October++;
+        }
+        else if(Month == "November"){
+          November++;
+        }
+        else if(Month == "December"){
+          December++;
+        }
+      }
+
+      Array_Months = [January,February,March,April,May,June,July,August,September,October,November,December];
+
+      // console.log("Monthly -----------------------------------------");
+      // console.log("Array_Months :"+Array_Months);
+      // new Chart(document.getElementById("chart_InfractionsPerMonth"), {
+
+
+      chart_PerMonth = new Chart(document.getElementById("cvs_InfractionsPerMonth"), {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [{ 
+              data: Array_Months,
+              label: CurrentYear,
+              borderColor: "#3cba9f",
+              fill: false
+            },
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Number of Infractions Per Month'
+          },
+
+          scales: {
+                  yAxes: [{
+                      ticks: {
+                        stepSize: 1,
+                          beginAtZero:true,
+                          // max:50,
+                      }
+                  }]
+              },
+
+        },
+
+      });
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var Department_List_Items;
+
+var Array_Department = [];
+
+function Get_Departments(){
+  context = SP.ClientContext.get_current();
+  var Departments = context.get_web().get_lists().getByTitle("Department");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Department_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Department_List_Items);
+  context.executeQueryAsync(Get_Departments_Succeeded, onQueryFailed);
+}
+function Get_Departments_Succeeded(){
+    var listItemsCollection = Department_List_Items.getEnumerator();
+
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+    }
+
+    ExecuteOrDelayUntilScriptLoaded(Get_Infractions_PerDepartment,'sp.js');
+
+    for (var i = 0; i<=Array_Department.length-1; i++){
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.setAttribute("id", Array_Department[i]);
+        a.onclick = function () {
+		   Department_Link_Onlick(this);
+		};
+        a.innerHTML = Array_Department[i];
+        li.appendChild(a);
+      	document.getElementById('UL_Departments').appendChild(li);
+    }
+
+}
+
+var Get_Infractions_PerDepartment_Items;
+
+function Get_Infractions_PerDepartment(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Infractions_PerDepartment_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Infractions_PerDepartment_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Infractions_PerDepartment_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Infractions_PerDepartment_Succeeded(){
+
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Infractions_PerDepartment_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EmployeeDepartment'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_Count')); 
+      }
+    //   console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_id = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_id[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Employees_ID_final_points=[]
+
+        for(var i=0; i<=Array_Department.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+
+        if(Array_Department[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_id[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Employees_ID_final_points[i]=point;
+      }
+
+    }
+
+      chart_ByDepartment = new Chart(document.getElementById("cvs_DepartmentalSummary"), {
+          type: 'horizontalBar',
+          data: {
+            labels: Array_Department,
+            datasets: [
+              {
+                label: "Infraction Count: ",
+                backgroundColor: "#c45850",
+                data: IT_Employees_ID_final_points
+              }
+            ]
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Number of Infractions Per Department ('+current_month+')'
+            },
+          scales: {
+                  xAxes: [{
+                      ticks: {
+                        stepSize: 1,
+                        beginAtZero:true,
+                        fontSize: 20
+                      }
+                  }]
+              },
+          }
+      });
+
+      chart_ByDepartment.render();
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var NoticeOfDecision_Items;
+
+function Get_Infractions_NoticeOfDecision(){
+
+        // alert(current_month);
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.NoticeOfDecision_Items = oList.getItems(camlQuery);
+        clientContext.load(NoticeOfDecision_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Infractions_NoticeOfDecision_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Infractions_NoticeOfDecision_Succeeded(){
+    var listItemEnumerator = NoticeOfDecision_Items.getEnumerator();
+    
+    var Count_VerbalWarning = 0;
+    var Count_WrittenWarning = 0;
+    var Count_FinalWarning = 0;
+    var Count_1DaySuspension = 0;
+    var Count_3DaysSuspension = 0;
+    var Count_5DaysSuspension = 0;
+
+    while (listItemEnumerator.moveNext()) {
+        var oListItem = listItemEnumerator.get_current();
+        var SanctionType = oListItem.get_item('LI_SanctionType')
+
+        if(SanctionType == "Verbal Warning"){
+        	Count_VerbalWarning++;
+        }
+        else if(SanctionType == "Written Warning"){
+        	Count_WrittenWarning++;
+        }
+        else if(SanctionType == "Final Warning"){
+        	Count_FinalWarning++;
+        }
+        else if(SanctionType == "1 Day Suspension"){
+        	Count_1DaySuspension++;
+        }
+        else if(SanctionType == "3 Days Suspension"){
+        	Count_3DaysSuspension++;
+        }
+        else if(SanctionType == "5 Days Suspension"){
+        	Count_5DaysSuspension++;
+        }
+    }
+
+    var array_sanctions = [Count_VerbalWarning,Count_WrittenWarning,Count_FinalWarning,Count_1DaySuspension,Count_3DaysSuspension,Count_5DaysSuspension];
+
+    // console.log("Sanctions -----------------------------------------");
+    // console.log("Count_VerbalWarning :"+Count_VerbalWarning);
+    // console.log("Count_WrittenWarning :"+Count_WrittenWarning);
+    // console.log("Count_FinalWarning :"+Count_FinalWarning);
+    // console.log("Count_1DaySuspension :"+Count_1DaySuspension);
+    // console.log("Count_3DaysSuspension :"+Count_3DaysSuspension);
+    // console.log("Count_5DaysSuspension :"+Count_5DaysSuspension);
+
+chart_Sanctions = new Chart(document.getElementById("cvs_NoticeOfDecision"), {
+    type: 'doughnut',
+    data: {
+      labels: ['Verbal Warning ('+Count_VerbalWarning+')', 'Written Warning ('+Count_WrittenWarning+')', 'Final Warning ('+Count_FinalWarning+')', '1 Day Suspension ('+Count_1DaySuspension+')','3 Days Suspension ('+Count_3DaysSuspension+')','5 Days Suspension ('+Count_5DaysSuspension+')'],
+      datasets: [
+        {
+          label: "Infraction Count :",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#d4e157"],
+          data: array_sanctions
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Number of Sanctions Given ('+current_month+')'
+      }
+    }
+});
+
+	chart_Sanctions.render();
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// DEPARTMENTAL CHARTS
+
+
+function Department_Link_Onlick(link){
+	// alert(link.id);
+	document.getElementById("header_SelectedDepartment").innerText = link.id;
+
+	Selected_Department = link.id;
+
+	// alert(Selected_Department);
+	swal({
+	  type: 'success',
+	  title: Selected_Department,
+	  showConfirmButton: false,
+	  timer: 700
+	});
+
+
+	document.getElementById("Div_DepartmentalSummary").style.display = "none";
+
+	chart_PerMonth.destroy();
+	ExecuteOrDelayUntilScriptLoaded(Get_Monthly_Department,'sp.js');
+
+	chart_BreachType.destroy();
+	ExecuteOrDelayUntilScriptLoaded(Get_BreachType_Department,'sp.js');
+
+	chart_Sanctions.destroy();
+	ExecuteOrDelayUntilScriptLoaded(Get_Infractions_NoticeOfDecision_Department,'sp.js');
+	
+	document.getElementById("Div_Departmental_Infractions").style.display = "block";
+
+	
+	ExecuteOrDelayUntilScriptLoaded(Get_Employee_Accumulated_Points_Per_Department,'sp.js');
+}
+
+
+var DEPARTMENT_Get_By_BreachType_Items;
+function Get_Monthly_Department(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeDepartment\'/>' + 
+          '<Value Type=\'Text\'>'+Selected_Department+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_MonthlyInfractions_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_MonthlyInfractions_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_MonthlyInfractions_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+function Get_BreachType_Department(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeDepartment\'/>' + 
+          '<Value Type=\'Text\'>'+Selected_Department+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_By_BreachType_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_By_BreachType_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_BreachType_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+
+}
+function Get_Infractions_NoticeOfDecision_Department(){
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeDepartment\'/>' + 
+          '<Value Type=\'Text\'>'+Selected_Department+'</Value>'+
+          '</Eq>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+
+        this.NoticeOfDecision_Items = oList.getItems(camlQuery);
+        clientContext.load(NoticeOfDecision_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Infractions_NoticeOfDecision_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+function Display_Defualt_Charts(){
+
+	chart_PerMonth.destroy();
+	chart_BreachType.destroy();
+	chart_Sanctions.destroy();
+
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];   
+
+  var CurrentYear = (new Date()).getFullYear();
+
+  var current_date = new Date();
+  current_month = months[current_date.getMonth()];
+
+
+	ExecuteOrDelayUntilScriptLoaded(Get_MonthlyInfractions,'sp.js');
+	ExecuteOrDelayUntilScriptLoaded(Get_BreachType,'sp.js');
+	// chart_ByDepartment.destroy();
+	// ExecuteOrDelayUntilScriptLoaded(Get_Departments,'sp.js');
+
+  chart_ByDepartment.destroy();
+  ExecuteOrDelayUntilScriptLoaded(Get_Infractions_PerDepartment,'sp.js');
+  
+	ExecuteOrDelayUntilScriptLoaded(Get_Infractions_NoticeOfDecision,'sp.js');
+
+	document.getElementById("header_SelectedDepartment").innerText = "ALL DEPARTMENT";
+
+	document.getElementById("Div_DepartmentalSummary").style.display = "block";
+	document.getElementById("Div_Departmental_Infractions").style.display = "none";
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+	
+var Get_Accumulated_Points_Per_Department_Items;
+
+function Get_Employee_Accumulated_Points_Per_Department(){
+	
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeDepartment\'/>' + 
+          '<Value Type=\'Text\'>'+Selected_Department+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Accumulated_Points_Per_Department_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Accumulated_Points_Per_Department_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Employee_Accumulated_Points_Per_Department_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+function Get_Employee_Accumulated_Points_Per_Department_Succeeded(){
+
+    // var listItemEnumerator = Get_Accumulated_Points_Per_Department_Items.getEnumerator();
+    
+    // var Array_EmployeeName = [];
+
+    // while (listItemEnumerator.moveNext()) {
+    //     var oListItem = listItemEnumerator.get_current();
+    //     Array_EmployeeName.push(oListItem.get_item('LI_EmployeeName'));
+
+    // }
+    // // console.log("Array_EmployeeName :" +Array_EmployeeName);
+    // var Distinct_Name = Array.from(new Set(Array_EmployeeName))
+    // // console.log("Distinct_Name :" +Distinct_Name);
+
+
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+    var Array_EmployeeName = [];
+
+      var listItemsCollection = Get_Accumulated_Points_Per_Department_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EmployeeName'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_InfractionPoints')); 
+        Array_EmployeeName.push(listItem.get_item('LI_EmployeeName'));
+      }
+    //   console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+    var Distinct_Name = Array.from(new Set(Array_EmployeeName));
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID));
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_id = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_id[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Employees_ID_final_points=[]
+
+        for(var i=0; i<=Distinct_Name.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+
+        if(Distinct_Name[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_id[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Employees_ID_final_points[i]=point;
+      }
+
+    }
+
+      // for (var i = 0 ; i <= Distinct_Name.length - 1; i++){
+      //   console.log("Distinct_Name: "+ Distinct_Name[i] +" = "+IT_Employees_ID_final_points[i])
+      // }
+
+		chart_EmployeePerDepartment = new Chart(document.getElementById("chart_Departmental_Infractions"), {
+		    type: 'horizontalBar',
+		    data: {
+		      labels: Distinct_Name,
+		      datasets: [
+		        {
+		          label: "Accumulated Points",
+		          backgroundColor: "#03a9f4",
+		          data: IT_Employees_ID_final_points
+		        }
+		      ]
+		    },
+		    options: {
+		      legend: { display: false },
+		      title: {
+		        display: true,
+		        text: "Accumulated Points ",
+		        fontSize: 20
+		      },
+
+		    scales: {
+		            xAxes: [{
+		                ticks: {
+		                  stepSize: 10,
+		                    beginAtZero:true,
+		                    // max:200,
+		                    zeroLineWidth: 2,
+		                    fontSize: 20
+		                }
+		            }]
+		        },
+		    }
+		});
+
+		// chart_EmployeePerDepartment.render({
+		//     duration: 700,
+		//     lazy: false,
+		//     easing: 'easeOutBounce'
+		// });
+}
+//-------------------------------------------------------------------------------------------------------------------------------
+
+var Get_AccumulatedPoiints_ITEMS;
+
+function Get_AccumulatedPoiints(){
+	        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+	      '<Geq>'+
+	      '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+	      '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+	      '</Geq>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_AccumulatedPoiints_ITEMS = oList.getItems(camlQuery);
+        clientContext.load(Get_AccumulatedPoiints_ITEMS);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_AccumulatedPoiints_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+function Get_AccumulatedPoiints_Succeeded(){
+
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+    var Array_EmployeeName = [];
+
+    var Array_EmployeeID = [];
+
+      var listItemsCollection = Get_AccumulatedPoiints_ITEMS.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EmployeeName'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_InfractionPoints')); 
+        Array_EmployeeName.push(listItem.get_item('LI_EmployeeName'));
+        Array_EmployeeID.push(listItem.get_item('LI_EmployeeID'));
+      }
+    //   console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+    var Distinct_Name = Array.from(new Set(Array_EmployeeName));
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID));
+
+    var Distinct_EmployeID = Array.from(new Set(Array_EmployeeID));
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_id = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_id[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Employees_ID_final_points=[]
+
+        for(var i=0; i<=Distinct_Name.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+
+        if(Distinct_Name[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_id[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Employees_ID_final_points[i]=point;
+      }
+
+    }
+
+
+    var Array_FirstWarningForDismissal_ID = [];
+    var Array_FirstWarningForDismissal_Name = [];
+    var Array_FirstWarningForDismissal_Points = [];
+
+    var Array_FinalWarningForDismissal_ID = [];
+    var Array_FinalWarningForDismissal_Name = [];
+    var Array_FinalWarningForDismissal_Points = [];
+
+    var Array_Dismissal_ID = [];
+    var Array_Dismissal_Name = [];
+    var Array_Dismissal_Points = [];
+
+      for (var i = 0 ; i <= Distinct_Name.length - 1; i++){
+        // console.log("Employee_Name: "+ Distinct_Name[i] +" = "+IT_Employees_ID_final_points[i])
+        var Points = 0;
+        Points = parseInt(IT_Employees_ID_final_points[i]);
+        if(Points >= 100 && Points < 150){
+        	Array_FirstWarningForDismissal_ID.push(Distinct_EmployeID[i]);
+        	Array_FirstWarningForDismissal_Name.push(Distinct_Name[i]);
+        	Array_FirstWarningForDismissal_Points.push(IT_Employees_ID_final_points[i]);
+        }
+        else if(Points >= 150 && Points < 200){
+        	Array_FinalWarningForDismissal_ID.push(Distinct_EmployeID[i]);
+        	Array_FinalWarningForDismissal_Name.push(Distinct_Name[i]);
+        	Array_FinalWarningForDismissal_Points.push(IT_Employees_ID_final_points[i]);
+        }
+        else if(Points >= 200){
+        	Array_Dismissal_ID.push(Distinct_EmployeID[i]);
+        	Array_Dismissal_Name.push(Distinct_Name[i]);
+        	Array_Dismissal_Points.push(IT_Employees_ID_final_points[i]);
+        }
+      }
+  	// console.log("-----------------------FIRST----------------------------");
+
+  	for (var i = 0 ; i <= Array_FirstWarningForDismissal_Name.length - 1; i++){
+  		// console.log("Employee_Name: "+ Array_FirstWarningForDismissal_Name[i] +" = "+Array_FirstWarningForDismissal_Points[i])
+
+  		$("#UL_FirstWarningForDismissal").append(
+  			"<li class='collection-item'>"+
+  			"<div class = 'row'>"+
+  			"<div class = 'col s10'>"+Array_FirstWarningForDismissal_Name[i]+"</div>"+
+  			"<div class = 'col s2'>"+Array_FirstWarningForDismissal_Points[i]+"</div>"+
+  			"</div>"+
+  			"</li>"	
+  		);
+
+  		var Count = Array_FirstWarningForDismissal_Name.length;
+  		if(Count != 0){
+  			document.getElementById("Span_FirstWarning").innerHTML = Count;
+  		}
+  		
+  	}
+
+  	// console.log("------------------------FINAL---------------------------");
+
+  	for (var i = 0 ; i <= Array_FinalWarningForDismissal_Name.length - 1; i++){
+  		// console.log("Employee_Name: "+ Array_FinalWarningForDismissal_Name[i] +" = "+Array_FinalWarningForDismissal_Points[i])
+
+  		$("#UL_FinalWarningForDismissal").append(
+  			"<li class='collection-item'>"+
+  			"<div class = 'row'>"+
+  			"<div class = 'col s10'>"+Array_FinalWarningForDismissal_Name[i]+"</div>"+
+  			"<div class = 'col s2'>"+Array_FinalWarningForDismissal_Points[i]+"</div>"+
+  			"</div>"+
+  			"</li>"	
+  		);
+
+  		var Count = Array_FinalWarningForDismissal_Name.length;
+  		if(Count != 0){
+  			document.getElementById("Span_FinalWarning").innerHTML = Count;
+  		}
+  		
+  	}
+
+  	// console.log("------------------------DISMISSAL---------------------------");
+
+  	for (var i = 0 ; i <= Array_Dismissal_Name.length - 1; i++){
+  		// console.log("Employee_Name: "+ Array_Dismissal_Name[i] +" = "+Array_Dismissal_Points[i])
+
+  		$("#UL_Dismissal").append(
+  			"<li class='collection-item'>"+
+  			"<div class = 'row'>"+
+  			"<div class = 'col s10'>"+Array_Dismissal_Name[i]+"</div>"+
+  			"<div class = 'col s2'>"+Array_Dismissal_Points[i]+"</div>"+
+  			"</div>"+
+  			"</li>"	
+  		);
+
+  		var Count = Array_Dismissal_Name.length;
+  		if(Count != 0){
+  			document.getElementById("Span_Dismissal").innerHTML = Count;
+  		}
+  		
+  	}
+
+  	// console.log("------------------------------------------------------------------------");
+  	// console.log(Distinct_EmployeID);
+
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+// NUMBER OF INFRACTIONS PER BREACH TYPE FILTER BY MONTH
+
+function Choose_Month_Selected(obj){
+  // alert(obj.id);
+  current_month = obj.id;
+
+
+  chart_Sanctions.destroy();
+  ExecuteOrDelayUntilScriptLoaded(Get_Infractions_NoticeOfDecision,'sp.js');
+
+  chart_ByDepartment.destroy();
+  ExecuteOrDelayUntilScriptLoaded(Get_Infractions_PerDepartment,'sp.js');
+
+}
+
+function Get_BreachType_Specific_Month(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('Infraction Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+
+          '<And>'+
+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+
+
+          '<And>'+
+
+          '<Geq>'+
+          '<FieldRef Name=\'LI_PrescriptiveDate\' />'+
+          '<Value Type=\'DateTime\' IncludeTimeValue=\'FALSE\'>'+Date_Today()+'</Value>'+
+          '</Geq>'+
+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeDepartment\'/>' + 
+          '<Value Type=\'Text\'>'+Selected_Department+'</Value>'+
+          '</Eq>'+
+          '</And>'+
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_By_BreachType_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_By_BreachType_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_BreachType_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+ </script>
+
+<body>
+
+<main>
+
+    <div class="row " id="Div_Top_Buttons">
+
+        <div class="col s10 ">
+        	<div class="card-panel  blue-grey col z-depth-5">
+        		<h5 class="white-text" id="header_SelectedDepartment" >ALL DEPARTMENT</h5>
+        	</div>
+        </div>
+
+<!--         <div class="col s1">
+            <a class='dropdown-button btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight' href='#' data-activates='DropdownChoices_Month'><i class="large material-icons icon-blue">date_range</i></a>
+        </div> -->
+
+
+        <div class="col s1">
+            <a class="dropdown-button btn-large btn-floating btn-flat AlignButtonRight light-blue lighten-5  tooltipped " id="lnk_OpenEntries" data-position="bottom" data-delay="40" data-tooltip="OverAll Infractions" onclick="Display_Defualt_Charts()"><i class="large material-icons icon-blue">refresh</i></a>          
+        </div>
+        <div class="col s1">
+            <a class="btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight tooltipped button-collapse" id="lnk_OpenEntries" data-position="bottom" data-delay="40" data-tooltip="Show Departments" href="#" data-activates="slide-out" class="button-collapse"><i class="large material-icons icon-blue">menu</i></a> 
+       
+        </div>
+        <!-- <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a> -->
+    </div>
+
+<div class="row card-panel grey lighten-3" ">
+
+      <div class="row">
+        
+        <div class="col s4 ">
+          <div class="card horizontal hoverable " onclick="Open_FirstWaringForDismissal_Modal()">
+            <div class="card-stacked">
+              <div class="card-content light-blue">
+                  <span class="white-text spancenter" style="font-size: 13px;font-weight: bold;">FIRST WARNING FOR DISMISSAL</span>
+              </div>
+              <div class="card-action">
+                <div class="card-content ">
+                  <span class="card-title orange-text" align="center" id="Span_FirstWarning" style="font-size: 50px;font-weight: bold;text-align: center;" id="Span_F">0</span>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4 ">
+          <div class="card horizontal hoverable " onclick="Open_FinalWarningForDismissal_Modal()">
+            <div class="card-stacked ">
+              <div class="card-content light-blue">
+                  <span class="white-text spancenter" style="font-size: 13px;font-weight: bold;">FINAL WARNING FOR DISMISSAL</span>
+              </div>
+              <div class="card-action">
+                <div class="card-content ">
+                  <span class="card-title deep-orange-text" align="center" id="Span_FinalWarning" style="font-size: 50px;font-weight: bold;text-align: center;">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s4 ">
+          <div class="card horizontal hoverable " onclick="Open_Dismissal_Modal()">
+            <div class="card-stacked">
+              <div class="card-content light-blue">
+                  <span class="white-text spancenter" style="font-size: 13px;font-weight: bold;">DISMISSAL</span>
+              </div>
+              <div class="card-action ">
+                <div class="card-content ">
+                  <span class="card-title red-text text-darken-2 " id="Span_Dismissal" align="center" style="font-size: 50px;font-weight: bold;text-align: center;">0</span>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+<div class="col s12" id="Div_Charts_Default" >
+
+<!--     <div class="row">
+
+        <div class="col s6">
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="chart_MinorVsMajor" width="835" height="400">
+              
+            </canvas>
+          </div>      
+        </div>
+        <div class="col s6">
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="chart_InfractionsPerMonth" width="835" height="400">
+              
+            </canvas>
+          </div>      
+        </div>
+          
+    </div>
+
+    <div class="row">
+         <div class="col s6">
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="chart_DepartmentalSummary" width="835" height="400">
+              
+            </canvas>
+          </div>      
+        </div> 
+         <div class="col s6">
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="chart_NoticeOfDecision" width="835" height="400">
+              
+            </canvas>
+          </div>      
+        </div>   
+
+    </div> -->
+
+
+    <div class="row">
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="cvs_InfractionsPerMonth" width="1740" height="400">
+              
+            </canvas>
+          </div>       
+    </div>
+
+    <div class="row">
+<!--           <div class="col s12">
+            <a class='dropdown-button btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight' href='#' data-activates='DropdownChoices_Month'><i class="large material-icons icon-blue">date_range</i></a>
+          </div> -->
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="cvs_BreachType" width="1740" height="400">
+              
+            </canvas>
+          </div>      
+
+        
+    </div>
+
+    <div class="row" id="Div_DepartmentalSummary">
+<!--           <div class="col s12">
+            <a class='dropdown-button btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight' href='#' data-activates='DropdownChoices_Month'><i class="large material-icons icon-blue">date_range</i></a>
+          </div> -->
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="cvs_DepartmentalSummary" width="1740" height="400">
+              
+            </canvas>
+          </div>       
+    </div>
+
+    <div class="row">
+<!--           <div class="col s12">
+            <a class='dropdown-button btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight' href='#' data-activates='DropdownChoices_Month' ><i class="large material-icons icon-blue">date_range</i></a>
+          </div> -->
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="cvs_NoticeOfDecision" width="1740" height="400">
+              
+            </canvas>
+          </div>       
+    </div>
+
+</div>
+
+
+
+<div class="col s12" id="Div_Departmental_Infractions">
+
+    <div class="row">
+          <div class="card-panel col z-depth-2" id="div_TeamErrors">
+            <canvas id="chart_Departmental_Infractions"  width="1740" >
+              
+            </canvas>
+          </div>       
+    </div>
+
+</div>
+
+
+</div>
+
+</main>
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+<div id="Modal_FirstWarningForDismissal" class="modal ModalTopDistance">
+    <div id="Modal_FirstWarningForDismissal_Content" class="modal-content">
+          <div class="row">
+              <a class="btn-floating red AlignButtonRight" onclick="Close_FirstWaringForDismissal_Modal()"><i class=" material-icons">close</i></a>
+          </div>
+
+           <div class="row">
+            <div class="col s12 ">
+              <div class="card horizontal z-depth-2">
+                <div class="card-stacked">
+                  <div class="card-content orange">
+                      <span class="white-text " style="font-size: 13px;font-weight: bold;">
+                      		<div class="row">
+			                  	<div class="col s10 ">FIRST WARNING FOR DISMISSAL</div>
+			                  	<div class="col s2 ">100 & Above</div>
+		                  	</div>
+                      </span>
+                  </div>
+                  <div class="card-action ">
+                    <div class="card-content ">
+	                    <ul class="collection" id="UL_FirstWarningForDismissal">
+<!-- 	                          <li class="collection-item">Fernando Durano Singson Jr</li>
+	                          <li class="collection-item">Fernando Durano Singson Jr</li>
+	                          <li class="collection-item">Fernando Durano Singson Jr</li>
+	                          <li class="collection-item">Fernando Durano Singson Jr</li> -->
+	                    </ul>  
+                    </div>                
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>         
+    </div>
+</div>
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+<div id="Modal_FinalWarningForDismissal" class="modal ModalTopDistance">
+    <div id="Modal_FirstWarningForDismissal_Content" class="modal-content">
+          <div class="row">
+              <a class="btn-floating red AlignButtonRight" onclick="Close_FinalWarningForDismissal_Modal()"><i class=" material-icons">close</i></a>
+          </div>
+
+           <div class="row">
+            <div class="col s12 ">
+              <div class="card horizontal z-depth-2">
+                <div class="card-stacked">
+                  <div class="card-content deep-orange">
+                      <span class="white-text " style="font-size: 13px;font-weight: bold;">
+                      		<div class="row">
+			                  	<div class="col s10 ">FINAL WARNING FOR DISMISSAL</div>
+			                  	<div class="col s2 ">150 & Above</div>
+		                  	</div>
+                      </span>
+                  </div>
+                  <div class="card-action ">
+                    <div class="card-content ">
+                      <ul class="collection" id="UL_FinalWarningForDismissal">
+<!-- 	                          <li class="collection-item">Fernando Durano Singson Jr</li>
+	                          <li class="collection-item">Fernando Durano Singson Jr</li>
+	                          <li class="collection-item">Fernando Durano Singson Jr</li>
+	                          <li class="collection-item">Fernando Durano Singson Jr</li> -->
+	                   </ul>  
+                    </div>                
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>         
+    </div>
+</div>
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+<div id="Modal_Dismissal" class="modal ModalTopDistance">
+    <div id="Modal_FirstWarningForDismissal_Content" class="modal-content">
+          <div class="row">
+              <a class="btn-floating red AlignButtonRight" onclick="Close_Dismissal_Modal()"><i class=" material-icons">close</i></a>
+          </div>
+
+           <div class="row">
+            <div class="col s12 ">
+              <div class="card horizontal z-depth-2">
+                <div class="card-stacked">
+                  <div class="card-content red">
+                      <span class="white-text " style="font-size: 13px;font-weight: bold;">
+                      		<div class="row">
+			                  	<div class="col s10 ">DISMISSAL</div>
+			                  	<div class="col s2 ">200 & Above</div>
+		                  	</div>
+                      </span>
+                  </div>
+                  <div class="card-action ">
+                    <div class="card-content ">
+                        <ul class="collection" id="UL_Dismissal">
+  <!--                         <li class="collection-item">Fernando Durano Singson Jr</li>
+                          <li class="collection-item">Fernando Durano Singson Jr</li>
+                          <li class="collection-item">Fernando Durano Singson Jr</li>
+                          <li class="collection-item">Fernando Durano Singson Jr</li> -->
+                        </ul>                      
+                    </div>                
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>         
+    </div>
+</div>
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+  <ul id="slide-out" class="side-nav">
+    <li><div class="user-view">
+    	<div class="row">
+    		<div class="col">
+    			<img src="https://intranet.houseofit.com.au/SiteAssets/Logo/Hoit_Logo_reimbursement_logo.png"/>
+    		</div>
+    		<div class="col"></div>
+    	</div>
+    </div></li>
+<!--     <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+    <li><a href="#!">Second Link</a></li> -->
+    <li><div class="divider"></div></li>
+    <li><a class="subheader light-blue-text" style="font-size: 18px;font-weight: bold;">DEPARTMENTS</a></li>
+    <ul id="UL_Departments">
+    <!-- 	<li id=""><a class="waves-effect" href="#!">Third Link With Waves</a></li> -->
+    </ul>
+  </ul>
+  
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+  <ul id='DropdownChoices_Month' class='dropdown-content' >
+    <li ><a onclick="Choose_Month_Selected(this)" id="January" style="text-decoration: none;">January</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="February" style="text-decoration: none;">February</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="March" style="text-decoration: none;">March</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="April" style="text-decoration: none;">April</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="May" style="text-decoration: none;">May</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="June" style="text-decoration: none;">June</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="July" style="text-decoration: none;">July</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="August" style="text-decoration: none;">August</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="September" style="text-decoration: none;">September</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="October" style="text-decoration: none;">October</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="November" style="text-decoration: none;">November</a></li>
+    <li ><a onclick="Choose_Month_Selected(this)" id="December" style="text-decoration: none;">December</a></li>
+  </ul>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- 
+  <div class="fixed-action-btn horizontal click-to-toggle">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">date_range</i>
+    </a>
+    <ul>
+
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="January" style="text-decoration: none;">January</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="February" style="text-decoration: none;">February</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="March" style="text-decoration: none;">March</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="April" style="text-decoration: none;">April</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="May" style="text-decoration: none;">May</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="June" style="text-decoration: none;">June</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="July" style="text-decoration: none;">July</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="August" style="text-decoration: none;">August</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="September" style="text-decoration: none;">September</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="October" style="text-decoration: none;">October</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="November" style="text-decoration: none;">November</a></li>
+    <li ><a class="btn blue" onclick="Choose_Month_Selected(this)" id="December" style="text-decoration: none;">December</a></li>
+
+    </ul>
+  </div> -->
+
+
+
+  <div class="fixed-action-btn toolbar">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">date_range</i>
+    </a>
+    <ul>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="January" >January</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="February" >February</a></li>
+    <li ><a class="red" class="light-blue" onclick="Choose_Month_Selected(this)" id="March" >March</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="April" >April</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="May" >May</a></li>
+    <li ><a class="red" class="light-blue" onclick="Choose_Month_Selected(this)" id="June" >June</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="July" >July</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="August" >August</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="September" >September</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="October" >October</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="November" >November</a></li>
+    <li ><a class="red" onclick="Choose_Month_Selected(this)" id="December" >December</a></li>
+    </ul>
+  </div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+ 
+</html>

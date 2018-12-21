@@ -1,0 +1,70 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="../../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+
+<!DOCTYPE html>
+
+
+<style type="text/css">
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+
+</style>
+
+
+<html>
+<head>
+<!-- SEMANTIC UI -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+<!--ANGULAR JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<!--JQUERY    -->
+<script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<!--CONTROLLER-->   
+<script type="text/javascript" src="/SiteAssets/CSR%20TEMPLATE/Users%20Report/Controller/UserPermissionReport_CONTROLLER.js"></script>
+    
+<body>
+	<div ng-app="listApp">    
+<!-- 	    <div id="App1" ng-controller="controller1">    
+	        <h1>First List Items</h1>    
+	        <div ng-repeat="item in items">    
+	            <p>{{item.Title}}</p>    
+	        </div>  
+
+	    </div>     -->
+
+		    <table class="ui table" ng-controller="Users_Controller">
+		    	<thead>
+		    		<th>NAME</th>
+		    		<th>SDFSDF</th>
+		    	</thead>
+		    	<tbody id="App1">
+		    		<tr ng-repeat="item in items">
+		    			<td>{{item.Title}}</td>
+		    			<td>{{item.UserName}}</td>
+		    		</tr>
+		    	</tbody>
+		    </table>
+
+
+	</div> 
+
+</body>
+
+</html>
+
+
+
+

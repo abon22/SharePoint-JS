@@ -1,0 +1,598 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script>
+<script src="/SiteAssets/sputility.min.js"></script>
+<script
+  type="text/javascript"
+  src="/SiteAssets/Scripts/jquery.timeago.js"
+></script>
+<script
+  type="text/javascript"
+  src="../LND%20Point%20System/_layouts/15/sp.runtime.js"
+></script>
+<script
+  type="text/javascript"
+  src="../LND%20Point%20System/_layouts/15/sp.js"
+></script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="text/html; charset=utf-8"
+      x-undefined=""
+    />
+    <title>QA or Department Head</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/SiteAssets/Scripts/Scorecard System/css/qa_or_department_head.css"
+    />
+
+    <!--
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css"
+      />
+    -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.css"
+    />
+
+    <!-- SEMANTIC UI -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link
+      href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+  </head>
+  <body>
+    <div class="ui stackable two column grid">
+      <div class="row">
+        <div class="eight wide column"></div>
+        <div class="eight wide column">
+          <div class="ui basic clearing segment">
+            <div class="ui right floated button" onclick="ShowModal_ENTRIES()">
+              <i class="blue list icon"></i> Entries
+            </div>
+            <div
+              class="ui right floated button"
+              data-inverted=""
+              data-tooltip="Add users to your feed"
+              data-position="top left"
+            >
+              Top Left
+            </div>
+            <div
+              class="ui right floated button"
+              data-inverted=""
+              data-tooltip="Add users to your feed"
+              data-position="top left"
+            >
+              Top Left
+            </div>
+            <div
+              class="ui right floated button"
+              data-inverted=""
+              data-tooltip="Add users to your feed"
+              data-position="top center"
+            >
+              Top Center
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="eight wide column">
+          <div class="ui raised fluid card ">
+            <div class="content">
+              <div class="header">MINOR</div>
+              <div class="meta">December</div>
+              <div class="descriptiont">
+                <canvas id="CHART_MINOR" class="fluid"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="eight wide column">
+          <div class="ui raised fluid card ">
+            <div class="content">
+              <div class="header">MAJOR</div>
+              <div class="meta">December</div>
+              <div class="descriptiont">
+                <canvas id="CHART_MAJOR" class="fluid"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="eight wide column">
+          <div class="ui raised fluid card">
+            <div class="content">
+              <div class="header">ACCUMULATED POINTS</div>
+              <div class="meta">December</div>
+              <div class="description">
+                <canvas id="myChart3" class="fluid"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="eight wide column">
+          <div class="ui raised fluid card">
+            <div class="content">
+              <div class="header">MONTHLY ACCUMULATED POINTS</div>
+              <div class="meta">Friend</div>
+              <div class="description">
+                <canvas id="myChart4" class="fluid"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ENTRIES -->
+
+    <div class="ui fullscreen modal ENTRIES " style="height: 100vh !important">
+      <i class="large close icon"></i>
+      <div class="header">INFRACTION ENTRIES</div>
+      <div class=" content">
+        <!-- DIV CAP -->
+        <div
+          class="ui three column grid"
+          id="DIV_CAP"
+          style="display:none;overflow-y: scroll !important"
+        >
+          <div class="two wide column"></div>
+          <div class="twelve wide column">
+            <div class="ui raised segments">
+              <div class="ui clearing segment">
+                <h3 class="ui left floated header">
+                  <div class=" content">
+                    Corrective Action Plan
+                    <div class="sub header">CAP</div>
+                  </div>
+                </h3>
+                <a
+                  class="ui right floated labeled icon button"
+                  onclick="Hide_CAP()"
+                >
+                  <i class="right arrow icon"></i> Back
+                </a>
+              </div>
+              <div class="ui segment">
+                <div class="ui grid">
+                  <div class="row">
+                    <div class="column">
+                      <div class="ui fluid form">
+                        <div class="field">
+                          <label>DESCRIPTION OF ISSUE</label>
+                          <table
+                            cellspacing="0"
+                            class="ms-rteTable-default"
+                            style="width: 100%; height: 150px;"
+                          >
+                            <tbody>
+                              <tr class="ms-rteTableOddRow-default">
+                                <td
+                                  class="ms-rteTableEvenCol-default"
+                                  id="ISSUE_DESCRIPTION"
+                                  style="width: 4%; text-align: left;"
+                                >
+                                  <strong></strong>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="field">
+                          <label>ROOT CAUSE ANALYSIS (RCA)</label>
+                          <div
+                            class="ms-rtestate-field ms-rtefield ms-inputBox"
+                            id=""
+                            style="border:none !important"
+                          >
+                            <div
+                              class="ms-rtestate-write ms-rteflags-0 ms-rtestate-field"
+                              id="CAP_RCA"
+                              style="min-height:168px"
+                              aria-labelledby=""
+                              contenteditable="false"
+                              role="textbox"
+                              aria-autocomplete="both"
+                              aria-multiline="true"
+                              rtedirty="false"
+                            >
+                              <p>&#8203; <br /></p>
+                            </div>
+                            <div style="clear : both;"></div>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <label>CORRECTIVE ACTION STEPS</label>
+                          <table
+                            cellspacing="0"
+                            class="ms-rteTable-default"
+                            style="width: 100%; height: 150px;"
+                            id="CAP_CAS"
+                          >
+                            <tbody>
+                              <tr class="ms-rteTableOddRow-default">
+                                <td
+                                  class="ms-rteTableEvenCol-default"
+                                  id="ISSUE_DESCRIPTION"
+                                  style="width: 4%; text-align: left;"
+                                >
+                                  <strong></strong>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="column" style="text-align: right !important">
+                      <div class="ui buttons">
+                        <button class="ui positive button">Approve</button>
+                        <div class="or"></div>
+                        <button class="ui red button">Reject</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="five wide column"></div>
+        </div>
+
+        <!-- DIV ENTRY FORM -->
+        <div
+          class="ui three column grid"
+          id="DIV_ENTRY_FORM"
+          style="display:none"
+        >
+          <div class="five wide column"></div>
+          <div class="six wide column">
+            <div class="ui raised segments">
+              <div class="ui segment">
+                <h3 class="ui header">
+                  <div class=" ontent">
+                    ENTRY FORM
+                    <div class="sub header">New Entry</div>
+                  </div>
+                </h3>
+              </div>
+              <div class="ui segment">
+                <div class="ui padded stackable grid">
+                  <div class="two column row">
+                    <div class="five wide column">
+                      <label>EMPLOYEE NAME :</label>
+                    </div>
+                    <div class="eleven wide column">
+                      <div class="ui right action input fluid">
+                        <div
+                          id="INPUT_NAME"
+                          class="ui search selection dropdown fluid FORM_FIELD NAME"
+                        >
+                          <input type="hidden" /> <i class="dropdown icon"></i>
+                          <div class="default text">Select Employee</div>
+                          <div class="menu" id="DROPDOWN_IT_EMPLOYEES"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="two column row">
+                    <div class="five wide column"><label>TEAM :</label></div>
+                    <div class="eleven wide column">
+                      <div
+                        id="INPUT_TEAM"
+                        class="ui search selection dropdown fluid FORM_FIELD TEAM"
+                      >
+                        <input type="hidden" onchange="handleOnChange(event)" />
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select Team</div>
+                        <div class="menu">
+                          <div
+                            class="item"
+                            name="TEAM"
+                            data-value="Manage Office"
+                          >
+                            Manage Office
+                          </div>
+                          <div
+                            class="item"
+                            name="TEAM"
+                            data-value="Internal Technician"
+                          >
+                            Internal Technician
+                          </div>
+                          <div
+                            class="item"
+                            name="TEAM"
+                            data-value="Software Developer"
+                          >
+                            Software Developer
+                          </div>
+                          <div
+                            class="item"
+                            name="TEAM"
+                            data-value="SharePoint Developer"
+                          >
+                            SharePoint Developer
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="two column row">
+                    <div class="five wide column">
+                      <label>INFRACTION TYPE :</label>
+                    </div>
+                    <div class="eleven wide column">
+                      <div
+                        id="INPUT_INFRACTION_TYPE"
+                        class="ui search selection dropdown fluid FORM_FIELD INFRACTION_TYPE"
+                      >
+                        <input type="hidden" /> <i class="dropdown icon"></i>
+                        <div class="default text">Select Infraction Type</div>
+                        <div class="menu">
+                          <div
+                            class="item"
+                            name="INFRACTION_TYPE"
+                            data-value="Minor"
+                          >
+                            Minor
+                          </div>
+                          <div
+                            class="item"
+                            name="INFRACTION_TYPE"
+                            data-value="Major"
+                          >
+                            Major
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="two column row" id="ELEMENT_ERROR_CLASSIFICATION">
+                    <div class="five wide column">
+                      <label>ERROR CLASSFICATION :</label>
+                    </div>
+                    <div class="eleven wide column">
+                      <div
+                        class="ui search selection dropdown fluid FORM_FIELD ERROR_CLASSIFICATION"
+                        id="INPUT_ERROR_CLASSIFICATION"
+                      >
+                        <input type="hidden" /> <i class="dropdown icon"></i>
+                        <div class="default text">
+                          Select Error Classification
+                        </div>
+                        <div class="menu">
+                          <div
+                            class="item"
+                            name="ERROR_CLASSIFICATION"
+                            data-value="Technical Support"
+                          >
+                            Technical Support
+                          </div>
+                          <div
+                            class="item"
+                            name="ERROR_CLASSIFICATION"
+                            data-value="Rework"
+                          >
+                            Rework
+                          </div>
+                          <div
+                            class="item"
+                            name="ERROR_CLASSIFICATION"
+                            data-value="Customer Service Satisfaction"
+                          >
+                            Customer Service Satisfaction
+                          </div>
+
+                          <div
+                            class="item"
+                            name="ERROR_CLASSIFICATION"
+                            data-value="Insubordination"
+                          >
+                            Insubordination
+                          </div>
+
+                          <div
+                            class="item"
+                            name="ERROR_CLASSIFICATION"
+                            data-value="Company Policy"
+                          >
+                            Company Policy
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="two column row">
+                    <div class="five wide column">
+                      <label>INFRACTION DATE :</label>
+                    </div>
+                    <div class="eleven wide column">
+                      <div
+                        class="ui calendar DATE INFRACTION_DATE"
+                        id="CALENDAR_DATE"
+                      >
+                        <div
+                          class="ui input right icon fluid"
+                          id="INPUT_INFRACTION_DATE"
+                        >
+                          <i class="calendar alternate outline icon"></i>
+                          <input
+                            class="FORM_FIELD"
+                            type="text"
+                            readonly
+                            onchange="handleOnChange(event)"
+                            placeholder="Select Date of infraction"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="two column row">
+                    <div class="five wide column">
+                      <label>TICKET NUMBER :</label>
+                    </div>
+                    <div class="eleven wide column">
+                      <div class="ui fluid input" id="INPUT_TICKET_NUMBER">
+                        <input
+                          type="text"
+                          class="FORM_FIELD"
+                          placeholder="Reference ticket number if applicable"
+                          name="TICKET_NUMBER"
+                          id="TXT_TICKET_NUMBER"
+                          onchange="handleOnChange(event)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="two column row">
+                    <div class="five wide column">
+                      <label>DESCRIPTION :</label>
+                    </div>
+                    <div class="eleven wide column">
+                      <div class="ui fluid form">
+                        <div class="field" id="INPUT_INFRACTION_DESCRIPTION">
+                          <textarea
+                            class="FORM_FIELD"
+                            placeholder="Enter project description here..."
+                            name="INFRACTION_DESCRIPTION"
+                            id="TXT_INFRACTION_DESCRIPTION"
+                            onchange="handleOnChange(event)"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="column" style="text-align: right !important">
+                      <div
+                        class="ui primary button"
+                        onclick="handleSubmit()"
+                        id="BUTTON_SUBMIT_ENTRY"
+                      >
+                        Submit
+                      </div>
+                      <div class="ui button" onclick="ShowHide_EntryForm()">
+                        Cancel
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="five wide column"></div>
+        </div>
+        <!-- DIV TABLE ENTRIES -->
+        <div id="DIV_TABLE_ENTRIES">
+          <div id="context2">
+            <div class="ui secondary menu clearing basic top attached segment">
+              <a class="item yellow active" data-tab="Minor">MINOR</a>
+              <a class="item red " data-tab="Major">MAJOR</a>
+
+              <div class="right menu">
+                <a
+                  class="ui right floated large button"
+                  onclick="handle_AddNewEntry_Clicked()"
+                  id="BTN_NEW_ENTRY"
+                >
+                  <i class="plus green icon"></i> NEW ENTRY
+                </a>
+              </div>
+            </div>
+            <div
+              class="ui active tab bottom attached basic segment"
+              data-tab="Minor"
+            >
+              <table
+                class="ui striped table raised segment  order-table-entries"
+                id="TABLE_MINOR"
+              >
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>TEAM</th>
+                    <th>ERROR CLASSIFICATION</th>
+                    <th>TICKET NUMBER</th>
+                    <th>DESCRIPTION</th>
+                    <th>INFRACTION DATE</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="TBODY_TABLE_MINOR"></tbody>
+              </table>
+            </div>
+            <div class="ui tab bottom attached basic segment" data-tab="Major">
+
+              
+
+              <table
+                class="ui striped raised segment table order-table-entries"
+                id="TABLE_MAJOR"
+              >
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>TEAM</th>
+                    <th>TICKET NUMBER</th>
+                    <th>DESCRIPTION</th>
+                    <th>INFRACTION DATE</th>
+                    <th>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CAP
+                    </th>
+                    <th>CAP STATUS</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="TBODY_TABLE_MAJOR"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js"></script>
+    -->
+    <!-- JQUERY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- SEMANTIC UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.8/sweetalert2.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> -->
+    <!-- CHARTS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+    <script src="/SiteAssets/CSR TEMPLATE/IT Infraction Tracker/IT_INFRACTION_TRACKER.js"></script>
+  </body>
+</html>

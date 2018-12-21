@@ -1,0 +1,169 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="layout" />
+ 
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+
+<style type="text/css">
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+}
+ 
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+
+.CenterHeader{
+  text-align: center;
+
+}
+
+.AlignButtonRight{
+  float: right;
+}
+
+.CardHeader{
+    padding: 10px;
+}
+
+.Cardwidth{
+  width: 700px;
+}
+
+</style>
+ 
+ <script type="text/javascript">
+  
+
+  $(document).ready(function() {
+
+  // ExecuteOrDelayUntilScriptLoaded(Load_Dropdown_Items, "sp.js");
+
+    // document.getElementById("s4-ribbonrow").remove();
+    // document.getElementById("ctl00_PlaceHolderLeftNavBar_QuickLaunchNavigationManager").remove();
+    // document.getElementById("sideNavBox").remove();
+    // document.getElementById("DeltaPlaceHolderMain").style.marginRight = "200px";
+    
+
+
+    $('select').material_select();
+
+
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+
+
+
+    }); // ========================= END OF DOCUMENT READY FUNCTION ================================================================
+
+
+//-------------------------------------------------------------------------------------
+
+var siteUrl = 'https://intranet.houseofit.com.au/';
+
+
+
+ </script>
+
+<body>
+
+
+<main>
+
+
+
+ <div class="row">
+
+
+    <div class="col s12">
+
+      <ul class="collection with-header card-panel">
+        <div class="col s12">
+  <a class="btn-floating red AlignButtonRight" href="https://intranet.houseofit.com.au/Lists/Employee%20Profile"><i class="large material-icons">close</i></a>
+</div>
+
+        <li class="collection-item">
+
+          <div class="col s3"></div>
+
+          <div class="card-panel col Cardwidth">
+              <div class="input-field row">
+                  <input id="TB_FirstName" type="text">
+                  <label for="TB_FirstName">Created By</label>
+              </div>            
+              <div class="input-field row">
+                  <input id="TB_FirstName" type="text">
+                  <label for="TB_FirstName">Subject</label>
+              </div>
+              <div class="input-field row">
+                  <input id="TB_FirstName" type="text">
+                  <label for="TB_FirstName">Description</label>
+              </div>
+              <div class="input-field row">
+                  <label>Effectivity Date</label>              
+                  <input type = "text" class = "datepicker" id="Date_BirthDate">    
+              </div>              
+          </div>
+
+    <div class="row">
+      <div class="input-field col s9">
+            <a class="waves-effect waves-light btn light-blue darken-1 z-depth-2 AlignButtonRight submit hoverable" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </a>
+      </div>
+      <div class="col"></div>
+  </div>
+
+      </li>
+    </ul>
+    </div>
+  </div>
+
+</main>
+
+
+
+
+
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+</body>
+ 
+</html>
