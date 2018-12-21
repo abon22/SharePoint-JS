@@ -1,0 +1,181 @@
+﻿<style>
+.main{
+min-height:20px;
+padding:5px;
+margin-bottom:5px;
+color:white;
+background-color: #0072C6;
+width:50%;
+}
+ 
+input#txtbox {
+ width: 350px;
+ height: 30px;
+}
+ 
+#currentindex&amp;gt;div {
+ background-color: #0072C6;
+ padding: 5px;
+ color: white;
+ width: 50%;
+ }
+ 
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/_layouts/15/SP.RequestExecutor.js"></script>
+<script type="text/javascript">$(document).ready(function () {
+//display list function
+ $("#btndisplaylist").click(function(){
+ var currsite= $('#txtsite').val();
+ if(checkvalues())
+ { $('#currentindex').hide();
+ $('#divlistperm').show();
+ var endpointgetlist= currsite+"/_api/Web/lists";
+ $('#ddllists').empty();
+ getJson(endpointgetlist).done(function(data){
+ var lists= data.d.results;
+    lists.forEach(function(listitem){
+    $('#ddllists').append($('<option>', {value: listitem.Title, text : listitem.Title }));
+    });
+ })
+.fail(
+ function(error){ console.log(JSON.stringify(error)); });
+  }
+ });
+//display list function ends here
+ 
+//display lists that has unique permission
+ $("#btndisplayuniquelist").click(function(){
+  var currsite= $('#txtsite').val();
+   if(checkvalues())
+  {
+     $('#currentindex').hide();
+     $('#divlistperm').show();
+     var endpointgetlist= currsite+"/_api/Web/lists?$filter=HasUniqueRoleAssignments";
+      $('#ddllists').empty();
+     getJson(endpointgetlist).done(function(data){
+            var lists= data.d.results;
+            lists.forEach(function(listitem){
+              $('#ddllists').append($('<option>', { value: listitem.Title,text : listitem.Title }));
+            });
+      })
+    .fail( function(error){ console.log(JSON.stringify(error)); });
+  }
+ });
+//display lists that has unique permission ends here
+ 
+//checksite permission
+ $("#chksiteperm").click(function(){
+    var currsite= $('#txtsite').val();
+    var endpointUrl = currsite+"/_api/Web/RoleAssignments?$expand=Member,RoleDefinitionBindings";
+    $('#divlistperm').hide();
+    $('#currentindex').show();
+    if(checkvalues()) {
+        getJson(endpointUrl).done(function(data) {
+        var items = data.d.results;
+        items.forEach(function(item){
+        var roles= item.RoleDefinitionBindings.results;
+        var currid= item.Member.Title.replace(/[ ,]+/g, "");
+        currid= currid.replace('(','');
+        currid=currid.replace(')','');
+        currid=currid.replace(/[^a-z0-9\s]/gi,'');
+        $('#currentindex').append("<div id="+currid+"><i style='color:#e3f178;font-size: 16px;'>"+item.Member.Title+"</i><b>Permissions</b></div>");
+       roles.forEach(function(roledef){
+       if($('#'+currid).is(":contains('"+roledef.Name+"')"))
+       { }
+       else{
+        $('#'+currid).append(""+roledef.Name +":"+roledef.Description);
+           }
+        });
+       });
+     })
+ .fail( function(error){
+    console.log(JSON.stringify(error)); }); } });
+ 
+//check site permission ends here
+ 
+//check list permission
+ $('#chklistpermission').click(function(){
+      var listtitle= $('#ddllists').find(":selected").text();
+      var currsite= $('#txtsite').val();
+      var endpointUrl = currsite+"/_api/Web/lists/getbytitle('"+listtitle+"')/RoleAssignments?$expand=Member,RoleDefinitionBindings";
+      if(checkvalues())
+      {
+        $('#currentindex').show();
+        $('#currentindex').empty();
+        getJson(endpointUrl).done(function(data) {
+            var items = data.d.results;
+            items.forEach(function(item){
+            var roles= item.RoleDefinitionBindings.results;
+            var currid= item.Member.Title.replace(/[ ,]+/g, "");
+            currid= currid.replace('(','');
+            currid=currid.replace(')','');
+            currid=currid.replace(/[^a-z0-9\s]/gi,'')
+            $('#currentindex').append("<div id="+currid+"><div class='principlename'><i style='color:#e3f178;font-size: 16px;'>"+item.Member.Title+"</i>");
+            roles.forEach(function(roledef){
+                if($('#'+currid).is(":contains('"+roledef.Name+"')"))
+                     {}
+                else{
+                   $('#'+currid).append(""+roledef.Name +":"+roledef.Description );
+                    }
+                  });
+         });
+         })
+    .fail( function(error){console.log(JSON.stringify(error)); }); }
+ });
+//end check list permission
+ 
+/*ends the document.ready here */
+});
+ 
+//json call function
+ function getJson(url)  {
+    return $.ajax({
+             url: url,
+          type: "GET",
+          contentType: "application/json;odata=verbose",
+        headers: {"Accept": "application/json;odata=verbose" }     });
+         }
+//end json call function
+ 
+//function to check if site url is null
+     function checkvalues()
+     {
+       var currsite= $('#txtsite').val();
+       var str='';
+       if(currsite=='')
+       {
+        str +='Site Url cannot be empty'
+        };
+       if(str=='')
+        {
+         return true;
+        }
+       else{
+        alert(str);
+        return false;
+            }
+      }
+    //end function  
+
+
+$(function() {
+
+  
+})
+
+ 
+</script>
+
+
+<div id="chkpermission">
+<label for="enterlistname" style="font-weight:bold;font-size:16pxl">Enter the site URL (Please enter the full URL like https://www.google.com)</label>
+ 
+<input id="txtsite" type="text" size="60px" height="30px" style="margin-top:5px;">
+<input id="chksiteperm" type="button" value="Check Site Permission">
+<input id="btndisplaylist" type="button" value="Display All Lists"> <input id="btndisplayuniquelist" type="button" value="Display Lists With Unique Permission">
+<div id="divlistperm" style="display:none"><select id="ddllists">
+</select> <input id="chklistpermission" type="button" value="Check List Permission"></div>
+</div>
+<div id='currentindex'></div>
