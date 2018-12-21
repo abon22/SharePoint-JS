@@ -1,0 +1,41 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script><script type="text/javascript">
+
+
+
+ $(document).ready(function()
+{
+
+var inputcontrols = document.getElementsByTagName("input");
+        for(i = 0; i<inputcontrols.length; i++)
+        {
+            if(inputcontrols[i].type == "button" && inputcontrols[i].value == "Save")
+                inputcontrols[i].value = "Submit";
+        }
+        var ribbonSave = $("span.ms-cui-ctl-largelabel:contains('Save')");
+        ribbonSave.text("Submit");
+
+SPUtility.HideSPField('Acknowledgement');
+SPUtility.HideSPField('Staff Name');
+SPUtility.HideSPField('Comments');
+SPUtility.HideSPField('Equipment Condition');
+SPUtility.HideSPField('Verified By');
+
+document.getElementById("Document_x0020_No_7b2cdb39-a426-4a4b-99b2-224e8ab4e839_$TextField").className = "ms-input ms-spellcheck-true ";
+document.getElementById("Document_x0020_No_7b2cdb39-a426-4a4b-99b2-224e8ab4e839_$TextField").size = "11";
+$("input[id='Document_x0020_No_7b2cdb39-a426-4a4b-99b2-224e8ab4e839_$TextField']").attr('readonly', 'readonly').css('background-color','#F6F6F6'); 
+
+document.getElementById("Revision_f7fba72b-6fd8-4c65-aa19-c6119e22c73a_$NumberField").className = "ms-input ms-spellcheck-true ";
+document.getElementById("Revision_f7fba72b-6fd8-4c65-aa19-c6119e22c73a_$NumberField").size = "11";
+$("input[id='Revision_f7fba72b-6fd8-4c65-aa19-c6119e22c73a_$NumberField']").attr('readonly', 'readonly').css('background-color','#F6F6F6'); 
+
+
+var waiver_div = document.getElementById('Computer_x0020_Units_fb2770a7-69d3-4873-9592-35864cd4b5ec_$TextField_inplacerte');
+ 
+waiver_div.innerHTML = "<table cellspacing='0' class='ms-rteTable-default' style='width: 100%; height: 228px; text-align: left;'> <tbody> <tr dir='ltr' style='text-align: center;'> <td class='ms-rteTable-default' style='width: 8%; height: 1px;'> <p>​<strong>Item No.​</strong></p> </td> <td class='ms-rteTable-default' style='width: 31%; height: 1px;'> <p> <strong>Computer Equipment M​odel/Brand​</strong></p> </td> <td class='ms-rteTable-default' style='width: 26%; height: 1px;'> <p>​<strong>Description</strong></p> </td> <td class='ms-rteTable-default' style='width: 20%; height: 1px;'> <p>​<strong>Serial No.</strong></p> </td> <td class='ms-rteTable-default' style='width: 20%; height: 1px;'> <strong>Remarks</strong></td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%; height: 16px;'>​</td> <td class='ms-rteTable-default' style='width: 31%; height: 16px;'>​​</td> <td class='ms-rteTable-default' style='width: 26%; height: 16px;'>​</td> <td class='ms-rteTable-default' style='height: 16px;'>​</td> <td class='ms-rteTable-default' style='height: 16px; text-align: center;'>​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​​​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​​​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​​​</td> </tr> <tr> <td class='ms-rteTable-default' style='width: 8%;'>​​</td> <td class='ms-rteTable-default' style='width: 31%;'>​</td> <td class='ms-rteTable-default' style='width: 26%;'>​</td> <td class='ms-rteTable-default'>​</td> <td class='ms-rteTable-default' style='text-align: center;'>​​​</td> </tr> </tbody></table><table cellspacing='0' class='ms-rteTable-default' style='width: 100%;'> <tbody> <tr> <td class='ms-rteTable-default' style='width: 100%;'> <table border='0' cellpadding='0' cellspacing='0' style='width: 788px;'> <colgroup></colgroup> <tbody> <tr height='22' style='height: 16.5pt;'> <td align='center' height='22' class='xl65' width='64' style='height: 16.5pt; width: 48pt;'> <h2>ACKNOWLEDGEMENT</h2> </td> </tr> <tr height='20' style='height: 15pt;'> <td height='20' class='xl66' style='height: 15pt;'> <i>This is to&#160;acknowledge that I am accountable for the above items.&#160; I understand that I will pay or replace​ the same unit in case of loss&#160;</i></td> </tr> <tr height='20' style='height: 15pt;'> <td height='20' class='xl66' style='height: 15pt;'> <i>or damage due to my&#160; fault or negligence.&#160; In case of resignation, separation or transfer, I will turnover these items before issuance</i></td> </tr> <tr height='20' style='height: 15pt;'> <td height='20' class='xl66' style='height: 15pt;'> <i>of my clearance.&#160; For any additional software protected with license installed that do not appear on the list above, or do not have any</i></td> </tr> <tr height='20' style='height: 15pt;'> <td height='20' class='xl66' style='height: 15pt;'> <i>supporting documents(s)coming from the Admin Department Head or IT Technician, it is my responsibility to face any charges or liablity&#160;</i></td> </tr> <tr height='20' style='height: 15pt;'> <td height='20' class='xl66' style='height: 15pt;'> <i>coming from any software authority or organization.&#160; Also I will follow the rules &amp; regulations imposed by the Admin Department Office.</i></td> </tr> <tr height='20' style='height: 15pt;'> <td height='20' class='xl66' style='height: 15pt;'> <i>I will be liable for any consequences that may arise for not complying with the set of rules and&#160; regulations.</i></td> </tr> </tbody> </table> </td> </tr> </tbody></table><table border='0' cellpadding='0' cellspacing='0' width='799' style='width: 601pt;'> <colgroup><col width='64' style='width: 48pt; text-align: left;'></col></colgroup><colgroup><col width='205' style='width: 154pt;'></col></colgroup><colgroup><col width='206' style='width: 155pt;'></col></colgroup><colgroup><col width='174' style='width: 131pt;'></col></colgroup><colgroup><col width='150' style='width: 113pt;'></col></colgroup> <tbody style='text-align: left;'> </tbody></table>";
+
+
+});
+
+
+</script><i>​​​​​​<b>Note:</b> Make sure you recieve an email once you save the request from sharepoint@houseofit.com.au indicating &quot;Than​k you for Submitting&quot;.<br/> If you haven&#39;t recieve any email upon submittin​​g the request , Please send an email to 
+   <a href="mailto:sharepoint2@houseofit.com.au?Subject=There%20was%20a%20problem%20while%20processing%20the%20request.">SharePoint Support</a>​​​ or click the link.​​​​​​​​​​​</i>

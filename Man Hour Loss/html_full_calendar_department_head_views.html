@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+  <link href="/SiteAssets/Scripts/Corrective_Action_Plan_(CAP)/css/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+  <link href="/SiteAssets/Scripts/Corrective_Action_Plan_(CAP)/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+  <script type="text/javascript" src="/SiteAssets/Scripts/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/SiteAssets/Scripts/js/moment.min.js"></script>
+  <script type="text/javascript" src="/SiteAssets/Scripts/js/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="/SiteAssets/Scripts/js/3b35dbef3b.js"></script>
+  <script type="text/javascript" src="/SiteAssets/Scripts/js/jquery.sidebar.min.js"></script>
+
+  <link href="/SiteAssets/Scripts/Man Hour Loss/css/manhourloss.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="/SiteAssets/Scripts/Man%20Hour%20Loss/js/manhourloss_department_head_views.js"></script>
+
+  <script type="text/javascript" src="/SiteAssets/Scripts/Man Hour Loss/js/amchart.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/Man Hour Loss/js/serial.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/Man Hour Loss/js/none.js"></script>
+
+
+<style type="text/css">
+  body {
+    font-size: 1.3595em!important;
+  }
+</style>
+
+</head>
+
+<body>
+
+  <div id="calendar-wrapper" >
+      <div class="sidebar left" style="display:none">
+        <h2>
+          <div id="calendar-search">
+            <input type="text" class="form-control" placeholder="To be replaced by bucket search">
+          </div>
+          <div id="sidebar-toggle">
+            <div class="burger burger1"><span></span></div>
+          </div>
+        </h2>
+        <hr/>
+        <label class="filter attendance">
+          Attendance
+          <input type="checkbox" checked id="filter-attendance">
+        </label>
+      </div>
+      <h2>
+        CALENDAR
+      </h2>
+      <div id="calendar"></div>
+      <p class="note"><span style="color:red; font-size: 16px">*</span> - use google chrome for best appearance.</p>
+    </div>
+    <div class="card-wrapper">
+      <div class="card" style="opacity: 0; transform: scale(0.8) rotateY(0deg);">
+        <div class="front-panel">
+          <div class="event-title"></div>
+          <p class="event-date"></p>
+          <div class="sk-cube-grid event-loader">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+          </div>
+          <div class="entries"></div>
+        </div>
+        <div class="back-panel">
+          <div class="sk-cube-grid event-loader">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+          </div>
+
+
+          <div class="event-detail" data-type="">
+            <!-- SAMPLE DATA -->
+            <p class="emp-name" style="text-transform: uppercase;letter-spacing: 3px;" ></p>
+            
+            <p class="event-date"></p>
+            <br/>
+            <div class="emp-display"> </div>
+            <!-- SAMPLE DATA END -->
+            <div class="chart-block" style="padding:5px"  style="vertical-align: middle;">
+              <p><b>Current Year Trend Per Month</b></p>
+              <div id="column1" style="vertical-align: middle;display: inline-block; width: 180px; height: 50px;"></div>
+            </div>
+          </div>
+        </div>
+
+      
+
+
+
+      </div>
+    </div>
+
+</body>
+ 
+</html>
