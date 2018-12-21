@@ -1,0 +1,20 @@
+﻿<style type="text/css">
+ 
+/* List View Header */
+.ms-listviewtable > thead > tr > th {
+ background-color: #5B9BD5;
+}
+ 
+/* List view Header Text color*/
+.ms-vh-div,  .ms-headerSortTitleLink {
+color:white!important; font-weight: bold;
+}
+ 
+/* background color for alternate rows */
+.ms-listviewtable > tbody > tr.ms-alternating {
+background: #DDEBF7
+}
+</style>
+/*
+
+#Read more: http://www.sharepointdiary.com/2017/04/add-custom-css-to-sharepoint-2016-list-view-webpart.html#ixzz5Pdy2flVZ*/

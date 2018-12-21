@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" x-undefined="" />
+<title>DisplayForm</title>
+
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script>
+<script src="/SiteAssets/sputility.min.js"></script>
+<script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script>
+<link rel="stylesheet" type="text/css" href="/SiteAssets/Sample/SharePoint_Bug_Report_v.2/style.css">
+
+<link rel="stylesheet" type="text/css" href="/SiteAssets/Sample/SharePoint_Bug_Report_v.2/dist/components/table.min.css">
+<link rel="stylesheet" type="text/css" href="/SiteAssets/Sample/SharePoint_Bug_Report_v.2/dist/semantic.min.js">
+<link rel="stylesheet" type="text/css" href="/SiteAssets/Sample/SharePoint_Bug_Report_v.2/dist/semantic.js">
+<link rel="stylesheet" type="text/css" href="/SiteAssets/Sample/SharePoint_Bug_Report_v.2/dist/semantic.min.css">
+
+<script type="text/javascript">
+
+
+      var userProfileProperties;
+      ExecuteOrDelayUntilScriptLoaded(init,'sp.js');
+      var targetUser;
+
+            function init(){
+
+                this.clientContext2 = new SP.ClientContext.get_current();
+                this.oWeb = clientContext2.get_web();
+                targetUser = this.oWeb.get_currentUser();
+                this.clientContext2.load(targetUser);
+                this.clientContext2.executeQueryAsync(Function.createDelegate(this,this.onQuerySucceeded), Function.createDelegate(this,this.onQueryFailed));
+                
+             }
+
+            function onQuerySucceeded(message) {
+
+                var account = targetUser.get_loginName();
+                targetUser_temp = account.substring(account.indexOf("|") + 10);
+                targetUser = targetUser_temp;
+
+                     if(targetUser == "junreyd" || targetUser == "litoa"){ 
+
+                      SPUtility.ShowSPField('Comments');
+                      SPUtility.ShowSPField('Issue Status');
+                      SPUtility.ShowSPField('Assigned To');
+
+                      } else {
+
+                      SPUtility.HideSPField('Comments');
+                      SPUtility.HideSPField('Issue Status');
+                 	  SPUtility.HideSPField('Assigned To');
+                    
+                     }
+                  }
+</script>
+<!-- 
+<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+<style type="text/css">
+.ms-formtable {display:none;}
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	$("span.hillbillyForm").each(function() {
+	displayName = $(this).attr("data-displayName");
+ 
+displayName  = displayName.replace(/&(?!amp;)/g,'&amp;'); 
+elem = $(this);
+$("table.ms-formtable td").each(function(){ if (this.innerHTML.indexOf('FieldName="'+displayName+'"') != -1){ $(this).contents().appendTo(elem); } }); }); }); </script>
+
+</head>
+
+<body>
+
+<table class="ui celled striped table">
+  <thead>
+    <tr><th colspan="3">
+      <i class="exclamation circle icon"></i>Sharepoint Issue
+    </th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Requester Name</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Requester Name"</span></td>
+    </tr>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Department/Section</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Department"</span></td>
+    </tr>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Title</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Title"</span></td>
+    </tr>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Priority</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Priority"</span></td>
+    </tr>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Description</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Description"</span></td>
+    </tr>
+        <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Assigned To</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Assigned To"</span></td>
+    </tr>
+        <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Issue Status</b>
+      </td>
+      <td><span class="hillbillyForm" data-displayName="Issue Status"</span></td>
+    </tr>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Comments</b>
+      </td>
+      <td class="collapsing"><span class="hillbillyForm" data-displayName="Comments"</span></td>
+    </tr>
+    <tr>
+      <td class="collapsing">
+        &nbsp;&nbsp;<b>Attachments</b>
+      </td>
+      <td class="collapsing"><span class="hillbillyForm" data-displayName="Attachments"</span></td>
+    </tr>
+  </tbody>
+</table>
+ -->
+</body>
+
+</html>
