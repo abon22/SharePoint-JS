@@ -1,0 +1,2435 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="layout" />
+ 
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+
+<style type="text/css">
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+}
+ 
+
+img{
+  max-width:180px;
+}
+
+/*input[type=file]{
+padding:10px;
+background:#2d2d2d;}*/
+label span { 
+  color: red;
+  font-size: 20px
+}
+
+.CenterHeader{
+  text-align: center;
+
+}
+
+.AlignButtonRight{
+  float: right;
+}
+
+.CardHeader{
+    padding: 10px;
+}
+
+
+.ProfilePicture {
+    height:150;
+    width:200;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 80px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+
+</style>
+ 
+ <script type="text/javascript">
+  
+
+var V_FirstName;
+var V_MiddleName;
+var V_LastName;
+var V_Suffix;
+var V_Sex;
+var V_BirthDate;
+var V_ContactNumber;
+var V_CurrentAddress;
+var V_ProvincialAddress;
+var V_CivilStatus;
+var V_EmergencyContactNumber;
+var V_EmergencyContactPerson;
+var V_PersonalEmail;
+var V_Religion;
+var V_BirthPlace;
+var V_EmployeeID;
+var V_Company;
+var V_Department;
+var V_Section;
+var V_PositionTitle;
+var V_JobLevel;
+var V_JobGrade;
+var V_DateJoined;
+var V_DateHired;
+var V_ImmediateHead;
+var V_DepartmentHead;
+var V_EmployeeType;
+var V_RegularizationDate;
+var V_TIN;
+var V_SSS;
+var V_PHILHEALTH;
+var V_PAGIBIG;
+var V_Separated;
+var V_DateSeparated;
+var V_EmployeeStatus;
+var V_CompanyEmail;
+var V_Username;
+
+  $(document).ready(function() {
+
+
+    // ExecuteOrDelayUntilScriptLoaded(Retrieve_EmployeeID_Last, "sp.js");
+  // ExecuteOrDelayUntilScriptLoaded(getListId, "sp.js");
+
+    $('select').material_select();
+    $('.modal').modal();
+
+
+      $('#ModalDependents').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() {  } // Callback for Modal close
+    }
+  );
+
+      $('#ModalEducationalBackground').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() {  } // Callback for Modal close
+    }
+  );    
+
+      $('#ModalWorkExperience').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() {  } // Callback for Modal close
+    }
+  );     
+
+
+
+    // REMOVE_RIBBONS
+    document.getElementById("titleAreaBox").style.display = "none";
+    document.getElementById("sideNavBox").remove();
+    document.getElementById("DeltaSPRibbon").remove();
+    document.getElementById("DeltaPlaceHolderMain").style.marginRight = "50px";
+    document.getElementById("s4-titlerow").remove();
+    document.getElementById("s4-ribbonrow").style.height = "0px";
+    document.getElementById("s4-workspace").style.height = "1000px";
+
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 200, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('#Date_DateHired').change(function () {
+      var DateHired = $("#Date_DateHired").val().split("/");
+      
+      var Date_DateHired = new Date(DateHired[2], DateHired[0] - 1, DateHired[1]);
+
+    Date_DateHired.setMonth(Date_DateHired.getMonth() + 6);
+
+    var RegularizationDate = getFormattedDate(Date_DateHired);
+
+      document.getElementById('TB_RegularizationDate').value = RegularizationDate;
+
+      var Diff_DateHired = $("#Date_DateHired").val();
+      var Diff_DateRegularized = $("#TB_RegularizationDate").val();
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd = '0'+dd } 
+    if(mm<10) {
+        mm = '0'+mm } 
+    today = mm + '/' + dd + '/' + yyyy;
+
+
+    if(toDate(today) < toDate(RegularizationDate)){
+          document.getElementById('TB_EmployeeType').value = 'Probationary';
+          RegularizationDate.clear();
+      }
+      else{
+        document.getElementById('TB_EmployeeType').value = 'Regular';
+            RegularizationDate.clear()
+      }
+
+
+  });
+
+
+$(document).on('change',"#DP_EmployeeStatus", function() { 
+  // alert( $(this).val())
+      if($(this).val() == "Trainee"){
+        document.getElementById("span_date_hired").innerHTML = "";
+        document.getElementById('Date_DateHired').value = "";
+        document.getElementById('TB_EmployeeType').value = "";
+        document.getElementById('TB_RegularizationDate').value = "";
+        document.getElementById('Date_DateHired').disabled = true;        
+      }
+      else{
+        document.getElementById("span_date_hired").innerHTML = "*";
+        document.getElementById('Date_DateHired').disabled = false;
+        document.getElementById('Date_DateHired').value = V_DateHired;
+        document.getElementById('TB_EmployeeType').value = V_EmployeeType;
+        document.getElementById('TB_RegularizationDate').value = "";
+
+      var DateHired = $("#Date_DateHired").val().split("/");
+      
+      var Date_DateHired = new Date(DateHired[2], DateHired[0] - 1, DateHired[1]);
+
+    Date_DateHired.setMonth(Date_DateHired.getMonth() + 6);
+
+    var RegularizationDate = getFormattedDate(Date_DateHired);
+
+      document.getElementById('TB_RegularizationDate').value = RegularizationDate;
+
+      var Diff_DateHired = $("#Date_DateHired").val();
+      var Diff_DateRegularized = $("#TB_RegularizationDate").val();
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd = '0'+dd } 
+    if(mm<10) {
+        mm = '0'+mm } 
+    today = mm + '/' + dd + '/' + yyyy;
+
+
+    if(toDate(today) < toDate(RegularizationDate)){
+          document.getElementById('TB_EmployeeType').value = 'Probationary';
+          RegularizationDate.clear();
+      }
+      else{
+        document.getElementById('TB_EmployeeType').value = 'Regular';
+            RegularizationDate.clear()
+      }
+
+
+      }
+});
+
+$('#CB_Separated').change(function () {
+    if(V_DateSeparated != null){
+        if(document.getElementById("CB_Separated").checked == true){
+              document.getElementById("Date_Separated").value = V_DateSeparated;
+              document.getElementById("Date_Separated").disabled = false;
+              }
+        else{
+              document.getElementById("Date_Separated").value = "";
+              document.getElementById("Date_Separated").disabled = true;
+   }
+    }
+
+ });
+
+  // $('#Date_Separated').change(function () {
+  //   if(isEmptyOrSpaces(V_DateSeparated = document.getElementById("Date_Separated").value)){
+  //     document.getElementById("CB_Separated").checked = false;
+  //   }
+  //   else{
+  //     document.getElementById("CB_Separated").checked = true;
+  //   }
+  // });
+
+        $("#Table_Dependents td").click(function() {     
+ 
+            var column_num = parseInt( $(this).index() ) + 1;
+            var row_num = parseInt( $(this).parent().index() )+1;    
+ 
+            // $("#result").html( "Row_num =" + row_num + "  ,  Rolumn_num ="+ column_num );  
+            alert(column_num +" - "+row_num); 
+        });
+
+
+// swal({
+//   type: 'Wait..........',
+//   title: 'Loading Employee Information',
+//   showConfirmButton: false,
+//   timer: 2000
+// })
+
+    document.getElementById("btn_TriggerScripts").click();
+
+    // document.getElementById("Div_PersonalInformation").style.display = "none";
+
+    // ExecuteOrDelayUntilScriptLoaded(GetCurrentUsername, "sp.js");
+
+swal({
+  type: 'Wait..........',
+  title: 'Loading Employee profile',
+  showConfirmButton: false,
+  timer: 2500
+})
+
+
+
+
+
+$("#TB_CompanyEmail").on('input',function() {
+  document.getElementById("LBL_CompanyEmail").classList.remove("red-text");
+});
+
+$("#TB_FirstName").on('input',function() {
+  document.getElementById("LBL_FirstName").classList.remove("red-text");
+});
+
+$("#TB_LastName").on('input',function() {
+  document.getElementById("LBL_LastName").classList.remove("red-text");
+});
+
+$('#Date_BirthDate').change(function () {
+  document.getElementById("LBL_BirthDate").classList.remove("red-text");
+});
+$("#TB_ContactNumber").on('input',function() {
+  document.getElementById("LBL_ContactNumber").classList.remove("red-text");
+});
+$("#TB_CurrentAddress").on('input',function() {
+  document.getElementById("LBL_CurrentAddress").classList.remove("red-text");
+});
+
+$("#TB_EmployeeID").on('input',function() {
+  document.getElementById("LBL_EmployeeID").classList.remove("red-text");
+});
+
+$(document).on('change',"#DP_Company", function() { 
+  document.getElementById("LBL_Company").classList.remove("red-text");
+});
+
+$('#Date_DateJoined').change(function () {
+  document.getElementById("LBL_DateJoined").classList.remove("red-text");
+});
+
+$(document).on('change',"#DP_Department", function() { 
+  document.getElementById("LBL_Department").classList.remove("red-text");
+});
+
+$(document).on('change',"#DP_PositionTitle", function() { 
+  document.getElementById("LBL_PositionTitle").classList.remove("red-text");
+});
+
+$(document).on('change',"#DP_DepartmentHead", function() { 
+  document.getElementById("LBL_DepartmentHead").classList.remove("red-text");
+});
+
+
+
+
+
+}); /// END OF DOCUMENT READY FUNCTION /////////////////////////////////////////////////////////////////////////
+
+  function LoadScripts(){
+  ExecuteOrDelayUntilScriptLoaded(RetrieveListItem, "sp.js");
+  ExecuteOrDelayUntilScriptLoaded(Load_Dropdown_Items, "sp.js");
+  $('select').material_select();
+  }
+
+  function toDate(dateStr) {
+      const [month, day, year] = dateStr.split("/")
+      return new Date(year, month - 1, day)
+  }
+
+  function getFormattedDate(date) {
+            var year = date.getFullYear();
+            /// Add 1 because JavaScript months start at 0
+            var month = (1 + date.getMonth()).toString();
+            month = month.length > 1 ? month : '0' + month;
+            var day = date.getDate().toString();
+            day = day.length > 1 ? day : '0' + day;
+            return month + '/' + day + '/' + year;
+    }
+
+  function monthDiff(d1, d2) {
+      var months;
+      months = (d2.getFullYear() - d1.getFullYear()) * 12;
+      months -= d1.getMonth() + 1;
+      months += d2.getMonth();
+      return months <= 0 ? 0 : months;
+  }
+
+//-----------------------------------------------------------------------------------------------------------
+
+// GET LIST ITEM ID
+
+// var list;
+// function getListId() {
+//     var context = new SP.ClientContext.get_current();
+//     var web = context.get_web();
+//     list = web.get_lists().getByTitle('Employee Profile');
+//     context.load(list, 'Id');
+
+//     context.executeQueryAsync(Function.createDelegate(this, success), Function.createDelegate(this, error));
+
+// }
+
+
+// function success() {
+//     listId = list.get_id();
+//     alert(listId);
+// }
+
+// function error(sender, args) {
+//     alert('Request failed. ' + args.get_message() + 
+//         '\n' + args.get_stackTrace());
+// }
+
+
+
+//------------------------------------------------------------------------------------------------------------
+var Department_List_Items;
+var Section_List_Items;
+var PositionTitle_Items;
+var ImmediateHead_Items;
+var DepartmentHead_Items;
+
+function Load_Dropdown_Items() {
+  context = SP.ClientContext.get_current();
+
+  // Department
+  var Departments = context.get_web().get_lists().getByTitle("Department");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Department_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Department_List_Items);
+  context.executeQueryAsync(Read_Department_Succeeded, ReadListItemFailed);
+
+  // Section
+  context2 = SP.ClientContext.get_current();
+  var Sections = context.get_web().get_lists().getByTitle("Section");
+  var camlQuery_Section = SP.CamlQuery.createAllItemsQuery();
+  this.Section_List_Items = Sections.getItems(camlQuery_Section);
+
+  context2.load(Section_List_Items);
+  context2.executeQueryAsync(Read_Section_Succeeded, ReadListItemFailed);
+
+  // Position Title
+  context3 = SP.ClientContext.get_current();
+  var PositionTitle = context.get_web().get_lists().getByTitle("Position");
+  var camlQuery_PositionTitle = SP.CamlQuery.createAllItemsQuery();
+  this.PositionTitle_Items = PositionTitle.getItems(camlQuery_PositionTitle);
+
+  context3.load(PositionTitle_Items);
+  context3.executeQueryAsync(Read_PositionTitle_Succeeded, ReadListItemFailed);
+
+  // Immediate Head
+  context4 = SP.ClientContext.get_current();
+  var ImmediateHead = context.get_web().get_lists().getByTitle("Immediate Head List");
+  var camlQuery_ImmediateHead = SP.CamlQuery.createAllItemsQuery();
+  this.ImmediateHead_Items = ImmediateHead.getItems(camlQuery_ImmediateHead);
+
+  context4.load(ImmediateHead_Items);
+  context4.executeQueryAsync(Read_ImmediateHead_Succeeded, ReadListItemFailed);
+
+  // Department Head
+  context5 = SP.ClientContext.get_current();
+  var DepartmentHead = context.get_web().get_lists().getByTitle("Department Head List");
+  var camlQuery_DepartmentHead = SP.CamlQuery.createAllItemsQuery();
+  this.DepartmentHead_Items = DepartmentHead.getItems(camlQuery_DepartmentHead);
+
+  context5.load(DepartmentHead_Items);
+  context5.executeQueryAsync(Read_DepartmentHead_Succeeded, ReadListItemFailed);
+}
+
+// GET DEPARTMENTS
+function Read_Department_Succeeded(sender, args) {
+    var listItemsCollection = Department_List_Items.getEnumerator();
+    var Array_Department = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+    }
+
+    for (var i = 0; i<=Array_Department.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_Department[i];
+        opt.value = Array_Department[i];
+      document.getElementById('DP_Department').appendChild(opt);
+    }
+
+    $('select').material_select();
+}
+
+// GET SECTIONS
+function Read_Section_Succeeded(sender, args) {
+  var listItemsCollection = Section_List_Items.getEnumerator();
+  var Array_Section = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Section.push(listItem.get_item('Title'));
+    }
+
+    for (var i = 0; i<=Array_Section.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_Section[i];
+        opt.value = Array_Section[i];
+      document.getElementById('DP_Section').appendChild(opt);
+    }
+
+  $('select').material_select();
+}
+
+// GET POSITION TITLE
+function Read_PositionTitle_Succeeded(sender, args) {
+  var listItemsCollection = PositionTitle_Items.getEnumerator();
+  var Array_PositionTitle = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_PositionTitle.push(listItem.get_item('Title'));
+    }
+
+    for (var i = 0; i<=Array_PositionTitle.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_PositionTitle[i];
+        opt.value = Array_PositionTitle[i];
+      document.getElementById('DP_PositionTitle').appendChild(opt);
+    }
+
+  $('select').material_select();
+}
+
+// GET IMMEDIATE HEAD
+function Read_ImmediateHead_Succeeded(sender, args) {
+  var listItemsCollection = ImmediateHead_Items.getEnumerator();
+  var Array_ImmediateHead = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_ImmediateHead.push(listItem.get_item('Title'));
+    }
+
+    for (var i = 0; i<=Array_ImmediateHead.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_ImmediateHead[i];
+        opt.value = Array_ImmediateHead[i];
+      document.getElementById('DP_ImmediateHead').appendChild(opt);
+    }
+
+  $('select').material_select();
+}
+
+// GET DEPARTMENT HEAD
+function Read_DepartmentHead_Succeeded(sender, args) {
+  var listItemsCollection = DepartmentHead_Items.getEnumerator();
+  var Array_DepartmentteHead = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_DepartmentteHead.push(listItem.get_item('Title'));
+    }
+
+    for (var i = 0; i<=Array_DepartmentteHead.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_DepartmentteHead[i];
+        opt.value = Array_DepartmentteHead[i];
+      document.getElementById('DP_DepartmentHead').appendChild(opt);
+    }
+
+  $('select').material_select();
+}
+
+// IF QUERY FAILED
+function ReadListItemFailed(sender, args) {
+  alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+//-------------------------------------------------------------------------------------
+  
+  var targetListItem;
+  var itemId;
+   function RetrieveListItem() {
+    
+      JSRequest.EnsureSetup(); 
+     itemId = JSRequest.QueryString["ID"];
+
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'ID\'/>' + 
+        '<Value Type=\'Number\'>'+itemId+'</Value></Eq></Where></Query><RowLimit>1</RowLimit></View>');
+        this.targetListItem = oList.getItems(camlQuery);
+      clientContext.load(targetListItem);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.retrieve_onQuerySucceeded_Item), Function.createDelegate(this, this.onQueryFailed));
+
+   }
+
+    function retrieve_onQuerySucceeded_Item() {
+
+  var listItemsCollection = targetListItem.getEnumerator();
+
+  var V_col_dependent_name;
+  var V_col_dependent_relationship;
+  var V_col_dependent_dob;
+
+  var V_col_eb_level;
+  var V_col_eb_nameofschool;
+  var V_col_eb_yearattended;
+  var V_col_eb_highestlevel;
+
+  var V_col_we_from;
+  var V_col_we_to;
+  var V_col_we_position;
+  var V_col_we_company;
+
+  var V_col_dependent_name_Array;
+  var V_col_dependent_relationship_Array;
+  var V_col_dependent_dob_Array;
+
+  var V_col_eb_level_Array;
+  var V_col_eb_nameofschool_Array;
+  var V_col_eb_yearattended_Array;
+  var V_col_eb_highestlevel_Array;
+
+  var V_col_we_from_Array;
+  var V_col_we_to_Array;
+  var V_col_we_position_Array;
+  var V_col_we_company_Array;
+
+  while (listItemsCollection.moveNext()) {
+    var listItem = listItemsCollection.get_current();
+
+  var_ItemID = listItem.get_item('ID');
+  V_FirstName = listItem.get_item('LI_FirstName');
+  V_MiddleName = listItem.get_item('LI_MiddleName');
+  V_LastName = listItem.get_item('LI_LastName');
+  V_Suffix = listItem.get_item('LI_Suffix');
+  V_Sex = listItem.get_item('LI_Sex');
+  V_BirthDate = listItem.get_item('LI_BirthDate');
+  V_ContactNumber = listItem.get_item('LI_ContactNumber');
+  V_CurrentAddress = listItem.get_item('LI_CurrentAddress');
+  V_ProvincialAddress = listItem.get_item('LI_ProvincialAddress');
+  V_CivilStatus = listItem.get_item('LI_CivilStatus');
+  V_EmergencyContactNumber = listItem.get_item('LI_EmergencyContactNumber');
+  V_EmergencyContactPerson = listItem.get_item('LI_EmergencyContactPerson');
+  V_PersonalEmail = listItem.get_item('LI_PersonalEmail');
+  V_Religion = listItem.get_item('LI_Religion');
+  V_BirthPlace = listItem.get_item('LI_BirthPlace');
+  V_EmployeeID = listItem.get_item('LI_EmployeeID');
+  V_Company = listItem.get_item('LI_Company');
+  V_Department = listItem.get_item('LI_Department');
+  V_Section = listItem.get_item('LI_Section');
+  V_PositionTitle = listItem.get_item('LI_PositionTitle');
+  V_JobLevel = listItem.get_item('LI_JobLevel');
+  V_JobGrade = listItem.get_item('LI_JobGrade');
+  V_DateJoined = listItem.get_item('LI_DateJoined');
+  V_DateHired = listItem.get_item('LI_DateHired');
+  V_ImmediateHead = listItem.get_item('LI_ImmediateHead');
+  V_DepartmentHead = listItem.get_item('LI_DepartmentHead');
+  V_EmployeeType = listItem.get_item('LI_EmployeeType');
+  V_RegularizationDate = listItem.get_item('LI_RegularizationDate');
+  V_TIN = listItem.get_item('LI_TIN_Number');
+  V_SSS = listItem.get_item('LI_SSS_Number');
+  V_PHILHEALTH = listItem.get_item('LI_PHILHEALTH');
+  V_PAGIBIG = listItem.get_item('LI_PAGIBIG');
+  V_Separated = listItem.get_item('LI_Separated');
+  V_EmployeeStatus = listItem.get_item('LI_EmployeeStatus');
+  V_DateSeparated = listItem.get_item('LI_DateSeparated');
+
+  V_CompanyEmail = listItem.get_item('LI_CompanyEmail');
+
+  V_col_dependent_name = listItem.get_item('LI_DependentName');
+  V_col_dependent_relationship = listItem.get_item('LI_DependentRelationship');
+  V_col_dependent_dob = listItem.get_item('LI_DependentDateOfBirth');
+
+  V_col_eb_level = listItem.get_item('LI_EB_Level');
+  V_col_eb_nameofschool = listItem.get_item('LI_EB_NameOfSchool');
+  V_col_eb_yearattended = listItem.get_item('LI_EB_YearAttended');
+  V_col_eb_highestlevel = listItem.get_item('LI_EB_HighestLevel');
+
+  V_col_we_from = listItem.get_item('LI_WE_From');
+  V_col_we_to = listItem.get_item('LI_WE_To');
+  V_col_we_position = listItem.get_item('LI_WE_Position');
+  V_col_we_company = listItem.get_item('LI_WE_Company');
+
+  // console.log("DEPENDENT"+V_col_dependent_name + "\n"+V_col_dependent_relationship + "\n"+V_col_dependent_dob);
+  // console.log("EB"+V_col_eb_level + "\n"+V_col_eb_nameofschool + "\n"+V_col_eb_yearattended + "\n" +V_col_eb_highestlevel);
+  // console.log("WE"+V_col_we_from + "\n"+V_col_we_to + "\n"+V_col_we_position + "\n" +V_col_we_company);
+
+  }
+
+  setTimeout(function(){ 
+
+    if(V_Suffix == null){
+        V_Suffix = "";
+
+       }
+       if(V_Section == null){
+        V_Section = "";
+       }
+
+       document.getElementById('TB_FirstName').value = V_FirstName;
+       document.getElementById('TB_MiddleName').value = V_MiddleName;
+       document.getElementById('TB_LastName').value = V_LastName;
+       document.getElementById('TB_Suffix').value = V_Suffix;
+
+      if(V_Sex == "MALE"){
+        document.getElementById('Sex1').checked = true;
+      }
+      else if(V_Sex == "FEMALE"){
+        document.getElementById('Sex2').checked = true;
+      }
+
+       document.getElementById('Date_BirthDate').value = V_BirthDate;
+       document.getElementById('TB_ContactNumber').value = V_ContactNumber;
+       document.getElementById('TB_CurrentAddress').value = V_CurrentAddress;
+       document.getElementById('TB_ProvincialAddress').value = V_ProvincialAddress;
+       document.getElementById('DP_CivilStatus').value = V_CivilStatus;$('#DP_CivilStatus').material_select();
+       document.getElementById('TB_EmergencyContactNumber').value = V_EmergencyContactNumber;
+       document.getElementById('TB_EmergencyContactPerson').value = V_EmergencyContactPerson;
+       document.getElementById('TB_PersonalEmail').value = V_PersonalEmail;
+       document.getElementById('DP_Religion').value = V_Religion;$('#DP_Religion').material_select();
+       document.getElementById('TB_BirthPlace').value = V_BirthPlace;
+       document.getElementById('TB_CompanyEmail').value = V_CompanyEmail;
+       document.getElementById('TB_EmployeeID').value = V_EmployeeID;
+
+       document.getElementById('DP_Company').value = V_Company;
+        $('#DP_Company').material_select();
+
+       // var V_Company_Value = document.getElementById('DP_Company').options;
+       //  for(var i = 0; i < V_Company_Value.length; i++) {
+       //      if(V_Company_Value[i].value === V_Company) {
+       //          V_Company_Value[i].selected = true;
+       //          $('#DP_Company').material_select();
+       //          break;
+       //      }
+       //  }
+        
+       document.getElementById('DP_Department').value = V_Department;
+       $('#DP_Department').material_select();
+
+       // var V_Department_Value = document.getElementById('DP_Department').options;
+       //  for(var i = 0; i < V_Department_Value.length; i++) {
+       //      if(V_Department_Value[i].value === V_Department) {
+       //          V_Department_Value[i].selected = true;
+       //          $('#DP_Department').material_select();
+       //          break;
+       //      }
+       //  }
+        
+       document.getElementById('DP_Section').value = V_Section;
+       $('#DP_Section').material_select();
+       document.getElementById('DP_PositionTitle').value = V_PositionTitle;
+       $('#DP_PositionTitle').material_select();
+       document.getElementById('DP_JobLevel').value = V_JobLevel;
+       $('#DP_JobLevel').material_select();
+       document.getElementById('DP_JobGrade').value = V_JobGrade;
+       $('#DP_JobGrade').material_select();
+       document.getElementById('Date_DateJoined').value = V_DateJoined;
+       document.getElementById('Date_DateHired').value = V_DateHired;
+      document.getElementById('DP_ImmediateHead').value = V_ImmediateHead;
+      $('#DP_ImmediateHead').material_select();
+       document.getElementById('DP_DepartmentHead').value = V_DepartmentHead;
+       $('#DP_DepartmentHead').material_select();
+       document.getElementById('TB_EmployeeType').value = V_EmployeeType;
+       document.getElementById('TB_RegularizationDate').value = V_RegularizationDate;
+       document.getElementById('TB_TIN').value = V_TIN;
+       document.getElementById('TB_SSS').value = V_SSS;
+       document.getElementById('TB_PHILHEALTH').value = V_PHILHEALTH;
+       document.getElementById('TB_PAGIBIG').value = V_PAGIBIG;
+       document.getElementById('DP_EmployeeStatus').value = V_EmployeeStatus;
+       $('#DP_EmployeeStatus').material_select();
+
+       if(V_Separated == "Separated"){
+        document.getElementById('CB_Separated').checked = true;
+       }
+
+
+
+   if(V_col_dependent_name != null){
+       V_col_dependent_name_Array = V_col_dependent_name.split(";");
+       V_col_dependent_relationship_Array = V_col_dependent_relationship.split(";");
+       V_col_dependent_dob_Array = V_col_dependent_dob.split(";"); 
+       
+        for(i=0; i<=V_col_dependent_name_Array.length-1;i++){
+                                          $("#Table_Dependents").append("<tr align='middle'>" +
+                                         "<td align='left' class='dependent_name' > "+V_col_dependent_name_Array[i]+"</td>" +
+                                         "<td align='left' class='dependent_relationship'>"+V_col_dependent_relationship_Array[i]+"</td>" +
+                                         "<td align='left' class='dependent_dateofbirth'>"+V_col_dependent_dob_Array[i]+"</td>"  +
+
+                                         '<td><a class="btn-floating waves-effect waves-light teal  z-depth-2 hoverable"  onclick="Edit_Dependent(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                         '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                         "</tr>"); 
+        }  
+   }    
+
+   if(V_col_eb_level != null){
+       V_col_eb_level_Array = V_col_eb_level.split(";");
+       V_col_eb_nameofschool_Array = V_col_eb_nameofschool.split(";");
+       V_col_eb_yearattended_Array = V_col_eb_yearattended.split(";");
+       V_col_eb_highestlevel_Array = V_col_eb_highestlevel.split(";");
+
+        for(i=0; i<=V_col_eb_level_Array.length-1;i++){
+                                          $("#Table_EducationalBackground").append("<tr align='middle'>" +
+                                          "<td align='left' class='eb_level' > "+V_col_eb_level_Array[i]+"</td>" +
+                                          "<td align='left' class='eb_school_name'>"+V_col_eb_nameofschool_Array[i]+"</td>" +
+                                          "<td align='left' class='eb_yearattended'>"+V_col_eb_yearattended_Array[i]+"</td>"  +
+                                          "<td align='left' class='eb_highestlevel'>"+V_col_eb_highestlevel_Array[i]+"</td>"  +       
+                                           
+                                           '<td><a class="btn-floating waves-effect waves-light teal z-depth-2 hoverable"  onclick="Edit_EducationalBackground(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                           '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                           "</tr>");  
+        }    
+   }
+
+   if(V_col_we_from != null){
+       V_col_we_from_Array = V_col_we_from.split(";");
+       V_col_we_to_Array = V_col_we_to.split(";");
+       V_col_we_position_Array = V_col_we_position.split(";");
+       V_col_we_company_Array = V_col_we_company.split(";");
+
+        for(i=0; i<=V_col_we_from_Array.length-1;i++){
+                                          $("#Table_WorkExperience").append("<tr align='middle'>" +
+                                           "<td align='left' class='we_from' > "+V_col_we_from_Array[i]+"</td>" +
+                                           "<td align='left' class='we_to'>"+V_col_we_to_Array[i]+"</td>" +
+                                           "<td align='left' class='we_position'>"+V_col_we_position_Array[i]+"</td>"  +
+                                           "<td align='left' class='we_company'>"+V_col_we_company_Array[i]+"</td>"  +
+
+                                           '<td><a class="btn-floating waves-effect waves-light teal z-depth-2 hoverable"  onclick="Edit_WorkExperience(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                           '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                           "</tr>");
+        } 
+   }
+                            
+  }, 1000);
+
+
+   }
+
+//---------------------------------------------------------------------------------------
+
+
+function onQuerySucceeded() {
+swal({
+  position: 'center',
+  type: 'success',
+  title: 'Employee Profile has been updated',
+  showConfirmButton: false,
+  timer: 1500
+})
+
+    window.location.href='https://intranet.houseofit.com.au/SitePages/Employee%20Database.aspx';
+
+
+}
+
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function Validate_Add_NewHire(){
+  if(document.getElementById("DP_EmployeeStatus").value == "Employee"){
+
+    if(isEmptyOrSpaces(document.getElementById('TB_CompanyEmail').value) ||
+      isEmptyOrSpaces(document.getElementById('TB_EmployeeID').value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Company").value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Department").value) || 
+      isEmptyOrSpaces(document.getElementById("DP_PositionTitle").value) ||
+      isEmptyOrSpaces(document.getElementById('Date_DateJoined').value) || 
+      isEmptyOrSpaces(document.getElementById('Date_DateHired').value) ||  
+      isEmptyOrSpaces(document.getElementById("DP_DepartmentHead").value) || 
+      isEmptyOrSpaces(document.getElementById("DP_EmployeeStatus").value)){
+      
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error')
+    }
+    else{
+        Add_NewHire_Information();
+    }
+}
+else{
+    if(isEmptyOrSpaces(document.getElementById('TB_CompanyEmail').value) ||
+      isEmptyOrSpaces(document.getElementById('TB_EmployeeID').value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Company").value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Department").value) || 
+      isEmptyOrSpaces(document.getElementById("DP_PositionTitle").value) ||
+      isEmptyOrSpaces(document.getElementById('Date_DateJoined').value) || 
+      isEmptyOrSpaces(document.getElementById("DP_DepartmentHead").value) || 
+      isEmptyOrSpaces(document.getElementById("DP_EmployeeStatus").value)){
+      
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error')
+    }
+    else{
+        Add_NewHire_Information();
+    }
+}
+}
+
+function getUsername(){
+  V_CompanyEmail = document.getElementById('TB_CompanyEmail').value;
+  var username = V_CompanyEmail.split("@");
+ V_Username = username[0];
+//  alert(V_Username);
+// ExecuteOrDelayUntilScriptLoaded(RetrieveListItem, "sp.js");
+}
+
+var siteUrl = 'https://intranet.houseofit.com.au/';
+
+//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+function updateListItem() {
+get_columns();
+
+V_CompanyEmail = document.getElementById('TB_CompanyEmail').value;
+ V_FirstName = document.getElementById('TB_FirstName').value;
+ V_MiddleName = document.getElementById('TB_MiddleName').value;
+ V_LastName = document.getElementById('TB_LastName').value;
+ V_Suffix = document.getElementById('TB_Suffix').value;
+ V_Sex = $("input[name=RB_Sex]:checked").val();
+ V_BirthDate = document.getElementById("Date_BirthDate").value;
+ V_ContactNumber = document.getElementById('TB_ContactNumber').value;
+ V_CurrentAddress = document.getElementById('TB_CurrentAddress').value;
+ V_ProvincialAddress = document.getElementById('TB_ProvincialAddress').value;
+ V_CivilStatus = document.getElementById("DP_CivilStatus").value;
+ V_EmergencyContactNumber = document.getElementById('TB_EmergencyContactNumber').value;
+ V_EmergencyContactPerson = document.getElementById('TB_EmergencyContactPerson').value;
+ V_PersonalEmail = document.getElementById('TB_PersonalEmail').value;
+ V_Religion = document.getElementById("DP_Religion").value;
+ V_BirthPlace = document.getElementById('TB_BirthPlace').value;
+ V_EmployeeID = document.getElementById('TB_EmployeeID').value;
+ V_Company = document.getElementById("DP_Company").value;
+ V_Department = document.getElementById("DP_Department").value; 
+
+if(document.getElementById("DP_Section").selectedIndex > 0){
+  V_Section = document.getElementById("DP_Section").value;
+}
+else{
+  V_Section = "None"
+}
+
+ V_PositionTitle = document.getElementById("DP_PositionTitle").value
+ V_JobLevel = document.getElementById("DP_JobLevel").value
+ V_JobGrade = document.getElementById("DP_JobGrade").value
+
+ V_DateJoined = document.getElementById('Date_DateJoined').value;
+ V_DateHired = document.getElementById('Date_DateHired').value;
+ V_ImmediateHead = document.getElementById("DP_ImmediateHead").value;
+ V_DepartmentHead = document.getElementById("DP_DepartmentHead").value;
+
+ V_EmployeeType = document.getElementById('TB_EmployeeType').value;
+ V_RegularizationDate = document.getElementById('TB_RegularizationDate').value;
+ V_TIN = document.getElementById('TB_TIN').value;
+ V_SSS = document.getElementById('TB_SSS').value;
+ V_PHILHEALTH = document.getElementById('TB_PHILHEALTH').value;
+ V_PAGIBIG = document.getElementById('TB_PAGIBIG').value; 
+ V_DateSeparated = document.getElementById("Date_Separated").value;
+ V_EmployeeStatus = document.getElementById("DP_EmployeeStatus").value;
+
+//GET THE MONTH ADN YEAR HIRED
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var d=new Date(document.getElementById("Date_DateHired").value);  //converts the string into date object
+  var m=d.getMonth()+1; //get the value of month
+
+  var V_MonthHired = months[parseInt(m)-1];
+  var V_YearHired = d.getFullYear(); //get the value of month
+
+  var DateRegularization =new Date(document.getElementById("TB_RegularizationDate").value); 
+  var MonthRegularization=DateRegularization.getMonth()+1;
+  var V_MonthRegularized = months[parseInt(MonthRegularization)-1];
+  var V_YearRegularized = DateRegularization.getFullYear();
+
+
+  var BirthDate = new Date(document.getElementById("Date_BirthDate").value); 
+  var MonthBirthday=BirthDate.getMonth()+1;
+  var V_MonthBirthday = months[parseInt(MonthBirthday)-1];
+  var V_YearBirthday = BirthDate.getFullYear();  
+
+
+  var DateSeparated =new Date(document.getElementById("TB_RegularizationDate").value); 
+  var MonthSeparation=DateSeparated.getMonth()+1;
+  var V_MonthSeparated = months[parseInt(MonthSeparation)-1];
+  var V_YearSeparated = DateSeparated.getFullYear();
+
+
+if(document.getElementById("CB_Separated").checked == true){
+  V_Separated = document.getElementById("CB_Separated").value;
+}
+else{
+  V_Separated = "Active";
+  V_DateSeparated = "";
+}
+
+  var username = V_CompanyEmail.split("@");
+ V_Username = username[0];
+
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+
+    // alert(EmployeeInformation_ItemID);
+
+    this.oListItem = oList.getItemById(itemId);
+
+    oListItem.set_item('LI_CompanyEmail', V_CompanyEmail);
+    oListItem.set_item('LI_FirstName', V_FirstName);
+    oListItem.set_item('LI_MiddleName', V_MiddleName);
+    oListItem.set_item('LI_LastName', V_LastName);
+    oListItem.set_item('LI_Suffix', V_Suffix);
+    oListItem.set_item('LI_Sex', V_Sex);
+    oListItem.set_item('LI_BirthDate', V_BirthDate);
+    oListItem.set_item('LI_ContactNumber', V_ContactNumber);
+    oListItem.set_item('LI_CurrentAddress', V_CurrentAddress);
+    oListItem.set_item('LI_ProvincialAddress', V_ProvincialAddress);
+    oListItem.set_item('LI_CivilStatus', V_CivilStatus);
+    oListItem.set_item('LI_EmergencyContactNumber', V_EmergencyContactNumber);
+    oListItem.set_item('LI_EmergencyContactPerson', V_EmergencyContactPerson);
+    oListItem.set_item('LI_PersonalEmail', V_PersonalEmail);
+    oListItem.set_item('LI_Religion', V_Religion);
+    oListItem.set_item('LI_BirthPlace', V_BirthPlace);
+    oListItem.set_item('LI_EmployeeID', V_EmployeeID);
+    oListItem.set_item('LI_Company', V_Company);
+    oListItem.set_item('LI_Department', V_Department);
+    oListItem.set_item('LI_Section', V_Section);
+    oListItem.set_item('LI_PositionTitle', V_PositionTitle);
+    oListItem.set_item('LI_JobLevel', V_JobLevel);
+    oListItem.set_item('LI_JobGrade', V_JobGrade);
+    oListItem.set_item('LI_DateJoined', V_DateJoined);
+    oListItem.set_item('LI_DateHired', V_DateHired);
+    oListItem.set_item('LI_ImmediateHead', V_ImmediateHead);
+    oListItem.set_item('LI_DepartmentHead', V_DepartmentHead);
+    oListItem.set_item('LI_EmployeeType', V_EmployeeType);
+    oListItem.set_item('LI_RegularizationDate', V_RegularizationDate);
+    oListItem.set_item('LI_TIN_Number', V_TIN);
+    oListItem.set_item('LI_SSS_Number', V_SSS);
+    oListItem.set_item('LI_PHILHEALTH', V_PHILHEALTH);
+    oListItem.set_item('LI_PAGIBIG', V_PAGIBIG);
+    oListItem.set_item('LI_Separated', V_Separated);
+    oListItem.set_item('LI_MonthHired', V_MonthHired);
+    oListItem.set_item('LI_YearHired', V_YearHired);
+    oListItem.set_item('LI_MonthRegularized', V_MonthRegularized);
+    oListItem.set_item('LI_YearRegularized', V_YearRegularized);
+    oListItem.set_item('LI_DateSeparated', V_DateSeparated);
+    oListItem.set_item('LI_MonthSeparated', V_MonthSeparated);
+    oListItem.set_item('LI_YearSeparated', V_YearSeparated);  
+    oListItem.set_item('LI_EmployeeStatus', V_EmployeeStatus);  
+    oListItem.set_item('LI_MonthBirthdate', V_MonthBirthday);
+    oListItem.set_item('LI_YearBirthDate', V_YearBirthday);
+
+    oListItem.set_item('LI_Username', V_Username);
+    oListItem.set_item('LI_FilledUpStatus', "Employee Fillup");
+
+
+    oListItem.set_item('LI_DependentName', col_dependent_name);
+    oListItem.set_item('LI_DependentRelationship', col_dependent_relationship);
+    oListItem.set_item('LI_DependentDateOfBirth', col_dependent_dob);
+
+    oListItem.set_item('LI_EB_Level', col_eb_level);
+    oListItem.set_item('LI_EB_NameOfSchool', col_eb_nameofschool);
+    oListItem.set_item('LI_EB_YearAttended', col_eb_yearattended);
+    oListItem.set_item('LI_EB_HighestLevel', col_eb_highestlevel);
+
+    oListItem.set_item('LI_WE_From', col_we_from);
+    oListItem.set_item('LI_WE_To', col_we_to);
+    oListItem.set_item('LI_WE_Position', col_we_position);
+    oListItem.set_item('LI_WE_Company', col_we_company);
+
+    oListItem.update();
+
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+
+function Validate(){
+ var V_DateSeparated = document.getElementById('Date_Separated').value;
+
+if(document.getElementById("DP_EmployeeStatus").value == "Employee"){
+
+    if(isEmptyOrSpaces(document.getElementById('TB_FirstName').value) ||
+          isEmptyOrSpaces(document.getElementById('TB_LastName').value) ||
+          isEmptyOrSpaces(document.getElementById('TB_CompanyEmail').value) ||
+          isEmptyOrSpaces(document.getElementById('TB_EmployeeID').value) || 
+          isEmptyOrSpaces(document.getElementById("DP_Company").options[ document.getElementById("DP_Company").selectedIndex ].value) || 
+          isEmptyOrSpaces(document.getElementById("DP_Department").options[ document.getElementById("DP_Department").selectedIndex ].value) || 
+          isEmptyOrSpaces(document.getElementById("DP_PositionTitle").options[ document.getElementById("DP_PositionTitle").selectedIndex ].value) ||
+          isEmptyOrSpaces(document.getElementById('Date_DateJoined').value) || 
+          isEmptyOrSpaces(document.getElementById('Date_DateHired').value) ||  
+          isEmptyOrSpaces(document.getElementById("DP_DepartmentHead").options[ document.getElementById("DP_DepartmentHead").selectedIndex ].value) || 
+          isEmptyOrSpaces(document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value)){
+      
+
+          if (document.getElementById('TB_CompanyEmail').value == ""){
+            document.getElementById("LBL_CompanyEmail").classList.add("red-text");
+          }
+          if (document.getElementById('TB_FirstName').value == ""){
+            document.getElementById("LBL_FirstName").classList.add("red-text");
+          }
+          if (document.getElementById('TB_LastName').value == ""){
+            document.getElementById("LBL_LastName").classList.add("red-text");
+          }
+          if (document.getElementById('Date_BirthDate').value == ""){
+            document.getElementById("LBL_BirthDate").classList.add("red-text");
+          }
+          if (document.getElementById('TB_ContactNumber').value == ""){
+            document.getElementById("LBL_ContactNumber").classList.add("red-text");
+          }
+          if (document.getElementById('TB_CurrentAddress').value == ""){
+            document.getElementById("LBL_CurrentAddress").classList.add("red-text");
+          }
+          if (document.getElementById('TB_EmployeeID').value == ""){
+            document.getElementById("LBL_EmployeeID").classList.add("red-text");
+          }
+          if (document.getElementById('DP_Company').value == ""){
+            document.getElementById("LBL_Company").classList.add("red-text");
+          }
+          if (document.getElementById('DP_Department').value == ""){
+            document.getElementById("LBL_Department").classList.add("red-text");
+          }
+          if (document.getElementById('DP_PositionTitle').value == ""){
+            document.getElementById("LBL_PositionTitle").classList.add("red-text");
+          }
+          if (document.getElementById('DP_DepartmentHead').value == ""){
+            document.getElementById("LBL_DepartmentHead").classList.add("red-text");
+          }
+          if (document.getElementById('Date_DateJoined').value == ""){
+            document.getElementById("LBL_DateJoined").classList.add("red-text");
+          }
+          if (document.getElementById('Date_DateHired').value == ""){
+            document.getElementById("LBL_DateHired").classList.add("red-text");
+          }
+          if (document.getElementById('DP_EmployeeStatus').value == ""){
+            document.getElementById("LBL_EmployeeStatus").classList.add("red-text");
+          }
+
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error')
+    }
+    else{
+    if(document.getElementById("CB_Separated").checked == true && isEmptyOrSpaces(V_DateSeparated)){
+        swal(
+      'Oops...',
+      'Please provide the Separation Date',
+      'error')
+      }else{
+          updateListItem();
+      }
+    }
+}
+else if(document.getElementById("DP_EmployeeStatus").value == "Trainee"){
+        if(isEmptyOrSpaces(document.getElementById('TB_FirstName').value) ||
+          isEmptyOrSpaces(document.getElementById('TB_LastName').value) ||
+          isEmptyOrSpaces(document.getElementById('TB_CompanyEmail').value) ||
+          isEmptyOrSpaces(document.getElementById('TB_EmployeeID').value) || 
+          isEmptyOrSpaces(document.getElementById("DP_Company").options[ document.getElementById("DP_Company").selectedIndex ].value) || 
+          isEmptyOrSpaces(document.getElementById("DP_Department").options[ document.getElementById("DP_Department").selectedIndex ].value) || 
+          isEmptyOrSpaces(document.getElementById("DP_PositionTitle").options[ document.getElementById("DP_PositionTitle").selectedIndex ].value) ||
+          isEmptyOrSpaces(document.getElementById('Date_DateJoined').value) || 
+          isEmptyOrSpaces(document.getElementById("DP_DepartmentHead").options[ document.getElementById("DP_DepartmentHead").selectedIndex ].value) || 
+          isEmptyOrSpaces(document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value)){
+    
+
+          if (document.getElementById('TB_CompanyEmail').value == ""){
+            document.getElementById("LBL_CompanyEmail").classList.add("red-text");
+          }
+          if (document.getElementById('TB_FirstName').value == ""){
+            document.getElementById("LBL_FirstName").classList.add("red-text");
+          }
+          if (document.getElementById('TB_LastName').value == ""){
+            document.getElementById("LBL_LastName").classList.add("red-text");
+          }
+          if (document.getElementById('Date_BirthDate').value == ""){
+            document.getElementById("LBL_BirthDate").classList.add("red-text");
+          }
+          if (document.getElementById('TB_ContactNumber').value == ""){
+            document.getElementById("LBL_ContactNumber").classList.add("red-text");
+          }
+          if (document.getElementById('TB_CurrentAddress').value == ""){
+            document.getElementById("LBL_CurrentAddress").classList.add("red-text");
+          }
+          if (document.getElementById('TB_EmployeeID').value == ""){
+            document.getElementById("LBL_EmployeeID").classList.add("red-text");
+          }
+          if (document.getElementById('DP_Company').value == ""){
+            document.getElementById("LBL_Company").classList.add("red-text");
+          }
+          if (document.getElementById('DP_Department').value == ""){
+            document.getElementById("LBL_Department").classList.add("red-text");
+          }
+          if (document.getElementById('DP_PositionTitle').value == ""){
+            document.getElementById("LBL_PositionTitle").classList.add("red-text");
+          }
+          if (document.getElementById('DP_DepartmentHead').value == ""){
+            document.getElementById("LBL_DepartmentHead").classList.add("red-text");
+          }
+          if (document.getElementById('Date_DateJoined').value == ""){
+            document.getElementById("LBL_DateJoined").classList.add("red-text");
+          }
+          if (document.getElementById('DP_EmployeeStatus').value == ""){
+            document.getElementById("LBL_EmployeeStatus").classList.add("red-text");
+          }
+
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error')
+    }
+    else{
+    if(document.getElementById("CB_Separated").checked == true && isEmptyOrSpaces(V_DateSeparated)){
+        swal(
+      'Oops...',
+      'Please provide the Separation Date',
+      'error')
+      }else{
+          updateListItem();
+      }
+
+    }
+}
+else {
+          if (document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value){
+            document.getElementById("LBL_EmployeeStatus").classList.add("red-text");
+          }
+}
+
+
+}
+
+
+//--------------------------------------------------------------------------------------------------------------
+
+var Employee_Username;
+
+function Check_Fillup_Status(){
+    var context = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var list = context.get_web().get_lists().getByTitle('Employee Profile');
+    var caml = new SP.CamlQuery();
+    caml.set_viewXml("<View><Query><Where><Eq><FieldRef Name='LI_Username' /><Value Type='Text'>"+Employee_Username+"</Value></Eq></Where></Query><RowLimit>1</RowLimit></View>");
+    returnedItems = list.getItems(caml);
+    context.load(returnedItems);
+    context.executeQueryAsync(Check_Fillup_Status_Succeeded, onFail);
+}
+function Check_Fillup_Status_Succeeded(){
+      var enumerator = returnedItems.getEnumerator();
+    // var Ref_ID;
+    var ItemID = -1;
+    var Fillup_Status;
+    while (enumerator.moveNext()) {
+        var listItem = enumerator.get_current();  
+        // Ref_ID = listItem.get_item('Title'); 
+        Fillup_Status = listItem.get_item("LI_FilledUpStatus");
+    }
+}
+
+
+function GetCurrentUsername()
+{
+var ctxt = new SP.ClientContext('https://intranet.houseofit.com.au/');
+this.website = ctxt.get_web();
+this.currentUser = website.get_currentUser();
+ctxt.load(currentUser);
+ctxt.executeQueryAsync(Function.createDelegate(this, this.onSucceess), Function.createDelegate(this, this.onFail));
+}
+
+
+function onSucceess(sender, args)
+ {
+ // alert(currentUser.get_loginName());
+ var full_username = currentUser.get_loginName();
+ var current_username = full_username.split("\\");
+  Employee_Username = current_username[1];
+  
+ExecuteOrDelayUntilScriptLoaded(get_username_from_EmployeeProfile, "sp.js");
+
+  if(Employee_Username != "diannag" && Employee_Username != "mithis" && Employee_Username != "ninoc" && Employee_Username != "jeannem" && Employee_Username != "artems"){
+    $( "#TB_CompanyEmail" ).prop( "disabled", true );
+    $( "#TB_EmployeeID" ).prop( "disabled", true );
+    $( "#DP_Company" ).prop( "disabled", true );
+    $( "#DP_Department" ).prop( "disabled", true );
+    $( "#DP_Section" ).prop( "disabled", true );
+    $( "#DP_PositionTitle" ).prop( "disabled", true );
+    $( "#DP_JobLevel" ).prop( "disabled", true );
+    $( "#DP_JobGrade" ).prop( "disabled", true );
+    $( "#Date_DateJoined" ).prop( "disabled", true );
+    $( "#Date_DateHired" ).prop( "disabled", true );
+    $( "#DP_ImmediateHead" ).prop( "disabled", true );
+    $( "#DP_DepartmentHead" ).prop( "disabled", true );
+    $( "#DP_EmployeeStatus" ).prop( "disabled", true );
+    $( "#TB_EmployeeType" ).prop( "disabled", true );
+    $( "#TB_RegularizationDate" ).prop( "disabled", true );
+    document.getElementById("Div_Separated").style.display = "none";
+    document.getElementById("Div_SeparationDate").style.display = "none";
+    $( "#TB_TIN" ).prop( "disabled", true );
+    $( "#TB_SSS" ).prop( "disabled", true );
+    $( "#TB_PHILHEALTH" ).prop( "disabled", true );
+    $( "#TB_PAGIBIG" ).prop( "disabled", true );
+  }
+
+
+ }
+
+
+function onFail(sender, args)
+{
+alert('request failed ' + args.get_message() + '\n'+ args.get_stackTrace());
+}
+
+
+//--------------------------------------------------------------------------------------------------------------
+
+  var targetListItem;
+   function Retrieve_EmployeeID_Last() {
+  
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Geq><FieldRef Name=\'ID\'/>' + 
+        '<Value Type=\'Number\'>1</Value></Geq></Where><OrderBy><FieldRef Name=\'LI_EmployeeID\' Ascending=\'false\' /></OrderBy></Query><RowLimit>1</RowLimit></View>');
+        this.targetListItem = oList.getItems(camlQuery);
+      clientContext.load(targetListItem);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.Retrieve_EmployeeID_Last_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+   }
+   function Retrieve_EmployeeID_Last_Succeeded(){
+    var listItemInfo = '';
+      var listItemsCollection = targetListItem.getEnumerator();
+
+        while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        listItemInfo = listItem.get_item('LI_EmployeeID');
+        }
+
+        var current_id = 0;
+        current_id = parseInt(listItemInfo) + 1;
+        document.getElementById("TB_EmployeeID").value = current_id;
+   }
+
+// OPEN / CLOSE MODALS
+
+// DEPENDENTS
+function New_Dependent_Clicked(){
+  dependents_function = "New";
+  Open_DependentsModal();
+}
+
+function Open_DependentsModal(){
+  $('#ModalDependents').modal('open');
+}
+function Close_DependentsModal(){
+  $('#ModalDependents').modal('close');
+
+  document.getElementById("TB_DependentName").value = "";
+  document.getElementById("DP_DependentRelationship").selectedIndex = 0;
+  document.getElementById("Date_DependentDateofBirth").value = "";
+}
+
+// EDUCATIONAL BACKGROUND
+function New_EducationalBackground_Clicked(){
+  EducationalBackgound_Function = "New";
+  Open_ModalEducationalBackground();
+}
+function Open_ModalEducationalBackground(){
+  $('#ModalEducationalBackground').modal('open');
+}
+function Close_ModalEducationalBackground(){
+  $('#ModalEducationalBackground').modal('close');
+
+  document.getElementById("TB_EB_NameOfSchool").value = "";
+  document.getElementById("TB_EB_YearAttended").value = "";
+  document.getElementById("DP_EB_Level").selectedIndex = 0;  
+  document.getElementById("DP_EB_HighestLevel").selectedIndex = 0;  
+}
+
+function New_WorkExperience_Clicked(){
+  workexperience_function = "New";
+  Open_ModalWorkExperience();
+}
+function Open_ModalWorkExperience(){
+  $('#ModalWorkExperience').modal('open');
+}
+function Close_ModalWorkExperience(){
+  $('#ModalWorkExperience').modal('close');
+
+  document.getElementById("Date_WE_From").value = "";
+  document.getElementById("Date_WE_To").value = "";
+  document.getElementById("TB_WE_Position").value = "";
+  document.getElementById("TB_WE_Company").value = "";
+}
+
+
+// DEPENDENTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+var dependents_function;
+
+function Append_Table_Dependents(){
+
+var dependent_name = document.getElementById("TB_DependentName").value;
+var dependent_relationship = document.getElementById("DP_DependentRelationship").value;
+var dependent_dateofbirth = document.getElementById("Date_DependentDateofBirth").value;
+
+if (dependents_function == "New"){ 
+
+                              $("#Table_Dependents").append("<tr align='middle'>" +
+                               "<td align='left' class='dependent_name' > "+dependent_name+"</td>" +
+                               "<td align='left' class='dependent_relationship'>"+dependent_relationship+"</td>" +
+                               "<td align='left' class='dependent_dateofbirth'>"+dependent_dateofbirth+"</td>"  +
+
+                               '<td><a class="btn-floating waves-effect waves-light teal z-depth-2 hoverable"  onclick="Edit_Dependent(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                               '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                               "</tr>");  
+
+}
+else if(dependents_function == "Edit"){
+
+  var row = dependent_obj.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+
+                              $("#Table_Dependents").append("<tr align='middle'>" +
+                               "<td align='left'><span class='dependent_name'> "+dependent_name+"</span></td>" +
+                               "<td align='left'><span class='dependent_relationship'>"+dependent_relationship+"</span></td>" +
+                               "<td align='left'><span class='dependent_dateofbirth'>"+dependent_dateofbirth+"</span></td>"  +
+
+                               '<td><a class="btn-floating waves-effect waves-light teal z-depth-2 hoverable"  onclick="Edit_Dependent(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                               '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                               "</tr>");  
+}
+
+}
+
+var dependent_obj;
+
+function Delete_Dependent(btn){
+  var row = btn.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+
+}
+
+function Edit_Dependent(btn){
+      dependent_obj = btn;
+      dependents_function = "Edit";
+
+      var currentTR = $(btn).closest('tr');
+      var dependent_name = currentTR.find("td.dependent_name").text();
+      var dependent_relationship = currentTR.find("td.dependent_relationship").text();
+      var dependent_dateofbirth = currentTR.find("td.dependent_dateofbirth").text();
+
+      document.getElementById("TB_DependentName").value = dependent_name;
+      document.getElementById("DP_DependentRelationship").value = dependent_relationship;
+      document.getElementById("Date_DependentDateofBirth").value = dependent_dateofbirth;
+
+        Open_DependentsModal();
+}
+
+// VALIDATE DEPENDENTS FORM
+function Validate_DependentsForm(){
+
+    if(isEmptyOrSpaces(document.getElementById("TB_DependentName").value) ||
+        isEmptyOrSpaces(document.getElementById("DP_DependentRelationship").value) || 
+        isEmptyOrSpaces(document.getElementById("Date_DependentDateofBirth").value)){
+        swal(
+        'Oops...',
+        'Please fill all the fields!',
+        'error')      
+    }
+    else{
+      Append_Table_Dependents();
+      Close_DependentsModal();
+
+    }
+}
+
+function Store_Dependents_toVariable(){
+    var Table_Dependents = document.getElementById("Table_Dependents");
+    var n = Table_Dependents.rows.length;
+    var i, s = null, tr, td;
+
+    // First check that col is not less then 0
+    if (col < 0) {
+        return null;
+    }
+
+    for (i = 0; i < n; i++) {
+        tr = Table_Dependents.rows[i];
+        if (tr.cells.length > col) { // Check that cell exists before you try
+            td = tr.cells[col];      // to access it.
+            s += ' ' + td.innerText;
+        } // Here you could say else { return null; } if you want it to fail
+          // when requested column is out of bounds. It depends.
+    }
+    return s;
+}
+
+var col_dependent_name;
+var col_dependent_relationship;
+var col_dependent_dob;
+
+var col_eb_level;
+var col_eb_nameofschool;
+var col_eb_yearattended;
+var col_eb_highestlevel;
+
+var col_we_from;
+var col_we_to;
+var col_we_position;
+var col_we_company;
+
+function getColumn(table_id, col) {
+    var tab = document.getElementById(table_id);
+    var n = tab.rows.length;
+    var i, tr, td;
+    var s="";
+
+    // First check that col is not less then 0
+    if (col < 0) {
+        return null;
+    }
+
+    for (i = 1; i < n; i++) {
+        tr = tab.rows[i];
+        if (tr.cells.length > col) { // Check that cell exists before you try
+            td = tr.cells[col];      // to access it.
+            if(s != ""){
+              s += ';' + td.innerText;
+            }
+            else{
+              s = td.innerText;
+            }
+            
+        } // Here you could say else { return null; } if you want it to fail
+          // when requested column is out of bounds. It depends.
+    }
+    return s;
+}
+
+function get_columns(){
+  col_dependent_name = getColumn("Table_Dependents", 0);
+  col_dependent_relationship = getColumn("Table_Dependents", 1);
+  col_dependent_dob = getColumn("Table_Dependents", 2);
+
+  col_eb_level = getColumn("Table_EducationalBackground", 0);
+  col_eb_nameofschool = getColumn("Table_EducationalBackground", 1);
+  col_eb_yearattended = getColumn("Table_EducationalBackground", 2);
+  col_eb_highestlevel = getColumn("Table_EducationalBackground", 3);
+
+  col_we_from = getColumn("Table_WorkExperience", 0);
+  col_we_to = getColumn("Table_WorkExperience", 1);
+  col_we_position = getColumn("Table_WorkExperience", 2);
+  col_we_company = getColumn("Table_WorkExperience", 3);
+  
+  // console.log(col_dependent_name + "\n"+col_dependent_relationship + "\n"+col_dependent_dob);
+  // console.log(col_eb_level + "\n"+col_eb_nameofschool + "\n"+col_eb_yearattended + "\n" +col_eb_highestlevel);
+  // console.log(col_we_from + "\n"+col_we_to + "\n"+col_we_position + "\n" +col_we_company);
+
+}
+
+
+// EDUCATIONAL BACKGROUND >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+var EducationalBackgound_Function;
+
+function Append_Table_EducationalBackground(){
+
+    var eb_level = document.getElementById("DP_EB_Level").value;
+    var eb_school_name = document.getElementById("TB_EB_NameOfSchool").value;
+    var eb_yearattended = document.getElementById("TB_EB_FROM").value + "-" + document.getElementById("TB_EB_TO").value;
+    var eb_highestlevel = document.getElementById("DP_EB_HighestLevel").value;
+
+    if (EducationalBackgound_Function == "New"){ 
+
+                                  $("#Table_EducationalBackground").append("<tr align='middle'>" +
+                                  "<td align='left' class='eb_highestlevel'>"+eb_highestlevel+"</td>"  +
+                                   "<td align='left' class='eb_level' > "+eb_level+"</td>" +
+                                   "<td align='left' class='eb_school_name'>"+eb_school_name+"</td>" +
+                                   "<td align='left' class='eb_yearattended'>"+eb_yearattended+"</td>"  +
+
+                                   '<td><a class="btn-floating waves-effect waves-light teal z-depth-2 hoverable"  onclick="Edit_EducationalBackground(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                   '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                   "</tr>");  
+
+    }
+    else if(EducationalBackgound_Function == "Edit"){
+
+      var row = educationalbackground_obj.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+
+                                  $("#Table_EducationalBackground").append("<tr align='middle'>" +
+                                  "<td align='left' class='eb_highestlevel'>"+eb_highestlevel+"</td>"  +
+                                   "<td align='left' class='eb_level' > "+eb_level+"</td>" +
+                                   "<td align='left' class='eb_school_name'>"+eb_school_name+"</td>" +
+                                   "<td align='left' class='eb_yearattended'>"+eb_yearattended+"</td>"  +
+
+                                   '<td><a class="btn-floating waves-effect waves-light teal z-depth-2 hoverable"  onclick="Edit_EducationalBackground(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                   '<td><a class="btn-floating waves-effect waves-light deep-orange z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                   "</tr>"); 
+    }
+}
+
+
+// VALIDATE EDUCATIONAL BACKGROUND FORM
+function 
+Validate_EducationalBackground_Form(){
+
+    if(isEmptyOrSpaces(document.getElementById("TB_EB_NameOfSchool").value) ||
+        isEmptyOrSpaces(document.getElementById("TB_EB_FROM").value) ||
+        isEmptyOrSpaces(document.getElementById("TB_EB_TO").value) ||
+        isEmptyOrSpaces(document.getElementById("DP_EB_Level").value) || 
+        isEmptyOrSpaces(document.getElementById("DP_EB_HighestLevel").value)){
+        swal(
+
+        'Oops...',
+        'Please fill all the fields!',
+        'error')      
+    }
+    else{
+      Append_Table_EducationalBackground();
+      Close_ModalEducationalBackground();
+
+    }
+}
+
+var educationalbackground_obj;
+
+function Edit_EducationalBackground(btn){
+      educationalbackground_obj = btn;
+      EducationalBackgound_Function = "Edit";
+
+      var currentTR = $(btn).closest('tr');
+      // var eb_highestlevel = currentTR.find("td.eb_highestlevel").text();
+      // var eb_level = currentTR.find("td.eb_level").text();
+      // var eb_school_name = currentTR.find("td.eb_school_name").text();
+      // var eb_yearattended = currentTR.find("td.eb_yearattended").text().split("-");
+
+      var eb_highestlevel = currentTR.find("td.eb_level").text();
+      var eb_level = currentTR.find("td.eb_school_name").text();
+      var eb_school_name = currentTR.find("td.eb_yearattended").text();
+      var eb_yearattended = currentTR.find("td.eb_highestlevel").text().split("-");      
+
+      var eb_from = eb_yearattended[0];
+      var eb_to = eb_yearattended[1];
+
+      // console.log(eb_highestlevel);
+      // console.log(eb_level);
+      // console.log(eb_school_name);
+      // console.log(eb_from);
+      // console.log(eb_to);
+
+      $('#DP_EB_HighestLevel').material_select();
+      document.getElementById("DP_EB_HighestLevel").value = eb_highestlevel;
+      document.getElementById("DP_EB_Level").value = eb_level;
+      document.getElementById("TB_EB_NameOfSchool").value = eb_school_name;
+      // document.getElementById("TB_EB_YearAttended").value = eb_yearattended;
+      document.getElementById("TB_EB_FROM").value = eb_from;
+      document.getElementById("TB_EB_TO").value = eb_to;
+
+      Open_ModalEducationalBackground();
+}
+
+// WORK EXPERIENCE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+var workexperience_function;
+
+function Append_Table_WorkExperience(){
+
+    var we_from = document.getElementById("Date_WE_From").value;
+    var we_to = document.getElementById("Date_WE_To").value;
+    var we_position = document.getElementById("TB_WE_Position").value;
+    var we_company = document.getElementById("TB_WE_Company").value;
+
+    if (workexperience_function == "New"){ 
+
+                                  $("#Table_WorkExperience").append("<tr align='middle'>" +
+                                   "<td align='left' class='we_from' > "+we_from+"</td>" +
+                                   "<td align='left' class='we_to'>"+we_to+"</td>" +
+                                   "<td align='left' class='we_position'>"+we_position+"</td>"  +
+                                   "<td align='left' class='we_company'>"+we_company+"</td>"  +
+
+                                   '<td><a class="btn-floating waves-effect waves-light light-blue z-depth-2 hoverable"  onclick="Edit_WorkExperience(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                   '<td><a class="btn-floating waves-effect waves-light light-blue z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                   "</tr>");
+
+    }
+    else if(workexperience_function == "Edit"){
+
+      var row = workexperience_obj.parentNode.parentNode;
+      row.parentNode.removeChild(row);
+                                  $("#Table_WorkExperience").append("<tr align='middle'>" +
+                                   "<td align='left' class='we_from' > "+we_from+"</td>" +
+                                   "<td align='left' class='we_to'>"+we_to+"</td>" +
+                                   "<td align='left' class='we_position'>"+we_position+"</td>"  +
+                                   "<td align='left' class='we_company'>"+we_company+"</td>"  +
+
+                                   '<td><a class="btn-floating waves-effect waves-light light-blue z-depth-2 hoverable"  onclick="Edit_WorkExperience(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                                   '<td><a class="btn-floating waves-effect waves-light light-blue z-depth-2 hoverable" onclick="Delete_Dependent(this)" ><i class=" material-icons">delete_forever</i></a></td>' +                               
+                                   "</tr>");
+    }
+}
+
+// VALIDATE WORK EXPERIENCE FORM
+function Validate_WorkExperience_Form(){
+
+    if(isEmptyOrSpaces(document.getElementById("Date_WE_From").value) ||
+        isEmptyOrSpaces(document.getElementById("Date_WE_To").value) ||
+        isEmptyOrSpaces(document.getElementById("TB_WE_Position").value) ||
+        isEmptyOrSpaces(document.getElementById("TB_WE_Company").value)){
+        swal(
+        'Oops...',
+        'Please fill all the fields!',
+        'error')      
+    }
+    else{
+      Append_Table_WorkExperience();
+      Close_ModalWorkExperience();
+
+    }
+}
+
+var workexperience_obj;
+
+function Edit_WorkExperience(btn){
+      workexperience_obj = btn;
+      workexperience_function = "Edit";
+
+      var currentTR = $(btn).closest('tr');
+      var we_from = currentTR.find("td.we_from").text();
+      var we_to = currentTR.find("td.we_to").text();
+      var we_position = currentTR.find("td.we_position").text();
+      var we_company = currentTR.find("td.we_company").text();
+
+      document.getElementById("Date_WE_From").value = we_from;
+      document.getElementById("Date_WE_To").value = we_to;
+      document.getElementById("TB_WE_Position").value = we_position;
+      document.getElementById("TB_WE_Company").value = we_company;
+
+      // alert(we_from +"\n"+ we_to);
+
+      Open_ModalWorkExperience();
+}
+
+
+ </script>
+
+<body>
+
+
+<main>
+
+ <div class="row card-panel z-depth-3 grey lighten-4" id="Div_PersonalInformation">
+          <div class="col s12">
+            <a class="btn-floating red AlignButtonRight " href="https://intranet.houseofit.com.au/SitePages/Employee%20Database.aspx"><i class="large material-icons">close</i></a>
+        </div>
+    <div class="row">
+      <h5 class="CenterHeader">PERSONAL</h5>
+    </div>  
+
+
+    <div class="col s3">    
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_FirstName" type="text" placeholder=""  >
+              <label for="TB_FirstName" id="LBL_FirstName">First Name <span>*</span></label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_MiddleName" type="text" placeholder="" >
+              <label for="TB_MiddleName">Middle Name</label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_LastName" type="text" placeholder="" >
+              <label for="TB_LastName" id="LBL_LastName">Last Name <span>*</span></label>
+            </div>        
+          </div>   
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_Suffix" type="text" placeholder="">
+              <label for="TB_Suffix">Suffix</label>
+            </div>          
+          </div>                   
+      </div>
+    </div>
+
+
+    <div class="col s3">    
+      <div class="row card-panel">  
+          <div class="row"></div>
+          <div class="row">
+            <input name="RB_Sex" class="with-gap" type="radio" id="Sex1" value="MALE" checked="checked"/>
+            <label for="Sex1">Male</label>
+            <input name="RB_Sex" class="with-gap" type="radio" id="Sex2" value="FEMALE" />
+            <label for="Sex2">Female</label>   
+          </div>   
+          <div class="row"></div>
+          <div class="row"></div>
+          <div class="row">
+            <div class="input-field">
+                <label id="LBL_BirthDate">Birth Date <span>*</span></label>              
+                <input type = "text" class = "datepicker" id="Date_BirthDate" placeholder="" >    
+            </div>       
+          </div>   
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_CivilStatus">
+                <option value="" disabled selected>Choose a Civil Status *</option>
+                  <option value="Married">Married</option>
+                  <option value="Single">Single</option>
+                  <option value="Single">Separated</option>
+                  <option value="Single">Widow/Widower</option>
+              </select>   
+            </div>       
+          </div>   
+          <div class="row"></div>
+          <div class="row">
+            <div class="input-field">
+            <select id="DP_Religion">
+              <option value="" disabled selected>Choose a Religion</option>
+                <option value="7th Day Adventist">7th Day Adventist</option>
+                <option value="Assembly of God">Assembly of God</option>
+                <option value="Born Again Christian">Born Again Christian</option>
+                <option value="Christian">Christian</option>
+                <option value="Evangelist">Evangelist</option>
+                <option value="Jehova's Witness">Jehova's Witness</option>
+                <option value="Protestant">Protestant</option>
+                <option value="Roman Catholic">Roman Catholic</option>
+                <option value="No Religion">No Religion</option>
+            </select>
+            <label>Religion</label>
+            </div>            
+          </div>     
+          <div class="row"></div>
+          <div class="row"></div>  
+          <div class="row"></div>    
+          <div class="row"></div> 
+          <div class="row"></div>    
+          <div class="row"></div>    
+          <div class="row"></div> 
+      </div>
+    </div>
+
+    <div class="col s3">
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_ContactNumber" type="text" placeholder="" >
+              <label for="TB_ContactNumber" id="LBL_ContactNumber">Contact Number <span>*</span></label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_CurrentAddress" type="text" placeholder="" >
+              <label for="TB_CurrentAddress" id="LBL_CurrentAddress">Current Address <span>*</span></label> 
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_ProvincialAddress" type="text" placeholder="">
+              <label for="TB_ProvincialAddress">Provincial Address</label>
+            </div>        
+          </div>   
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_EmergencyContactNumber" type="text" placeholder="">
+              <label for="TB_EmergencyContactNumber">Emergency Contact Number</label>
+            </div>          
+          </div>              
+      </div>
+    </div>    
+
+    <div class="col s3">
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_EmergencyContactPerson" type="text" placeholder="">
+              <label for="TB_EmergencyContactPerson">Emergency Contact Person</label>
+            </div>  
+          </div>  
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_PersonalEmail" type="text" type="email" placeholder="">
+              <label for="TB_PersonalEmail">Personal Email</label>
+            </div>  
+          </div> 
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_BirthPlace" type="text" placeholder="">
+              <label for="TB_BirthPlace">Birth Place</label>
+            </div>            
+          </div>   
+          <div class="row"></div>
+          <div class="row"></div>  
+          <div class="row"></div>    
+          <div class="row"></div>   
+          <div class="row"></div>                                
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+          <div class="row"></div> 
+
+      </div>
+    </div>   
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+          <div class="row">
+            <div class="row">
+            <H6 >DEPENDENTS</H6>
+            </div>
+                <a class="dropdown-button btn-floating light-blue AlignButtonRight tooltipped " id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Dependent" onclick="New_Dependent_Clicked()"><i class="large material-icons icon-blue">add</i></a>       
+          </div>
+          <div class="row">
+              <table class="bordered responsive-table" id="Table_Dependents">
+                      <thead>
+                        <tr>
+                            <th>Name of Dependent</th>
+                            <th>Relationship</th>
+                            <th>Date of Birth</th>
+                        </tr>
+                      </thead>
+                  </table>          
+
+          </div>            
+        </div>        
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+          <div class="row">
+            <div class="row">
+            <H6 >EDUCATIONAL BACKGROUND</H6>
+            </div>
+                <a class="dropdown-button btn-floating light-blue AlignButtonRight tooltipped " id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Educational Experience" onclick="New_EducationalBackground_Clicked()"><i class="large material-icons icon-blue">add</i></a>            
+          </div>
+
+          <div class="row">
+              <table class="bordered responsive-table" id="Table_EducationalBackground">
+                      <thead>
+                        <tr>
+                            <th>Educational Attainment</th>
+                            <th>Course</th>
+                            <th>Name of School</th>
+                            <th>Year Attended</th>
+                        </tr>
+                      </thead>
+                  </table>          
+          </div>          
+        </div>        
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+          <div class="row">
+            <div class="row">
+            <H6 >WORK EXPERIENCE</H6>
+            </div>
+                <a class="dropdown-button btn-floating light-blue AlignButtonRight tooltipped " id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Work Experience" onclick="New_WorkExperience_Clicked()"><i class="large material-icons icon-blue">add</i></a>            
+          </div>
+
+          <div class="row">
+              <table class="bordered responsive-table" id="Table_WorkExperience">
+                      <thead>
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Position</th>
+                            <th>Company/Address</th>
+                        </tr>
+                      </thead>
+                  </table>          
+
+          </div>        
+        </div>        
+      </div>
+    </div>    
+
+  </div>
+
+
+<div class="row card-panel z-depth-3 grey lighten-4" id="Div_EmploymentInformation">
+    <div class="row">
+      <h5 class="CenterHeader">EMPLOYMENT</h5>
+    </div>  
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s3">
+                    <input id="TB_CompanyEmail" placeholder="Company Email"  type="text" >
+                    <label for="TB_CompanyEmail" id="LBL_CompanyEmail">Company Email<span>*</span></label>
+                </div>
+
+            </div>                     
+        </div>        
+      </div>
+    </div>
+
+    <div class="col s3">    
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <input id="TB_EmployeeID" type="text" placeholder=""  >
+              <label for="TB_EmployeeID" id="LBL_EmployeeID">Employee ID <span>*</span></label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_Company"  >
+                <option value="" disabled selected>Choose a Company</option>
+                  <option value="ASOCI">ASOCI</option>
+                  <option value="TBOS">TBOS</option>
+                  <option value="MOPH">MOPH</option>
+              </select>
+              <label id="LBL_Company">Comapany <span>*</span></label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_Department"  >
+                <option value="" disabled selected>Choose a Department</option>
+              </select>
+              <label id="LBL_Department">Department<span>*</span></label>
+            </div>        
+          </div>                    
+      </div>
+    </div>
+
+    <div class="col s3">    
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_Section" >
+                <option value="" disabled selected>Choose a Section</option>
+                <option value="None">None</option>
+              </select>
+              <label>Section</label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_PositionTitle" >
+                <option value="LBL_PositionTitle" disabled selected>Choose a Position Title</option>
+              </select>
+              <label id="">Position Title<span>*</span></label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_JobLevel" >
+                <option value="" disabled selected>Choose a Job Level</option>
+                  <option value="Managerial">Managerial</option>
+                  <option value="Rank and File">Rank and File</option>
+                  <option value="Supervisorial">Supervisorial</option>
+                  <option value="Supervisorial">Executive</option>
+              </select>
+              <label>Job Level </label>
+            </div>        
+          </div>                    
+      </div>
+    </div>
+
+    <div class="col s3">    
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_JobGrade"  >
+                <!-- <option value="" disabled selected>Choose a Job Grade</option> -->
+                  <option value="None">None</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+              </select>
+              <label>Job Grade</label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <label id="LBL_DateJoined">Date Joined <span>*</span></label>              
+              <input id="Date_DateJoined" type = "text" placeholder="" class = "datepicker"  />  
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+               <label id="LBL_DateHired">Date Hired <span id="span_date_hired">*</span></label>              
+               <input id="Date_DateHired" type = "text" placeholder="" class = "datepicker"  /> 
+            </div>        
+          </div>                    
+      </div>
+    </div>
+
+    <div class="col s3">    
+      <div class="row card-panel">
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_ImmediateHead" >
+                <option value="" disabled selected>Choose an Immediate Head</option>
+                <option value="None">None</option>
+              </select>
+              <label>Immediate Head</label>
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_DepartmentHead" >
+                <option value="" disabled selected>Choose a Department Head</option>
+              </select>
+              <label id="LBL_DepartmentHead">Department Head <span>*</span></label> 
+            </div>        
+          </div>
+          <div class="row">
+            <div class="input-field">
+              <select id="DP_EmployeeStatus" >
+                    <option value="" disabled selected>Choose Status</option>
+                    <option value="Employee" >Employee</option>
+                    <option value="Trainee" >Trainee</option>
+              </select>
+              <label id="LBL_EmployeeStatus">Employee Status <span>*</span></label>
+            </div>        
+          </div>                    
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s2">
+                    <input id="TB_EmployeeType" placeholder="Employment Type"  type="text" >
+                    <label for="TB_EmployeeType">Employee Type</label>
+                </div>
+                <div class="input-field col s2">
+                    <input id="TB_RegularizationDate" class = "datepicker" placeholder="Regularization Date" type="text" >
+                    <label for="TB_RegularizationDate">Regularization Date</label>
+                </div>
+
+                <div class="col s4">
+                </div>
+                    <div class=" col s2" id="Div_Separated">
+                      <input type="checkbox" class="filled-in" id="CB_Separated" value="Separated" />
+                      <label for="CB_Separated">Separated</label>
+                    </div>
+                    <div class="input-field col s2" id="Div_SeparationDate">
+                      <label>Separation Date</label>              
+                      <input type = "text" class = "datepicker" id="Date_Separated" placeholder="" >    
+                    </div>
+                </div>
+            </div>                     
+        </div>        
+      </div>
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s2">
+                    <input id="TB_TIN"  type="text" placeholder="" >
+                    <label for="TB_TIN">TIN Number</label>
+                </div>
+                <div class="input-field col s2">
+                    <input id="TB_SSS"  type="text" placeholder="" >
+                    <label for="TB_SSS">SSS Number</label>
+                </div>
+                <div class="input-field col s2">
+                    <input id="TB_PHILHEALTH"  type="text" placeholder="" >
+                    <label for="TB_PHILHEALTH">PHILHEALTH Number</label>
+                </div>
+                <div class="input-field col s2">
+                    <input id="TB_PAGIBIG"  type="text" placeholder="" >
+                    <label for="TB_PAGIBIG">PAG-IBIG Number</label>
+                </div>
+
+                <div id="divGetListData"></div>
+
+            </div>                 
+        </div>        
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+    <div class="row">
+
+<!-- <input type='file' onchange="readURL(this);" />
+<img id="blah" src="http://placehold.it/180" class="circle responsive-img" alt="your image" /> -->
+
+      <div class="input-field col s12">
+<!--           <button class="waves-effect waves-light btn-large light-blue darken-1 z-depth-2 AlignButtonRight submit hoverable" onclick="Validate()">Update</button> -->
+                <a class="waves-effect waves-light btn-large light-blue darken-1 z-depth-2 AlignButtonRight submit hoverable" onclick="Validate()">Save</a>
+      </div>
+
+  </div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+<div class="row"></div>
+</main>
+
+
+<!------------------------------------------------------------------------------------------------------------------
+ -->
+<div id="ModalDependents" class="modal ModalTopDistance">
+    <div id="ModalDependentsContent" class="modal-content">
+      <div class="row">
+        <div class="row">
+          <a class="btn-floating red fix AlignButtonRight" onclick="Close_DependentsModal()"><i class=" material-icons">close</i></a>    
+        </div>
+             
+            <div class="row">
+              <div class="col s4"></div>
+            <div class="col s4">
+
+                  <div class="card-panel z-depth-2">
+                    <div class="input-field row ">
+                        <input id="TB_DependentName" type="text"  placeholder="">
+                        <label for="TB_DependentName">Name of Dependent</label>
+                    </div>   
+                  <div class="input-field">
+                      <select id="DP_DependentRelationship">
+                        <option value="" disabled selected>Choose Relationship</option>
+                          <option value="Son">Son</option>
+                          <option value="Daughter">Daughter</option>
+                          <option value="Father">Father</option>
+                          <option value="Mother">Mother</option>
+                          <option value="Brother">Brother</option>
+                          <option value="Sister">Sister</option>
+                          <option value="Naphew">Nephew</option>
+                          <option value="Niece">Niece</option>
+                          <option value="Uncle">Uncle</option>
+                          <option value="Aunt">Aunt</option>
+                      </select>
+                      <label>Relationship</label>
+                  </div>                
+                    <div class="input-field">
+                        <label>Date of Birth</label>              
+                        <input type = "text" class = "datepicker" id="Date_DependentDateofBirth" placeholder="">    
+                    </div>                  
+                <div class="row">
+                  <a id="Btn_SaveTraining" class="waves-effect waves-light btn light-blue darken-1  AlignButtonRight hoverable" onclick="Validate_DependentsForm()">Ok</a>
+                </div>                                                                              
+                  </div>                
+                </div>                
+            </div>
+      </div>
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+<div id="ModalEducationalBackground" class="modal ModalTopDistance">
+    <div id="ModalEducationalBackgroundContent" class="modal-content">
+      <div class="row">
+        <div class="row">
+          <a class="btn-floating red fix AlignButtonRight" onclick="Close_ModalEducationalBackground()"><i class=" material-icons">close</i></a>    
+        </div>
+             
+            <div class="row">
+              <div class="col s4"></div>
+            <div class="col s4">
+
+                  <div class="card-panel z-depth-2">   
+                    <div class="input-field">
+                        <select id="DP_EB_HighestLevel">
+                          <option value="" disabled selected>Choose Educational Attainment</option>
+                            <option value="Doctorate">Doctorate</option>
+                            <option value="Master's Degree">Master's Degree</option>
+                            <option value="College Degree">College Degree</option>
+                            <option value="Associate Degree">Associate Degree</option>
+                            <option value="College Undergraduate">College Undergraduate</option>
+                        </select>
+                        <label>Educational Attainment</label>
+                    </div> 
+                    <div class="input-field row ">
+                        <input id="DP_EB_Level" type="text"  placeholder="">
+                        <label for="DP_EB_Level">Course</label>
+                    </div>                    
+                    <div class="input-field row ">
+                        <input id="TB_EB_NameOfSchool" type="text"  placeholder="">
+                        <label for="TB_EB_NameOfSchool">Name of School</label>
+                    </div>     
+                    <div class="row">
+                      <div class="input-field col s6">
+                          <input id="TB_EB_FROM" type="text"  placeholder="">
+                          <label for="TB_EB_FROM">Year From</label>
+                      </div>
+                      <div class="input-field col s6">
+                          <input id="TB_EB_TO" type="text"  placeholder="">
+                          <label for="TB_EB_TO">Year TO</label>
+                      </div>         
+                    </div>               
+                <div class="row">
+                  <a id="Btn_SaveTraining" class="waves-effect waves-light btn light-blue darken-1  AlignButtonRight hoverable" onclick="Validate_EducationalBackground_Form()">Ok</a>
+                </div>                                                                              
+                  </div>                
+                </div>                
+            </div>
+      </div>
+    </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+<div id="ModalWorkExperience" class="modal ModalTopDistance">
+    <div id="ModalWorkExperienceContent" class="modal-content">
+      <div class="row">
+        <div class="row">
+          <a class="btn-floating red fix AlignButtonRight" onclick="Close_ModalWorkExperience()"><i class=" material-icons">close</i></a>    
+        </div>
+             
+            <div class="row">
+              <div class="col s4"></div>
+            <div class="col s4">
+
+                  <div class="card-panel z-depth-2">   
+                    <div class="input-field">
+                        <label>From</label>              
+                        <input type = "text" class = "datepicker" id="Date_WE_From" placeholder="">    
+                    </div> 
+                    <div class="input-field">
+                        <label>To</label>              
+                        <input type = "text" class = "datepicker" id="Date_WE_To" placeholder="">    
+                    </div>                     
+                    <div class="input-field row ">
+                        <input id="TB_WE_Position" type="text"  placeholder="">
+                        <label for="TB_WE_Position">Position</label>
+                    </div>     
+                    <div class="input-field row ">
+                        <input id="TB_WE_Company" type="text"  placeholder="">
+                        <label for="TB_WE_Company">Company/Address</label>
+                    </div>               
+                <div class="row">
+                  <a id="Btn_SaveTraining" class="waves-effect waves-light btn light-blue darken-1  AlignButtonRight hoverable" onclick="Validate_WorkExperience_Form()">Ok</a>
+                </div>                                                                              
+                  </div>                
+                </div>                
+            </div>
+      </div>
+    </div>
+</div>
+
+  <a id="btn_TriggerScripts" onclick="LoadScripts()" hidden="true">Update</a>
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+</body>
+ 
+</html>

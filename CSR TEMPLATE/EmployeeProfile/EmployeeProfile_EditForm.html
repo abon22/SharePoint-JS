@@ -1,0 +1,1353 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="layout" />
+ 
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+
+<style type="text/css">
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+}
+ 
+
+img{
+  max-width:180px;
+}
+
+/*input[type=file]{
+padding:10px;
+background:#2d2d2d;}*/
+label span { 
+  color: red;
+  font-size: 20px
+}
+
+.CenterHeader{
+	text-align: center;
+
+}
+
+.AlignButtonRight{
+	float: right;
+}
+
+.CardHeader{
+	  padding: 10px;
+}
+
+
+.ProfilePicture {
+    height:150;
+    width:200;
+}
+
+</style>
+ 
+ <script type="text/javascript">
+  
+
+var V_FirstName;
+var V_MiddleName;
+var V_LastName;
+var V_Suffix;
+var V_Sex;
+var V_BirthDate;
+var V_ContactNumber;
+var V_CurrentAddress;
+var V_ProvincialAddress;
+var V_CivilStatus;
+var V_EmergencyContactNumber;
+var V_EmergencyContactPerson;
+var V_PersonalEmail;
+var V_Religion;
+var V_BirthPlace;
+var V_EmployeeID;
+var V_Company;
+var V_Department;
+var V_Section;
+var V_PositionTitle;
+var V_JobLevel;
+var V_JobGrade;
+var V_DateJoined;
+var V_DateHired;
+var V_ImmediateHead;
+var V_DepartmentHead;
+var V_EmployeeType;
+var V_RegularizationDate;
+var V_TIN;
+var V_SSS;
+var V_PHILHEALTH;
+var V_PAGIBIG;
+var V_Separated;
+var V_DateSeparated;
+var V_EmployeeStatus;
+
+  $(document).ready(function() {
+
+
+
+  // ExecuteOrDelayUntilScriptLoaded(getListId, "sp.js");
+
+    $('select').material_select();
+
+
+     // document.getElementById("RibbonContainer").remove();
+     // document.getElementById("zz15_RootAspMenu").remove();
+     // document.getElementById("s4-ribbonrow").remove();
+     // document.getElementById("sideNavBox").remove();
+
+
+    // document.getElementById("Ribbon.ListForm.Edit.Clipboard.Paste-Large").remove();
+    // document.getElementById("Ribbon.ListForm.Edit.Clipboard.Copy-Medium").remove();
+    // document.getElementById("Ribbon.ListForm.Edit.Clipboard").remove();
+    // document.getElementById("Ribbon.ListForm.Edit.Actions").remove();
+    // document.getElementById("s4-ribbonrow").remove();
+    // document.getElementById("ctl00_PlaceHolderLeftNavBar_QuickLaunchNavigationManager").remove();
+    // document.getElementById("sideNavBox").remove();
+
+    // REMOVE RIBBONS
+    document.getElementById("s4-ribbonrow").remove();
+    document.getElementById("ctl00_PlaceHolderLeftNavBar_QuickLaunchNavigationManager").remove();
+    document.getElementById("sideNavBox").remove();
+    document.getElementById("DeltaPlaceHolderMain").style.marginRight = "200px";
+
+
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+
+	$('#Date_DateHired').change(function () {
+   		var DateHired = $("#Date_DateHired").val().split("/");
+   		
+    	var Date_DateHired = new Date(DateHired[2], DateHired[0] - 1, DateHired[1]);
+
+		Date_DateHired.setMonth(Date_DateHired.getMonth() + 6);
+
+		var RegularizationDate = getFormattedDate(Date_DateHired);
+
+    	document.getElementById('TB_RegularizationDate').value = RegularizationDate;
+
+    	var Diff_DateHired = $("#Date_DateHired").val();
+    	var Diff_DateRegularized = $("#TB_RegularizationDate").val();
+
+    	var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		if(dd<10) {
+    		dd = '0'+dd } 
+		if(mm<10) {
+    		mm = '0'+mm } 
+		today = mm + '/' + dd + '/' + yyyy;
+
+
+		if(toDate(today) < toDate(RegularizationDate)){
+          document.getElementById('TB_EmployeeType').value = 'Probationary';
+          RegularizationDate.clear();
+    	}
+    	else{
+    		document.getElementById('TB_EmployeeType').value = 'Regular';
+          	RegularizationDate.clear()
+    	}
+
+
+	});
+
+
+$(document).on('change',"#DP_EmployeeStatus", function() { 
+  // alert( $(this).val())
+      if($(this).val() == "Trainee"){
+        document.getElementById('Date_DateHired').value = "";
+        document.getElementById('TB_EmployeeType').value = "";
+        document.getElementById('TB_RegularizationDate').value = "";
+        document.getElementById('Date_DateHired').disabled = true;        
+      }
+      else{
+        document.getElementById('Date_DateHired').disabled = false;
+        document.getElementById('Date_DateHired').value = V_DateHired;
+        document.getElementById('TB_EmployeeType').value = V_EmployeeType;
+        document.getElementById('TB_RegularizationDate').value = V_RegularizationDate;
+      }
+});
+
+$('#CB_Separated').change(function () {
+    if(V_DateSeparated != null){
+        if(document.getElementById("CB_Separated").checked == true){
+              document.getElementById("Date_Separated").value = V_DateSeparated;
+              document.getElementById("Date_Separated").disabled = false;
+              }
+        else{
+              document.getElementById("Date_Separated").value = "";
+              document.getElementById("Date_Separated").disabled = true;
+   }
+    }
+
+ });
+
+  // $('#Date_Separated').change(function () {
+  //   if(isEmptyOrSpaces(V_DateSeparated = document.getElementById("Date_Separated").value)){
+  //     document.getElementById("CB_Separated").checked = false;
+  //   }
+  //   else{
+  //     document.getElementById("CB_Separated").checked = true;
+  //   }
+  // });
+
+swal({
+  type: 'Wait..........',
+  title: 'Loading Employee profile',
+  showConfirmButton: false,
+  timer: 2500
+})
+
+    document.getElementById("btn_TriggerScripts").click();
+
+
+   $("#TB_ContactNumber").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl/cmd+A
+            (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+C
+            (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl/cmd+X
+            (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+  	});
+
+  function LoadScripts(){
+  ExecuteOrDelayUntilScriptLoaded(RetrieveListItem, "sp.js");
+  ExecuteOrDelayUntilScriptLoaded(Load_Dropdown_Items, "sp.js");
+  $('select').material_select();
+  }
+
+	function toDate(dateStr) {
+    	const [month, day, year] = dateStr.split("/")
+    	return new Date(year, month - 1, day)
+	}
+
+    function getFormattedDate(date) {
+            var year = date.getFullYear();
+            /// Add 1 because JavaScript months start at 0
+            var month = (1 + date.getMonth()).toString();
+            month = month.length > 1 ? month : '0' + month;
+            var day = date.getDate().toString();
+            day = day.length > 1 ? day : '0' + day;
+            return month + '/' + day + '/' + year;
+    }
+
+	function monthDiff(d1, d2) {
+    	var months;
+    	months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    	months -= d1.getMonth() + 1;
+    	months += d2.getMonth();
+    	return months <= 0 ? 0 : months;
+	}
+
+//-----------------------------------------------------------------------------------------------------------
+
+// GET LIST ITEM ID
+
+// var list;
+// function getListId() {
+//     var context = new SP.ClientContext.get_current();
+//     var web = context.get_web();
+//     list = web.get_lists().getByTitle('Employee Profile');
+//     context.load(list, 'Id');
+
+//     context.executeQueryAsync(Function.createDelegate(this, success), Function.createDelegate(this, error));
+
+// }
+
+
+// function success() {
+//     listId = list.get_id();
+//     alert(listId);
+// }
+
+// function error(sender, args) {
+//     alert('Request failed. ' + args.get_message() + 
+//         '\n' + args.get_stackTrace());
+// }
+
+//------------------------------------------------------------------------------------------------------------
+var Department_List_Items;
+var Section_List_Items;
+var PositionTitle_Items;
+var ImmediateHead_Items;
+var DepartmentHead_Items;
+
+function Load_Dropdown_Items() {
+  context = SP.ClientContext.get_current();
+
+  // Department
+  var Departments = context.get_web().get_lists().getByTitle("Department");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Department_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Department_List_Items);
+  context.executeQueryAsync(Read_Department_Succeeded, ReadListItemFailed);
+
+  // Section
+  context2 = SP.ClientContext.get_current();
+  var Sections = context.get_web().get_lists().getByTitle("Section");
+  var camlQuery_Section = SP.CamlQuery.createAllItemsQuery();
+  this.Section_List_Items = Sections.getItems(camlQuery_Section);
+
+  context2.load(Section_List_Items);
+  context2.executeQueryAsync(Read_Section_Succeeded, ReadListItemFailed);
+
+  // Position Title
+  context3 = SP.ClientContext.get_current();
+  var PositionTitle = context.get_web().get_lists().getByTitle("Position");
+  var camlQuery_PositionTitle = SP.CamlQuery.createAllItemsQuery();
+  this.PositionTitle_Items = PositionTitle.getItems(camlQuery_PositionTitle);
+
+  context3.load(PositionTitle_Items);
+  context3.executeQueryAsync(Read_PositionTitle_Succeeded, ReadListItemFailed);
+
+  // Immediate Head
+  context4 = SP.ClientContext.get_current();
+  var ImmediateHead = context.get_web().get_lists().getByTitle("Immediate Head List");
+  var camlQuery_ImmediateHead = SP.CamlQuery.createAllItemsQuery();
+  this.ImmediateHead_Items = ImmediateHead.getItems(camlQuery_ImmediateHead);
+
+  context4.load(ImmediateHead_Items);
+  context4.executeQueryAsync(Read_ImmediateHead_Succeeded, ReadListItemFailed);
+
+  // Department Head
+  context5 = SP.ClientContext.get_current();
+  var DepartmentHead = context.get_web().get_lists().getByTitle("Department Head List");
+  var camlQuery_DepartmentHead = SP.CamlQuery.createAllItemsQuery();
+  this.DepartmentHead_Items = DepartmentHead.getItems(camlQuery_DepartmentHead);
+
+  context5.load(DepartmentHead_Items);
+  context5.executeQueryAsync(Read_DepartmentHead_Succeeded, ReadListItemFailed);
+}
+
+// GET DEPARTMENTS
+function Read_Department_Succeeded(sender, args) {
+  	var listItemsCollection = Department_List_Items.getEnumerator();
+    var Array_Department = [];
+
+  	while (listItemsCollection.moveNext()) {
+    	var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+  	}
+
+  	for (var i = 0; i<=Array_Department.length-1; i++){
+      	var opt = document.createElement('option');
+      	opt.innerHTML = Array_Department[i];
+      	opt.value = Array_Department[i];
+  		document.getElementById('DP_Department').appendChild(opt);
+  	}
+
+  	$('select').material_select();
+}
+
+// GET SECTIONS
+function Read_Section_Succeeded(sender, args) {
+  var listItemsCollection = Section_List_Items.getEnumerator();
+  var Array_Section = [];
+
+  	while (listItemsCollection.moveNext()) {
+    	var listItem = listItemsCollection.get_current();
+       	Array_Section.push(listItem.get_item('Title'));
+  	}
+
+   	for (var i = 0; i<=Array_Section.length-1; i++){
+      	var opt = document.createElement('option');
+      	opt.innerHTML = Array_Section[i];
+      	opt.value = Array_Section[i];
+  		document.getElementById('DP_Section').appendChild(opt);
+  	}
+
+  $('select').material_select();
+}
+
+// GET POSITION TITLE
+function Read_PositionTitle_Succeeded(sender, args) {
+  var listItemsCollection = PositionTitle_Items.getEnumerator();
+  var Array_PositionTitle = [];
+
+  	while (listItemsCollection.moveNext()) {
+    	var listItem = listItemsCollection.get_current();
+       	Array_PositionTitle.push(listItem.get_item('Title'));
+  	}
+
+   	for (var i = 0; i<=Array_PositionTitle.length-1; i++){
+      	var opt = document.createElement('option');
+      	opt.innerHTML = Array_PositionTitle[i];
+      	opt.value = Array_PositionTitle[i];
+  		document.getElementById('DP_PositionTitle').appendChild(opt);
+  	}
+
+  $('select').material_select();
+}
+
+// GET IMMEDIATE HEAD
+function Read_ImmediateHead_Succeeded(sender, args) {
+  var listItemsCollection = ImmediateHead_Items.getEnumerator();
+  var Array_ImmediateHead = [];
+
+  	while (listItemsCollection.moveNext()) {
+    	var listItem = listItemsCollection.get_current();
+       	Array_ImmediateHead.push(listItem.get_item('Title'));
+  	}
+
+   	for (var i = 0; i<=Array_ImmediateHead.length-1; i++){
+      	var opt = document.createElement('option');
+      	opt.innerHTML = Array_ImmediateHead[i];
+      	opt.value = Array_ImmediateHead[i];
+  		document.getElementById('DP_ImmediateHead').appendChild(opt);
+  	}
+
+  $('select').material_select();
+}
+
+// GET DEPARTMENT HEAD
+function Read_DepartmentHead_Succeeded(sender, args) {
+  var listItemsCollection = DepartmentHead_Items.getEnumerator();
+  var Array_DepartmentteHead = [];
+
+  	while (listItemsCollection.moveNext()) {
+    	var listItem = listItemsCollection.get_current();
+       	Array_DepartmentteHead.push(listItem.get_item('Title'));
+  	}
+
+   	for (var i = 0; i<=Array_DepartmentteHead.length-1; i++){
+      	var opt = document.createElement('option');
+      	opt.innerHTML = Array_DepartmentteHead[i];
+      	opt.value = Array_DepartmentteHead[i];
+  		document.getElementById('DP_DepartmentHead').appendChild(opt);
+  	}
+
+  $('select').material_select();
+}
+
+// IF QUERY FAILED
+function ReadListItemFailed(sender, args) {
+  alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+//-------------------------------------------------------------------------------------
+
+	
+	var targetListItem;
+   function RetrieveListItem() {
+   	
+	JSRequest.EnsureSetup(); 
+	var itemId = JSRequest.QueryString["ID"];
+     // var clientContext = new SP.ClientContext(); 
+     // var targetList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+     // targetListItem = targetList.getItemById(itemId);
+     // clientContext.load(targetListItem);
+     // clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded_Item), Function.createDelegate(this, this.onQueryFailed));
+
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'ID\'/>' + 
+        '<Value Type=\'Number\'>'+itemId+'</Value></Eq></Where></Query><RowLimit>1</RowLimit></View>');
+        this.targetListItem = oList.getItems(camlQuery);
+      clientContext.load(targetListItem);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded_Item), Function.createDelegate(this, this.onQueryFailed));
+
+   }
+
+   function onQuerySucceeded_Item() {
+
+  var listItemsCollection = targetListItem.getEnumerator();
+
+  while (listItemsCollection.moveNext()) {
+    var listItem = listItemsCollection.get_current();
+
+  var_ItemID = listItem.get_item('ID');
+  V_FirstName = listItem.get_item('LI_FirstName');
+  V_MiddleName = listItem.get_item('LI_MiddleName');
+  V_LastName = listItem.get_item('LI_LastName');
+  V_Suffix = listItem.get_item('LI_Suffix');
+  V_Sex = listItem.get_item('LI_Sex');
+  V_BirthDate = listItem.get_item('LI_BirthDate');
+  V_ContactNumber = listItem.get_item('LI_ContactNumber');
+  V_CurrentAddress = listItem.get_item('LI_CurrentAddress');
+  V_ProvincialAddress = listItem.get_item('LI_ProvincialAddress');
+  V_CivilStatus = listItem.get_item('LI_CivilStatus');
+  V_EmergencyContactNumber = listItem.get_item('LI_EmergencyContactNumber');
+  V_EmergencyContactPerson = listItem.get_item('LI_EmergencyContactPerson');
+  V_PersonalEmail = listItem.get_item('LI_PersonalEmail');
+  V_Religion = listItem.get_item('LI_Religion');
+  V_BirthPlace = listItem.get_item('LI_BirthPlace');
+  V_EmployeeID = listItem.get_item('LI_EmployeeID');
+  V_Company = listItem.get_item('LI_Company');
+  V_Department = listItem.get_item('LI_Department');
+  V_Section = listItem.get_item('LI_Section');
+  V_PositionTitle = listItem.get_item('LI_PositionTitle');
+  V_JobLevel = listItem.get_item('LI_JobLevel');
+  V_JobGrade = listItem.get_item('LI_JobGrade');
+  V_DateJoined = listItem.get_item('LI_DateJoined');
+  V_DateHired = listItem.get_item('LI_DateHired');
+  V_ImmediateHead = listItem.get_item('LI_ImmediateHead');
+  V_DepartmentHead = listItem.get_item('LI_DepartmentHead');
+  V_EmployeeType = listItem.get_item('LI_EmployeeType');
+  V_RegularizationDate = listItem.get_item('LI_RegularizationDate');
+  V_TIN = listItem.get_item('LI_TIN_Number');
+  V_SSS = listItem.get_item('LI_SSS_Number');
+  V_PHILHEALTH = listItem.get_item('LI_PHILHEALTH');
+  V_PAGIBIG = listItem.get_item('LI_PAGIBIG');
+  V_Separated = listItem.get_item('LI_Separated');
+  V_EmployeeStatus = listItem.get_item('LI_EmployeeStatus');
+  V_DateSeparated = listItem.get_item('LI_DateSeparated');
+
+
+/*      var_ItemID = targetListItem.get_item('ID');
+  V_FirstName = targetListItem.get_item('LI_FirstName');
+  V_MiddleName = targetListItem.get_item('LI_MiddleName');
+  V_LastName = targetListItem.get_item('LI_LastName');
+  V_Suffix = targetListItem.get_item('LI_Suffix');
+  V_Sex = targetListItem.get_item('LI_Sex');
+  V_BirthDate = targetListItem.get_item('LI_BirthDate');
+  V_ContactNumber = targetListItem.get_item('LI_ContactNumber');
+  V_CurrentAddress = targetListItem.get_item('LI_CurrentAddress');
+  V_ProvincialAddress = targetListItem.get_item('LI_ProvincialAddress');
+  V_CivilStatus = targetListItem.get_item('LI_CivilStatus');
+  V_EmergencyContactNumber = targetListItem.get_item('LI_EmergencyContactNumber');
+  V_EmergencyContactPerson = targetListItem.get_item('LI_EmergencyContactPerson');
+  V_PersonalEmail = targetListItem.get_item('LI_PersonalEmail');
+  V_Religion = targetListItem.get_item('LI_Religion');
+  V_BirthPlace = targetListItem.get_item('LI_BirthPlace');
+  V_EmployeeID = targetListItem.get_item('LI_EmployeeID');
+  V_Company = targetListItem.get_item('LI_Company');
+  V_Department = targetListItem.get_item('LI_Department');
+  V_Section = targetListItem.get_item('LI_Section');
+  V_PositionTitle = targetListItem.get_item('LI_PositionTitle');
+  V_JobLevel = targetListItem.get_item('LI_JobLevel');
+  V_JobGrade = targetListItem.get_item('LI_JobGrade');
+  V_DateJoined = targetListItem.get_item('LI_DateJoined');
+  V_DateHired = targetListItem.get_item('LI_DateHired');
+  V_ImmediateHead = targetListItem.get_item('LI_ImmediateHead');
+  V_DepartmentHead = targetListItem.get_item('LI_DepartmentHead');
+  V_EmployeeType = targetListItem.get_item('LI_EmployeeType');
+  V_RegularizationDate = targetListItem.get_item('LI_RegularizationDate');
+  V_TIN = targetListItem.get_item('LI_TIN_Number');
+  V_SSS = targetListItem.get_item('LI_SSS_Number');
+  V_PHILHEALTH = targetListItem.get_item('LI_PHILHEALTH');
+  V_PAGIBIG = targetListItem.get_item('LI_PAGIBIG');
+  V_Separated = targetListItem.get_item('LI_Separated');
+  V_EmployeeStatus = targetListItem.get_item('LI_EmployeeStatus');
+  V_DateSeparated = targetListItem.get_item('LI_DateSeparated');
+*/
+
+
+
+  }
+
+  setTimeout(function(){ 
+
+    if(V_Suffix == null){
+        V_Suffix = "";
+
+       }
+       if(V_Section == null){
+        V_Section = "";
+       }
+
+       document.getElementById('TB_FirstName').value = V_FirstName;
+       document.getElementById('TB_MiddleName').value = V_MiddleName;
+       document.getElementById('TB_LastName').value = V_LastName;
+       document.getElementById('TB_Suffix').value = V_Suffix;
+
+      if(V_Sex == "MALE"){
+        document.getElementById('Sex1').checked = true;
+      }
+      else if(V_Sex == "FEMALE"){
+        document.getElementById('Sex2').checked = true;
+      }
+
+       document.getElementById('Date_BirthDate').value = V_BirthDate;
+       document.getElementById('TB_ContactNumber').value = V_ContactNumber;
+       document.getElementById('TB_CurrentAddress').value = V_CurrentAddress;
+       document.getElementById('TB_ProvincialAddress').value = V_ProvincialAddress;
+       document.getElementById('DP_CivilStatus').value = V_CivilStatus;$('#DP_CivilStatus').material_select();
+       document.getElementById('TB_EmergencyContactNumber').value = V_EmergencyContactNumber;
+       document.getElementById('TB_EmergencyContactPerson').value = V_EmergencyContactPerson;
+       document.getElementById('TB_PersonalEmail').value = V_PersonalEmail;
+       document.getElementById('DP_Religion').value = V_Religion;$('#DP_Religion').material_select();
+       document.getElementById('TB_BirthPlace').value = V_BirthPlace;
+       document.getElementById('TB_EmployeeID').value = V_EmployeeID;
+
+       document.getElementById('DP_Company').value = V_Company;
+        $('#DP_Company').material_select();
+
+       // var V_Company_Value = document.getElementById('DP_Company').options;
+       //  for(var i = 0; i < V_Company_Value.length; i++) {
+       //      if(V_Company_Value[i].value === V_Company) {
+       //          V_Company_Value[i].selected = true;
+       //          $('#DP_Company').material_select();
+       //          break;
+       //      }
+       //  }
+        
+       document.getElementById('DP_Department').value = V_Department;
+       $('#DP_Department').material_select();
+
+       // var V_Department_Value = document.getElementById('DP_Department').options;
+       //  for(var i = 0; i < V_Department_Value.length; i++) {
+       //      if(V_Department_Value[i].value === V_Department) {
+       //          V_Department_Value[i].selected = true;
+       //          $('#DP_Department').material_select();
+       //          break;
+       //      }
+       //  }
+        
+       document.getElementById('DP_Section').value = V_Section;
+       $('#DP_Section').material_select();
+       document.getElementById('DP_PositionTitle').value = V_PositionTitle;
+       $('#DP_PositionTitle').material_select();
+       document.getElementById('DP_JobLevel').value = V_JobLevel;
+       $('#DP_JobLevel').material_select();
+       document.getElementById('DP_JobGrade').value = V_JobGrade;
+       $('#DP_JobGrade').material_select();
+       document.getElementById('Date_DateJoined').value = V_DateJoined;
+       document.getElementById('Date_DateHired').value = V_DateHired;
+      document.getElementById('DP_ImmediateHead').value = V_ImmediateHead;
+      $('#DP_ImmediateHead').material_select();
+       document.getElementById('DP_DepartmentHead').value = V_DepartmentHead;
+       $('#DP_DepartmentHead').material_select();
+       document.getElementById('TB_EmployeeType').value = V_EmployeeType;
+       document.getElementById('TB_RegularizationDate').value = V_RegularizationDate;
+       document.getElementById('TB_TIN').value = V_TIN;
+       document.getElementById('TB_SSS').value = V_SSS;
+       document.getElementById('TB_PHILHEALTH').value = V_PHILHEALTH;
+       document.getElementById('TB_PAGIBIG').value = V_PAGIBIG;
+       document.getElementById('DP_EmployeeStatus').value = V_EmployeeStatus;
+       $('#DP_EmployeeStatus').material_select();
+
+       if(V_Separated == "Separated"){
+        document.getElementById('CB_Separated').checked = true;
+       }
+
+  }, 1000);
+
+
+   }
+
+
+//---------------------------------------------------------------------------------------
+
+function updateListItem() {
+
+ V_FirstName = document.getElementById('TB_FirstName').value;
+ V_MiddleName = document.getElementById('TB_MiddleName').value;
+ V_LastName = document.getElementById('TB_LastName').value;
+ V_Suffix = document.getElementById('TB_Suffix').value;
+ V_Sex = $("input[name=RB_Sex]:checked").val();
+ V_BirthDate = document.getElementById("Date_BirthDate").value;
+ V_ContactNumber = document.getElementById('TB_ContactNumber').value;
+ V_CurrentAddress = document.getElementById('TB_CurrentAddress').value;
+ V_ProvincialAddress = document.getElementById('TB_ProvincialAddress').value;
+
+ // V_CivilStatus = document.getElementById("DP_CivilStatus").options[ document.getElementById("DP_CivilStatus").selectedIndex ].value;
+ V_CivilStatus = document.getElementById("DP_CivilStatus").value;
+
+ V_EmergencyContactNumber = document.getElementById('TB_EmergencyContactNumber').value;
+ V_EmergencyContactPerson = document.getElementById('TB_EmergencyContactPerson').value;
+ V_PersonalEmail = document.getElementById('TB_PersonalEmail').value;
+
+ // V_Religion = document.getElementById("DP_Religion").options[ document.getElementById("DP_Religion").selectedIndex ].value;
+ V_Religion = document.getElementById("DP_Religion").value;
+
+ V_BirthPlace = document.getElementById('TB_BirthPlace').value;
+ V_EmployeeID = document.getElementById('TB_EmployeeID').value;
+
+ // V_Company = document.getElementById("DP_Company").options[ document.getElementById("DP_Company").selectedIndex ].value;
+ // V_Department = document.getElementById("DP_Department").options[ document.getElementById("DP_Department").selectedIndex ].value;
+ V_Company = document.getElementById("DP_Company").value;
+ V_Department = document.getElementById("DP_Department").value; 
+
+if(document.getElementById("DP_Section").selectedIndex > 0){
+  V_Section = document.getElementById("DP_Section").value;
+}
+else{
+  V_Section = "None"
+}
+
+
+ // V_PositionTitle = document.getElementById("DP_PositionTitle").options[ document.getElementById("DP_PositionTitle").selectedIndex ].value;
+ // V_JobLevel = document.getElementById("DP_JobLevel").options[ document.getElementById("DP_JobLevel").selectedIndex ].value;
+ // V_JobGrade = document.getElementById("DP_JobGrade").options[ document.getElementById("DP_JobGrade").selectedIndex ].value;
+ V_PositionTitle = document.getElementById("DP_PositionTitle").value
+ V_JobLevel = document.getElementById("DP_JobLevel").value
+ V_JobGrade = document.getElementById("DP_JobGrade").value
+
+ V_DateJoined = document.getElementById('Date_DateJoined').value;
+ V_DateHired = document.getElementById('Date_DateHired').value;
+
+ // V_ImmediateHead = document.getElementById("DP_ImmediateHead").options[ document.getElementById("DP_ImmediateHead").selectedIndex ].value;
+ // V_DepartmentHead = document.getElementById("DP_DepartmentHead").options[ document.getElementById("DP_DepartmentHead").selectedIndex ].value;
+
+ V_ImmediateHead = document.getElementById("DP_ImmediateHead").value;
+ V_DepartmentHead = document.getElementById("DP_DepartmentHead").value;
+
+ V_EmployeeType = document.getElementById('TB_EmployeeType').value;
+ V_RegularizationDate = document.getElementById('TB_RegularizationDate').value;
+ V_TIN = document.getElementById('TB_TIN').value;
+ V_SSS = document.getElementById('TB_SSS').value;
+ V_PHILHEALTH = document.getElementById('TB_PHILHEALTH').value;
+ V_PAGIBIG = document.getElementById('TB_PAGIBIG').value; 
+ V_DateSeparated = document.getElementById("Date_Separated").value;
+
+ // V_EmployeeStatus = document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value;
+ V_EmployeeStatus = document.getElementById("DP_EmployeeStatus").value;
+
+//GET THE MONTH ADN YEAR HIRED
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var d=new Date(document.getElementById("Date_DateHired").value);  //converts the string into date object
+  var m=d.getMonth()+1; //get the value of month
+
+  var V_MonthHired = months[parseInt(m)-1];
+  var V_YearHired = d.getFullYear(); //get the value of month
+
+  var DateRegularization =new Date(document.getElementById("TB_RegularizationDate").value); 
+  var MonthRegularization=DateRegularization.getMonth()+1;
+  var V_MonthRegularized = months[parseInt(MonthRegularization)-1];
+  var V_YearRegularized = DateRegularization.getFullYear();
+
+
+  var BirthDate = new Date(document.getElementById("Date_BirthDate").value); 
+  var MonthBirthday=BirthDate.getMonth()+1;
+  var V_MonthBirthday = months[parseInt(MonthBirthday)-1];
+  var V_YearBirthday = BirthDate.getFullYear();  
+
+
+  var DateSeparated =new Date(document.getElementById("TB_RegularizationDate").value); 
+  var MonthSeparation=DateSeparated.getMonth()+1;
+  var V_MonthSeparated = months[parseInt(MonthSeparation)-1];
+  var V_YearSeparated = DateSeparated.getFullYear();
+
+
+if(document.getElementById("CB_Separated").checked == true){
+  V_Separated = document.getElementById("CB_Separated").value;
+}
+else{
+  V_Separated = "Active";
+  V_DateSeparated = "";
+}
+
+
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+
+    JSRequest.EnsureSetup(); 
+	   itemId = JSRequest.QueryString["ID"];
+
+    this.oListItem = oList.getItemById(itemId);
+
+    oListItem.set_item('LI_FirstName', V_FirstName);
+    oListItem.set_item('LI_MiddleName', V_MiddleName);
+    oListItem.set_item('LI_LastName', V_LastName);
+    oListItem.set_item('LI_Suffix', V_Suffix);
+    oListItem.set_item('LI_Sex', V_Sex);
+    oListItem.set_item('LI_BirthDate', V_BirthDate);
+    oListItem.set_item('LI_ContactNumber', V_ContactNumber);
+    oListItem.set_item('LI_CurrentAddress', V_CurrentAddress);
+    oListItem.set_item('LI_ProvincialAddress', V_ProvincialAddress);
+    oListItem.set_item('LI_CivilStatus', V_CivilStatus);
+    oListItem.set_item('LI_EmergencyContactNumber', V_EmergencyContactNumber);
+    oListItem.set_item('LI_EmergencyContactPerson', V_EmergencyContactPerson);
+    oListItem.set_item('LI_PersonalEmail', V_PersonalEmail);
+    oListItem.set_item('LI_Religion', V_Religion);
+    oListItem.set_item('LI_BirthPlace', V_BirthPlace);
+    oListItem.set_item('LI_EmployeeID', V_EmployeeID);
+    oListItem.set_item('LI_Company', V_Company);
+    oListItem.set_item('LI_Department', V_Department);
+    oListItem.set_item('LI_Section', V_Section);
+    oListItem.set_item('LI_PositionTitle', V_PositionTitle);
+    oListItem.set_item('LI_JobLevel', V_JobLevel);
+    oListItem.set_item('LI_JobGrade', V_JobGrade);
+    oListItem.set_item('LI_DateJoined', V_DateJoined);
+    oListItem.set_item('LI_DateHired', V_DateHired);
+    oListItem.set_item('LI_ImmediateHead', V_ImmediateHead);
+    oListItem.set_item('LI_DepartmentHead', V_DepartmentHead);
+    oListItem.set_item('LI_EmployeeType', V_EmployeeType);
+    oListItem.set_item('LI_RegularizationDate', V_RegularizationDate);
+    oListItem.set_item('LI_TIN_Number', V_TIN);
+    oListItem.set_item('LI_SSS_Number', V_SSS);
+    oListItem.set_item('LI_PHILHEALTH', V_PHILHEALTH);
+    oListItem.set_item('LI_PAGIBIG', V_PAGIBIG);
+    oListItem.set_item('LI_Separated', V_Separated);
+    oListItem.set_item('LI_MonthHired', V_MonthHired);
+    oListItem.set_item('LI_YearHired', V_YearHired);
+    oListItem.set_item('LI_MonthRegularized', V_MonthRegularized);
+    oListItem.set_item('LI_YearRegularized', V_YearRegularized);
+    oListItem.set_item('LI_DateSeparated', V_DateSeparated);
+    oListItem.set_item('LI_MonthSeparated', V_MonthSeparated);
+    oListItem.set_item('LI_YearSeparated', V_YearSeparated);  
+    oListItem.set_item('LI_EmployeeStatus', V_EmployeeStatus);  
+    oListItem.set_item('LI_MonthBirthdate', V_MonthBirthday);
+    oListItem.set_item('LI_YearBirthDate', V_YearBirthday);
+
+    oListItem.update();
+
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+function onQuerySucceeded() {
+swal({
+  position: 'center',
+  type: 'success',
+  title: 'Employee Profile has been updated',
+  showConfirmButton: false,
+  timer: 1500
+})
+
+    window.location.href='https://intranet.houseofit.com.au/Lists/Employee%20Profile';
+
+
+}
+
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+
+function Validate(){
+ // var V_FirstName = document.getElementById('TB_FirstName').value;
+ // var V_MiddleName = document.getElementById('TB_MiddleName').value;
+ // var V_LastName = document.getElementById('TB_LastName').value;
+ // var V_Suffix = document.getElementById('TB_Suffix').value;
+ // var V_Sex = $("input[name=RB_Sex]:checked").val();
+ // var V_BirthDate = document.getElementById("Date_BirthDate").value;
+ // var V_ContactNumber = document.getElementById('TB_ContactNumber').value;
+ // var V_CurrentAddress = document.getElementById('TB_CurrentAddress').value;
+ // var V_ProvincialAddress = document.getElementById('TB_ProvincialAddress').value;
+ // var V_CivilStatus = document.getElementById("DP_CivilStatus").options[ document.getElementById("DP_CivilStatus").selectedIndex ].value;
+ // var V_EmergencyContactNumber = document.getElementById('TB_EmergencyContactNumber').value;
+ // var V_EmergencyContactPerson = document.getElementById('TB_EmergencyContactPerson').value;
+ // var V_PersonalEmail = document.getElementById('TB_PersonalEmail').value;
+ // var V_Religion = document.getElementById("DP_Religion").options[ document.getElementById("DP_Religion").selectedIndex ].value;
+ // var V_BirthPlace = document.getElementById('TB_BirthPlace').value;
+ // var V_EmployeeID = document.getElementById('TB_EmployeeID').value;
+ // var V_Company = document.getElementById("DP_Company").options[ document.getElementById("DP_Company").selectedIndex ].value;
+ // var V_Department = document.getElementById("DP_Department").options[ document.getElementById("DP_Department").selectedIndex ].value;
+ // var V_Section = document.getElementById("DP_Section").options[ document.getElementById("DP_Section").selectedIndex ].value;
+ // var V_PositionTitle = document.getElementById("DP_PositionTitle").options[ document.getElementById("DP_PositionTitle").selectedIndex ].value;
+ // var V_JobLevel = document.getElementById("DP_JobLevel").options[ document.getElementById("DP_JobLevel").selectedIndex ].value;
+ // var V_JobGrade = document.getElementById("DP_JobGrade").options[ document.getElementById("DP_JobGrade").selectedIndex ].value;
+ // var V_DateJoined = document.getElementById('Date_DateJoined').value;
+ // var V_DateHired = document.getElementById('Date_DateHired').value;
+ // var V_ImmediateHead = document.getElementById("DP_ImmediateHead").options[ document.getElementById("DP_ImmediateHead").selectedIndex ].value;
+ // var V_DepartmentHead = document.getElementById("DP_DepartmentHead").options[ document.getElementById("DP_DepartmentHead").selectedIndex ].value;
+ // var V_EmployeeType = document.getElementById('TB_EmployeeType').value;
+ // var V_RegularizationDate = document.getElementById('TB_RegularizationDate').value;
+ // var V_TIN = document.getElementById('TB_TIN').value;
+ // var V_SSS = document.getElementById('TB_SSS').value;
+ // var V_PHILHEALTH = document.getElementById('TB_PHILHEALTH').value;
+ // var V_PAGIBIG = document.getElementById('TB_PAGIBIG').value; 
+ // var V_EmployeeStatus = document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value;
+ var V_DateSeparated = document.getElementById('Date_Separated').value;
+
+if(document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value == "Employee"){
+
+    if(isEmptyOrSpaces(document.getElementById('TB_FirstName').value) ||  
+      isEmptyOrSpaces(document.getElementById('TB_LastName').value) || 
+      isEmptyOrSpaces(document.getElementById("Date_BirthDate").value) || 
+      isEmptyOrSpaces(document.getElementById('TB_ContactNumber').value) || 
+      isEmptyOrSpaces(document.getElementById('TB_CurrentAddress').value) || 
+      isEmptyOrSpaces(document.getElementById('TB_EmployeeID').value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Company").options[ document.getElementById("DP_Company").selectedIndex ].value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Department").options[ document.getElementById("DP_Department").selectedIndex ].value) || 
+      isEmptyOrSpaces(document.getElementById("DP_PositionTitle").options[ document.getElementById("DP_PositionTitle").selectedIndex ].value) ||
+      isEmptyOrSpaces(document.getElementById('Date_DateJoined').value) || 
+      isEmptyOrSpaces(document.getElementById('Date_DateHired').value) ||  
+      isEmptyOrSpaces(document.getElementById("DP_DepartmentHead").options[ document.getElementById("DP_DepartmentHead").selectedIndex ].value) || 
+      isEmptyOrSpaces(document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value)){
+      
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error')
+    }
+    else{
+    if(document.getElementById("CB_Separated").checked == true && isEmptyOrSpaces(V_DateSeparated)){
+        swal(
+      'Oops...',
+      'Please provide the Separation Date',
+      'error')
+      }else{
+          updateListItem();
+      }
+    }
+}
+else{
+    if(isEmptyOrSpaces(document.getElementById('TB_FirstName').value) || 
+      isEmptyOrSpaces(document.getElementById('TB_MiddleName').value) || 
+      isEmptyOrSpaces(document.getElementById('TB_LastName').value) || 
+      isEmptyOrSpaces(document.getElementById("Date_BirthDate").value) || 
+      isEmptyOrSpaces(document.getElementById('TB_ContactNumber').value) || 
+      isEmptyOrSpaces(document.getElementById('TB_CurrentAddress').value) || 
+      isEmptyOrSpaces(document.getElementById('TB_EmployeeID').value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Company").options[ document.getElementById("DP_Company").selectedIndex ].value) || 
+      isEmptyOrSpaces(document.getElementById("DP_Department").options[ document.getElementById("DP_Department").selectedIndex ].value) || 
+      isEmptyOrSpaces(document.getElementById("DP_PositionTitle").options[ document.getElementById("DP_PositionTitle").selectedIndex ].value) ||
+      isEmptyOrSpaces(document.getElementById('Date_DateJoined').value) || 
+      isEmptyOrSpaces(document.getElementById("DP_DepartmentHead").options[ document.getElementById("DP_DepartmentHead").selectedIndex ].value) || 
+      isEmptyOrSpaces(document.getElementById("DP_EmployeeStatus").options[ document.getElementById("DP_EmployeeStatus").selectedIndex ].value)){
+      
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error')
+    }
+    else{
+    if(document.getElementById("CB_Separated").checked == true && isEmptyOrSpaces(V_DateSeparated)){
+        swal(
+      'Oops...',
+      'Please provide the Separation Date',
+      'error')
+      }else{
+          updateListItem();
+      }
+
+    }
+}
+
+
+
+}
+
+
+// jQuery(document).ready(function () {
+
+//     // Check for FileReader API (HTML5) support.
+//     if (!window.FileReader) {
+//         alert('This browser does not support the FileReader API.');
+//     }
+// });
+
+
+//      function readURL(input) {
+//             if (input.files && input.files[0]) {
+//                 var reader = new FileReader();
+
+//                 reader.onload = function (e) {
+//                     $('#blah')
+//                         .attr('src', e.target.result);
+//                 };
+
+//                 reader.readAsDataURL(input.files[0]);
+//             }
+//         }
+
+
+// // UPLOAD IMAGE
+//     function _arrayBufferToBase64(buffer) {
+//     var binary = ''
+//     var bytes = new Uint8Array(buffer)
+//     var len = bytes.byteLength;
+//     for (var i = 0; i < len; i++) {
+//         binary += String.fromCharCode(bytes[i])
+//     }
+// return binary;
+// }
+//    function uploadfile(name, content) {
+//     var appweburl = 'https://intranet.houseofit.com.au/';
+//     var createitem = new SP.RequestExecutor(appweburl);
+//     createitem.executeAsync({
+//     url: appweburl + "/_api/web/GetFolderByServerRelativeUrl('/sites/Tile of web/app title/Lists/list name/foldername')/Files/Add(url='" + name + "',overwrite=true)",
+//     method: "POST",
+//     binaryStringRequestBody: true,
+//     body: content,
+//     success: function (e) {
+//         alert('done');
+//     },
+//     error: function () { alert("Error"); },
+//     state: "Update"
+//  });
+// }
+
+// function GetMonthYearSeparated(){
+//       var months = [ "January", "February", "March", "April", "May", "June",
+//     "July", "August", "September", "October", "November", "December" ];
+//     var DateSeparated =new Date(document.getElementById("Date_Separated").value); 
+//   var MonthSeparation=DateSeparated.getMonth()+1;
+
+//   var V_MonthSeparated = months[parseInt(MonthSeparation)-1];
+//   var V_YearSeparated = DateSeparated.getFullYear();  
+//   alert(V_MonthSeparated + " " + V_YearSeparated);
+// }
+
+ </script>
+
+<body>
+
+
+<main>
+
+
+
+ <div class="row">
+    <div class="col s12">
+
+      <ul class="collection with-header card-panel z-depth-2">
+        <div class="col s12">
+            <a class="btn-floating red AlignButtonRight " href="https://intranet.houseofit.com.au/Lists/Employee%20Profile"><i class="large material-icons">close</i></a>
+        </div>
+
+        <li class="collection-header"><h5 class="CenterHeader">EMPLOYEE PROFILE</h5><br><h6 class="CenterHeader">Edit Form</h6></li>
+        <li class="collection-item">
+
+
+<!--         <div class="col s12">
+        <div class='row'></div>
+        <div class='row'></div>
+        <div class='row'></div>
+
+              <div class="col s2">
+                  <div class="col s11">
+                    <img id="blah" height="150" width="150" class="circle AlignButtonRight" src="http://placehold.it/180" alt="your image" />
+                  </div> 
+                  <div class="col s1"></div>
+              </div>
+
+
+        <div class='row'></div>
+
+            <div class="col s2">
+                <div class="file-field input-field AlignButtonRight">
+                    <div class="btn light-blue darken-1 z-depth-2">
+                      <span>Image</span>
+                      <input type="file" onchange="readURL(this);">
+                    </div>
+                  <div class="file-path-wrapper">
+                      <input class="file-path" type="text" >
+                  </div>
+              </div>
+          </div>
+
+      </div>
+<div class="row"></div> -->
+
+      <div class="row card-panel z-depth-2 " >
+
+    	<div class="row">
+    		<div class="card-panel CardHeader z-depth-0">
+    		<H6 >PERSONAL</H6>
+    		</div>
+    	</div>
+
+
+    	<div class="row">
+
+        <div class="input-field col s2">
+          <input id="TB_FirstName" type="text" placeholder=""  >
+          <label for="TB_FirstName">First Name <span>*</span></label>
+        </div>
+        <div class="input-field col s2">
+          <input id="TB_MiddleName" type="text" placeholder="" >
+          <label for="TB_MiddleName">Middle Name <span>*</span></label>
+        </div>
+        <div class="input-field col s2">
+          <input id="TB_LastName" type="text" placeholder="" >
+          <label for="TB_LastName">Last Name <span>*</span></label>
+        </div>
+        <div class="input-field col s2">
+          <input id="TB_Suffix" type="text" placeholder="">
+          <label for="TB_Suffix">Suffix</label>
+        </div>  
+        <div class=" col s2">
+      		<label>Sex</label><br><br>
+            <input name="RB_Sex" class="with-gap" type="radio" id="Sex1" value="MALE" checked="checked"/>
+            <label for="Sex1">Male</label>
+            <input name="RB_Sex" class="with-gap" type="radio" id="Sex2" value="FEMALE" />
+            <label for="Sex2">Female</label>
+        </div>
+        <div class="input-field col s2">
+            <label>Birth Date <span>*</span></label>              
+            <input type = "text" class = "datepicker" id="Date_BirthDate" placeholder="" >    
+        </div>
+        <div class="input-field col s2">
+          <input id="TB_ContactNumber" type="text" placeholder="" >
+          <label for="TB_ContactNumber">Contact Number <span>*</span></label>
+        </div> 
+        <div class="input-field col s4">
+          <input id="TB_CurrentAddress" type="text" placeholder="" >
+          <label for="TB_CurrentAddress">Current Address <span>*</span></label>
+        </div> 
+        <div class="input-field col s4">
+          <input id="TB_ProvincialAddress" type="text" placeholder="">
+          <label for="TB_ProvincialAddress">Provincial Address</label>
+        </div> 
+        <div class="input-field col s2">
+        <select id="DP_CivilStatus">
+          <option value="" disabled selected>Choose a Civil Status *</option>
+            <option value="Married">Married</option>
+            <option value="Single">Single</option>
+            <option value="Single">Separated</option>
+            <option value="Single">Widow/Widower</option>
+        </select>
+        <label>Civil Status</label>
+        </div>
+        <div class="input-field col s2">
+          <input id="TB_EmergencyContactNumber" type="text" placeholder="">
+          <label for="TB_EmergencyContactNumber">Emergency Contact Number</label>
+        </div> 
+        <div class="input-field col s4">
+          <input id="TB_EmergencyContactPerson" type="text" placeholder="">
+          <label for="TB_EmergencyContactPerson">Emergency Contact Person</label>
+        </div> 
+        <div class="input-field col s2">
+          <input id="TB_PersonalEmail" type="text" type="email" placeholder="">
+          <label for="TB_PersonalEmail">Personal Email</label>
+        </div> 
+        <div class="input-field col s2">
+        <select id="DP_Religion">
+          <option value="" disabled selected>Choose a Religion</option>
+            <option value="7th Day Adventist">7th Day Adventist</option>
+            <option value="Assembly of God">Assembly of God</option>
+            <option value="Born Again Christian">Born Again Christian</option>
+            <option value="Christian">Christian</option>
+            <option value="Evangelist">Evangelist</option>
+            <option value="Jehova's Witness">Jehova's Witness</option>
+            <option value="Protestant">Protestant</option>
+            <option value="Roman Catholic">Roman Catholic</option>
+            <option value="No Religion">No Religion</option>
+        </select>
+        <label>Religion</label>
+        </div>
+        <div class="input-field col s2">
+          <input id="TB_BirthPlace" type="text" placeholder="">
+          <label for="TB_BirthPlace">Birth Place</label>
+        </div>
+
+
+    	</div>
+      	</div>
+
+      <div class="row card-panel z-depth-2 ">
+
+    	<div class="row">
+    		<div class="card-panel CardHeader z-depth-0">
+    		<H6 >EMPLOYMENT</H6>
+    		</div>
+    	</div>
+
+    	<div class="row">
+        <div class="input-field col s2">
+          <input id="TB_EmployeeID" type="text" placeholder="" >
+          <label for="TB_EmployeeID">Employee ID <span>*</span></label>
+        </div>
+      <div class="input-field col s2">
+        <select id="DP_Company" >
+          <option value="" disabled selected>Choose a Company</option>
+            <option value="ASOCI">ASOCI</option>
+            <option value="TBOS">TBOS</option>
+            <option value="MOPH">MOPH</option>
+        </select>
+        <label>Comapany <span>*</span></label>
+      </div>
+      <div class="input-field col s2">
+        <select id="DP_Department" >
+          <option value="" disabled selected>Choose a Department</option>
+        </select>
+        <label>Department <span>*</span></label>
+      </div>
+      <div class="input-field col s2">
+        <select id="DP_Section">
+          <option value="" disabled selected>Choose a Section</option>
+          <option value="None">None</option>
+        </select>
+        <label>Section</label>
+      </div>
+      <div class="input-field col s2">
+        <select id="DP_PositionTitle">
+          <option value="" disabled selected>Choose a Position Title</option>
+        </select>
+        <label>Position Title <span>*</span></label>
+      </div>
+      <div class="input-field col s2">
+        <select id="DP_JobLevel">
+          <option value="" disabled selected>Choose a Job Level</option>
+            <option value="Managerial">Managerial</option>
+            <option value="Rank and File">Rank and File</option>
+            <option value="Supervisorial">Supervisorial</option>
+            <option value="Supervisorial">Executive</option>
+        </select>
+        <label>Job Level <span>*</span></label>
+      </div>
+      <div class="input-field col s2">
+        <select id="DP_JobGrade" >
+          <option value="" disabled selected>Choose a Job Grade</option>
+            <option value="None">None</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <label>Job Grade</label>
+      </div>
+      <div class="input-field col s2">
+            <label>Date Joined <span>*</span></label>              
+            <input id="Date_DateJoined" type = "text" placeholder="" class = "datepicker" />    
+      </div>
+      <div class="input-field col s2">
+               <label>Date Hired <span>*</span></label>              
+               <input id="Date_DateHired" type = "text" placeholder="" class = "datepicker" />    
+      </div>  
+      <div class="input-field col s2">
+        <select id="DP_ImmediateHead">
+          <option value="" disabled selected>Choose an Immediate Head</option>
+          <option value="None">None</option>
+        </select>
+        <label>Immediate Head</label>
+      </div> 
+      <div class="input-field col s2">
+        <select id="DP_DepartmentHead">
+          <option value="" disabled selected>Choose a Department Head</option>
+        </select>
+        <label>Department Head <span>*</span></label>
+      </div> 
+      <div class="input-field col s2">
+          <select id="DP_EmployeeStatus">
+                <option value="" disabled selected>Choose Status</option>
+                <option value="Employee" >Employee</option>
+                <option value="Trainee" >Trainee</option>
+          </select>
+          <label>Employee Status <span>*</span></label>
+      </div>      
+  	</div>
+    </div>
+
+    <div class="row card-panel z-depth-2 ">
+
+    	<div class="row">
+    		<div class="card-panel CardHeader z-depth-0">
+    		<H6 >EMPLOYMENT STATUS</H6>
+    		</div>
+    	</div>
+
+    	<div class="row">
+        	<div class="input-field col s2">
+          		<input id="TB_EmployeeType" placeholder="Employment Type"  type="text">
+          		<label for="TB_EmployeeType">Employee Type</label>
+        	</div>
+        	<div class="input-field col s2">
+          		<input id="TB_RegularizationDate" class = "datepicker" placeholder="Regularization Date" type="text">
+          		<label for="TB_RegularizationDate">Regularization Date</label>
+        	</div>
+
+			<div class="col s4">
+			</div>
+          <div class=" col s2">
+            <input type="checkbox" class="filled-in" id="CB_Separated" value="Separated" />
+            <label for="CB_Separated">Separated</label>
+          </div>
+          <div class="input-field col s2">
+            <label>Separation Date</label>              
+            <input type = "text" class = "datepicker" id="Date_Separated" placeholder="" >    
+          </div>
+    	</div>
+    </div>
+
+    <div class="row card-panel z-depth-2 ">
+
+    	<div class="row">
+    		<div class="card-panel CardHeader z-depth-0">
+    		<H6 >GOVERNMENT NUMBERS</H6>
+    		</div>
+    	</div>
+
+    	<div class="row">
+        	<div class="input-field col s2">
+          		<input id="TB_TIN"  type="text" placeholder="">
+          		<label for="TB_TIN">TIN Number</label>
+        	</div>
+        	<div class="input-field col s2">
+          		<input id="TB_SSS"  type="text" placeholder="">
+          		<label for="TB_SSS">SSS Number</label>
+        	</div>
+        	<div class="input-field col s2">
+          		<input id="TB_PHILHEALTH"  type="text" placeholder="">
+          		<label for="TB_PHILHEALTH">PHILHEALTH Number</label>
+        	</div>
+        	<div class="input-field col s2">
+          		<input id="TB_PAGIBIG"  type="text" placeholder="">
+          		<label for="TB_PAGIBIG">PAG-IBIG Number</label>
+        	</div>
+
+        	<div id="divGetListData"></div>
+
+    	</div>
+    </div>
+
+    <div class="row">
+
+<!-- <input type='file' onchange="readURL(this);" />
+<img id="blah" src="http://placehold.it/180" class="circle responsive-img" alt="your image" /> -->
+
+      <div class="input-field col s12">
+<!--           <button class="waves-effect waves-light btn-large light-blue darken-1 z-depth-2 AlignButtonRight submit hoverable" onclick="Validate()">Update</button> -->
+                <a class="waves-effect waves-light btn-large light-blue darken-1 z-depth-2 AlignButtonRight submit hoverable" onclick="Validate()">Update</a>
+      </div>
+	</div>
+
+      </li>
+    </ul>
+    </div>
+  </div>
+
+</main>
+
+  <a id="btn_TriggerScripts" onclick="LoadScripts()" hidden="true">Update</a>
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+</body>
+ 
+</html>
