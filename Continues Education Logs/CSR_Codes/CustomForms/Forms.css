@@ -1,0 +1,38 @@
+﻿#printable { display: none; }
+@media print
+{
+   #non-printable { display: none; }
+   #printable { display: block; }
+}
+
+h2
+{
+	font-weight:bolder;!important;
+	font-size:medium;!important;
+	color:#0072C6!important; 
+
+
+}
+
+h3
+{
+	font-family:Rockwell;!important;
+	font-weight:bolder;!important;
+	font-size:small;!important;
+	color:black!important;
+
+}
+
+h4
+{
+	color:#0072C6!important; 
+	font-size:small;!important;
+
+}
+
+h5
+{
+	color:#333333!important; 
+	font-size:small;!important;
+
+}
