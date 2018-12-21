@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" x-undefined="" />
+	<title>QA or Department Head</title>
+	<link rel="stylesheet" type="text/css" href="/SiteAssets/Scripts/Scorecard System/css/qa_or_department_head_copy.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="/SiteAssets/Scripts/Scorecard System/assets/alertify.core.css">
+	<link rel="stylesheet" type="text/css" href="/SiteAssets/Scripts/Scorecard System/assets/alertify.default.css">
+
+
+	<style>
+
+		.loading {
+  max-width: 50%;
+  line-height: 1.4;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loading__author {
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #bdbdbd;
+  margin: 0.6rem 0 2rem 0;
+  display: block;
+}
+
+.loading__anim {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  border: 5px solid rgba(189, 189, 189, 0.25);
+  border-left-color: #039be5;
+  border-top-color: #039be5;
+  border-radius: 50%;
+  animation: rotate 600ms infinite linear;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+
+	</style>
+
+
+</head>
+
+<body>
+
+	<div class="ui grid">
+
+		<div class="sixteen wide column">
+			<div class="ui labeled icon input">
+				<div class="ui label">Department</div>
+				<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="kpi_select_dept_err">
+					<input name="topic" type="hidden" value="" id="filter_department_id">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select Department</div>
+					<div class="menu" id="append_dept_id">
+					</div>
+				</div>
+			</div>&nbsp;&nbsp;
+			<div class="ui labeled icon input">
+				<div class="ui label">Position</div>
+				<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0; width: 180px!important; max-height: 2.71428571em; text-overflow: ellipsis; white-space: nowrap;"
+				 id="kpi_select_pos_err">
+					<input name="topic" type="hidden" value="" id="filter_position_id">
+					<i class="dropdown icon"></i>
+					<div class="default text" style="overflow: hidden;
+					width: 100%;
+					text-overflow: ellipsis;" id="text_pos_id">Select
+						Position</div>
+					<div class="menu" id="append_pos_id">
+					</div>
+				</div>
+			</div>&nbsp;&nbsp;
+			<div class="ui labeled icon input">
+				<div class="ui icon input">
+					<input class="prompt" type="text" id="search-input" placeholder="Search...">
+					<i class="search icon"></i>
+				</div>
+			</div>
+			&nbsp
+			<div class="circular ui icon button" style=" min-width: 0em!important;" id="refresh_btn">
+				<i class="sync alternate icon" id="loading_refresh"></i>
+			</div>
+
+
+			<div class="ui labeled icon input" style="float: right; position: relative; padding-left: inherit;">
+				<div class="ui label">Month</div>
+				<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="">
+					<input name="topic" type="hidden" value="" id="filter_month_id">
+					<i class="dropdown icon"></i>
+					<div class="text" id="currentMonth"></div>
+					<div class="menu" id="listMonth">
+					</div>
+				</div>
+			</div>
+
+
+			<div class="ui labeled icon input" style="float: right; position: relative;">
+				<div class="ui label">Year</div>
+				<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="">
+					<input name="topic" type="hidden" value="" id="filter_year_id">
+					<i class="dropdown icon"></i>
+					<div class="text" id="currentYear"></div>
+					<div class="menu" id="listYear">
+					</div>
+				</div>
+			</div>
+			<div class="message information" id="alert">
+
+			</div>
+			<br>
+			<br>
+			<div class="ui form">
+
+				<table class="ui striped table" style="text-align: center; width: 100%;font-size: 9.5pt;">
+					<thead>
+						<tr id="employee_table"></tr>
+					</thead>
+					<tbody id="listEmployee">
+
+					</tbody>
+
+				</table>
+			</div>
+
+		</div>
+	</div>
+
+	<br>
+	<h2 class="ui dividing header" id="position_div_header_id">Position:</h2>
+	<!-- <a class="anchor" id="types"></a> -->
+	<div class="ui form">
+		<table class="ui celled table" style="text-align: center; width: 100%;font-size: 9.5pt; border-color: #1678C2!important;"
+		 id="table_kpi">
+			<thead>
+				<tr>
+					<th style="background-color: #1678C2!important;color: white; ">Key Result Area</th>
+					<th style="background-color: #1678C2!important;color: white; ">Key Performance Indicator</th>
+					<th style="background-color: #1678C2!important;color: white; ">Data Source</th>
+					<th style="background-color: #1678C2!important;color: white; ">Metrics per KPI</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--  -->
+				<tr style="display: none">
+					<td></td>
+					<td></td>
+					<td style="padding: 0px;">
+						<table class="ui very basic collapsing celled table" style="text-align: center; ">
+							<thead>
+								<tr>
+									<th width="80%"></th>
+									<th></th>
+									<th width="20%"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<!--  -->
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<div class="ui progress" id="kpi_total_progress_id" style="width: 100%;">
+		<div class="bar">
+			<div class="progress"></div>
+		</div>
+		<div class="label" id="kpi_count_label_id"></div>
+	</div>
+	</div>
+
+	<div class="ui longer fullscreen modal">
+		<div class="header">
+			Performance Review
+		</div>
+
+		<div class="scrolling content">
+			<div class="ui form">
+				<div class="two fields">
+					<div class="field">
+						<label>Employee name</label>
+						<input type='text' id="name" readonly />
+					</div>
+					<div class="field">
+						<label>Job Title</label>
+						<input type='text' id="position_title" readonly />
+					</div>
+				</div>
+				<div class="three fields">
+					<div class="field">
+						<label>Reviewer</label>
+						<input type='text' />
+					</div>
+					<div class="field">
+						<label>Reviewer Period</label>
+						<input type='text' />
+					</div>
+					<div class="field">
+						<label>Status</label>
+						<input type='text' />
+					</div>
+				</div>
+
+
+
+				<table id="employee_view" class="ui striped table">
+					<thead class="full-width">
+						<th>Key Performance Indicator</th>
+						<th>Data Source</th>
+						<th>Remarks</th>
+						<th>Score</th>
+						<th>Comments</th>
+					</thead>
+					<tbody id="KPIdata"></tbody>
+					<tfoot class="full-width">
+						<tr>
+							<th colspan="5">
+								<!-- <div class="ui right floated small warning labeled icon button" onclick="passKPI();">
+												<i class="cancel icon"></i> Cancel
+											</div>
+											<div class="ui right floated small primary labeled icon button" onclick="passKPI();">
+												<i class="save icon"></i> Save
+											</div> -->
+								<div class="ui indicating progress" id="employee_total_performance_id" style="width: 100%;">
+									<div class="bar">
+										<div class="progress"></div>
+									</div>
+
+									<div class="label">Overall Performance</div>
+								</div>
+							</th>
+						</tr>
+					</tfoot>
+				</table>
+
+
+			</div>
+
+		</div>
+		<div class="actions">
+			<div class="ui button" id="cancel_btn_performance">Cancel</div>
+			<div class="ui green button" id="save_btn_performance">Save</div>
+		</div>
+	</div>
+
+
+	<div id="loader_show_hide" style="display:none">
+		<div id="loader" style="display:table; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; background: #fff; opacity: 0.8;">
+			<div style="display:table-cell; vertical-align:middle; text-align: center;">
+				<span class="loading__anim"></span><br>
+				<h2>Loading</h2>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+
+<script src="/SiteAssets/Scripts/Scorecard System/assets/alertify.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-2.1.4.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+<script type="text/javascript" src="/SiteAssets/Scripts/Scorecard System/js/qa_or_department_head_copy.js"></script>
+
+</html>

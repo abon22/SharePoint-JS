@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title></title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <script src="/SiteAssets/Scripts/Scorecard System/js/kpi_info.js"></script>
+    <style>
+
+        #sideNavBox{
+	display: none!important;
+}
+
+#contentBox{
+    margin-left: 16px!important;
+}
+
+/*	.ui.table tr:first-child td {
+    border-top: !important;
+}
+*/
+	*{
+		font-family: "Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+	}
+
+	#DeltaPlaceHolderPageTitleInTitleArea{
+		display: none;
+	}
+	#sideNavBox {
+	display: none;
+	}
+	#contentBox {
+	margin-left: 20px;
+	}
+	.ms-fullscreenmode #contentBox
+	{
+	    margin-left: 0;
+	}
+
+.fixdiv{
+
+  position:fixed!important;
+  top: 67px;
+  
+
+}
+
+.fixdiv_filter{
+
+  position:fixed;
+  /*margin: auto;*/
+  z-index:10;
+  top: 65px;
+  padding: 4px 0;
+ /* width: 25%;*/
+  border-radius: 5px;
+  background: #fcfcfc;
+  text-align: center;
+  opacity:1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: opacity 0.25s linear, top 0.25s linear;
+
+  
+
+}
+
+.ui.celled.table tr td, .ui.celled.table tr th {
+    border-left: 1px solid rgba(34,36,38,.1)!important;
+}
+
+
+.ui.table tr td {
+    border-top: 1px solid rgba(34,36,38,.1)!important;
+}
+
+#menu-close {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+    .loading {
+  max-width: 50%;
+  line-height: 1.4;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loading__author {
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #bdbdbd;
+  margin: 0.6rem 0 2rem 0;
+  display: block;
+}
+
+.loading__anim {
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  border: 5px solid rgba(189, 189, 189, 0.25);
+  border-left-color: #039be5;
+  border-top-color: #039be5;
+  border-radius: 50%;
+  animation: rotate 600ms infinite linear;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+
+
+
+
+	</style>
+    <title>Key Performance Information</title>
+</head>
+
+<body>
+    <div class="ui tiny modal">
+        <div class="header" id="modal_header_id">
+            Deleting Key Performance Indicator
+        </div>
+        <div class="content" id="modal_content_id">
+        </div>
+        <div class="actions">
+            <div class="ui negative button">
+                <i class="cancel icon"></i>
+                No
+            </div>
+            <div class="ui positive button">
+                <i class="checkmark icon"></i>
+                Yes
+            </div>
+        </div>
+    </div>
+    <div class="ui grid">
+        <!-- KPI VIEW -->
+        <div class="twelve wide column">
+            <div class="ui labeled icon input">
+                <div class="ui label">Department</div>
+                <div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="kpi_select_dept_err">
+                    <input name="topic" type="hidden" value="" id="filter_department_id">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">Select Department</div>
+                    <div class="menu" id="append_dept_id">
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;
+            <div class="ui labeled icon input">
+                <div class="ui label">Position</div>
+                <div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0; width: 180px!important; max-height: 2.71428571em; text-overflow: ellipsis; white-space: nowrap;"
+                    id="kpi_select_pos_err">
+                    <input name="topic" type="hidden" value="" id="filter_position_id">
+                    <i class="dropdown icon"></i>
+                    <div class="default text" style="overflow: hidden;
+					width: 100%;
+					text-overflow: ellipsis;"
+                        id="text_pos_id">Select
+                        Position</div>
+                    <div class="menu" id="append_pos_id">
+                    </div>
+                </div>
+            </div>&nbsp;&nbsp;
+            <div class="circular ui icon button" style=" min-width: 0em!important;" id="refresh_btn">
+                <i class="sync alternate icon" id="loading_refresh"></i>
+            </div>
+
+
+            <div class="ui labeled icon input" style="float: right; position: relative; padding-left: inherit;">
+                <div class="ui label">Month</div>
+                <div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="">
+                    <input name="topic" type="hidden" value="" id="filter_month_id">
+                    <i class="dropdown icon"></i>
+                    <div class="text" id="currentMonth"></div>
+                    <div class="menu" id="listMonth">
+                            <div class="item" data-value="January">January</div>
+                            <div class="item" data-value="January">February</div>
+                            <div class="item" data-value="January">March</div>
+                            <div class="item" data-value="January">April</div>
+                            <div class="item" data-value="January">May</div>
+                            <div class="item" data-value="January">June</div>
+                            <div class="item" data-value="January">Jul</div>
+                            <div class="item" data-value="January">August</div>
+                            <div class="item" data-value="January">Sceptemer</div>
+                            <div class="item" data-value="January">October</div>
+                            <div class="item" data-value="January">November</div>
+                            <div class="item" data-value="January">Decimber</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui labeled icon input" style="float: right; position: relative;">
+                <div class="ui label">Year</div>
+                <div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="">
+                    <input name="topic" type="hidden" value="" id="filter_year_id">
+                    <i class="dropdown icon"></i>
+                    <div class="text" id="currentYear"></div>
+                    <div class="menu" id="listYear">
+
+                    </div>
+                </div>
+            </div>
+            <br>
+            <table class="ui celled table" style="text-align: center; width: 100%;font-size: 9.5pt; border-color: #1678C2!important;"
+                id="table_kpi">
+                <thead>
+                    <tr>
+                        <th style="background-color: #1678C2!important;color: white; ">Key Result Area</th>
+                        <th style="background-color: #1678C2!important;color: white; ">Key Performance Indicator</th>
+                        <th style="background-color: #1678C2!important;color: white; ">Data Source</th>
+                        <th style="background-color: #1678C2!important;color: white; ">Metrics per KPI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--  -->
+                    <tr style="display: none">
+                        <td></td>
+                        <td></td>
+                        <td style="padding: 0px;">
+                            <table class="ui very basic collapsing celled table" style="text-align: center; ">
+                                <thead>
+                                    <tr>
+                                        <th width="80%"></th>
+                                        <th></th>
+                                        <th width="20%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!--  -->
+                </tbody>
+            </table>
+            <br>
+            <div class="ui progress" id="kpi_total_progress_id" style="width: 100%;">
+                <div class="bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="label" id="kpi_count_label_id"></div>
+            </div>
+        </div>
+        <!-- KPI VIEW -->
+        <!-- FORMS -->
+        <div class="four wide column">
+            <div class="ui form" id="id_div_fixed">
+                <div id="message_success_id" style="position: fixed;right: 65px;top: 75px;z-index: 10"></div>
+                <div class="ui segment">
+                    <h4 class="ui dividing header">Add/Update Key Result Area</h4>
+                    <div class="field">
+                        <!-- <label>Title</label> -->
+                        <div class="field" id="kra_title_error">
+                            <input type="text" name="kra_title" placeholder="Title" id="kra_title_id">
+                        </div>
+                    </div>
+                    <div class="ui primary button" id="kra_btn">Add</div>
+                    <div class="ui button" id="kra_btn_reset">Reset</div>
+                </div>
+                <div class="ui segment">
+                    <h4 class="ui dividing header">Add/Update Key Performance Indicator</h4>
+                    <div class="field">
+                        <!--  <div class="field" id="kpi_select_dept_err" >
+		      	<label>Position Title</label> 
+		        <select class="ui fluid dropdown" id="kpi_select_dept">
+				    <option value="">Select Department</option>
+			    </select>
+		    </div>
+		    <div class="field" id="kpi_select_pos_err">
+		       <label>Position Title</label> 
+		       <select class="ui fluid dropdown" id="kpi_select_pos">
+				    <option value="">Select Position</option>
+			    </select>
+		    </div> -->
+                        <div class="field" id="kpi_select_kra_err">
+                            <!-- <label>Key Result Area</label> -->
+                            <select class="ui fluid dropdown" id="kpi_select_kra">
+                                <option value="">Select KRA</option>
+                            </select>
+                        </div>
+                        <div class="field" id="kpi_title_err">
+                            <!-- <label>Key Performance Indicator</label> -->
+                            <input type="text" name="" placeholder="Key Performance Indicator" id="kpi_title">
+                        </div>
+                        <div class="two fields">
+                            <!-- 
+		      <div class="field" id="kpi_min_score_err">
+		     <label>Min Score</label> 
+		        <input type="number" name="" placeholder="Min Score" id="kpi_min_score">
+		      </div>
+		      <div class="field" id="kpi_max_score_err">
+		      	 <label>Max Score</label> 
+		        <input type="number" name="" placeholder="Max Score" id="kpi_max_score">
+		      </div>
+
+		       -->
+                        </div>
+                    </div>
+                    <div class="ui primary button" id="kpi_btn">Add</div>
+                    <div class="ui button" id="kpi_btn_reset">Reset</div>
+                    <!-- <div class="negative circular ui icon button" style=" min-width: 0em!important; float: right;" id="delete_kra_btn">
+		  <i class="trash icon"></i>
+		</div> -->
+                </div>
+                <div class="ui segment">
+                    <h4 class="ui dividing header">Add/Update Metrics</h4>
+                    <div class="field" id="metrics_select_kpi_err">
+                        <!-- <label>Key Performance Indicator</label> -->
+                        <select class="ui fluid dropdown " id="metrics_select_kpi">
+                            <!-- disabled -->
+                            <option value="">Select KPI</option>
+                        </select>
+                    </div>
+                    <div class="field" id="metric_title_err">
+                        <!-- <label>Metric Title</label> -->
+                        <input type="text" name="" placeholder="Metric Title" id="metric_title"><!-- readonly="" -->
+                    </div>
+                    <div class="two fields">
+                        <div class="field" id="metric_score_err">
+                            <!-- <label>Score</label> -->
+                            <input type="number" name="" placeholder="Score" id="metric_score"><!-- readonly="" -->
+                        </div>
+                        <div class="field" id="metric_remarks_err">
+                            <!-- <label>Remarks</label> -->
+                            <select class="ui fluid dropdown " id="metric_remarks">
+                                <!-- disabled -->
+                                <option value="">Select Remarks</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ui primary button " id="metrics_btn">Add</div><!-- disabled -->
+                    <div class="ui button " id="metrics_btn_reset">Reset</div><!-- disabled -->
+                    <!-- <div class="negative circular ui icon button" style=" min-width: 0em!important; float: right;" id="delete_metrics_btn">
+		  <i class="trash icon"></i>
+		</div> -->
+                </div>
+            </div>
+        </div>
+        <!-- FORMS -->
+    </div>
+    <div id="loader_show_hide" style="display:none">
+        <div id="loader" style="display:table; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; background: #fff; opacity: 0.8;">
+            <div style="display:table-cell; vertical-align:middle; text-align: center;">
+                <span class="loading__anim"></span><br>
+                <h2>Loading</h2>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

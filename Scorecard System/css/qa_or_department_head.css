@@ -1,0 +1,214 @@
+﻿/*Start Hide sitepages title*/
+.ms-core-pageTitle,
+.ms-core-pageTitle a {
+  display: none;
+}
+
+/*End Hide sitepages title*/
+
+/*Start Hide sidenav*/
+#DeltaPlaceHolderPageTitleInTitleArea {
+  display: none;
+}
+
+#sideNavBox {
+  display: none;
+}
+
+#contentBox {
+  margin-left: 20px;
+}
+
+.ms-fullscreenmode #contentBox {
+  margin-left: 0;
+}
+
+/*End Hide sidenav*/
+
+#employee_table {
+  width: 45% !important;
+  white-space: nowrap;
+}
+
+#employee_view {
+
+  float: left !important;
+  margin-left: 2% !important;
+  width: 96% !important;
+  white-space: nowrap;
+  margin-bottom: 2%;
+}
+
+#none {
+  display: none;
+}
+
+.table-scroll {
+  display: none;
+}
+
+
+.table-scroll {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  margin: auto;
+  overflow-x: auto;
+}
+
+.table-scroll table {
+  width: 100%;
+  min-width: 700px;
+  margin: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-wrap {
+  position: relative;
+}
+
+.table-scroll th,
+.table-scroll td {
+  padding: 5px 10px;
+  /*border: 1px solid rgba(34,36,38,.1);*/
+  background: #fff;
+  vertical-align: top;
+
+}
+
+.table-scroll thead th {
+  /*background: #333;*/
+  /*color: #fff;*/
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+/* safari and ios need the tfoot itself to be position:sticky also */
+.table-scroll tfoot,
+.table-scroll tfoot th,
+.table-scroll tfoot td {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  /*background: #666;*/
+  /*color: #fff;*/
+  z-index: 4;
+}
+
+a:focus {
+  background: red;
+}
+
+/* testing links*/
+
+.sticky_col0 {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  border-left: 1px solid rgba(34, 36, 38, .1) !important;
+  border-right: 1px solid rgba(34, 36, 38, .1) !important;
+  border-bottom: 1px solid rgba(34, 36, 38, .1);
+
+  /*background: #ccc;*/
+}
+
+.sticky_col2 {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  border-right: 1px solid rgba(34, 36, 38, .1);
+  border-bottom: 1px solid rgba(34, 36, 38, .1);
+
+  /*background: #ccc;*/
+}
+
+.sticky_col1 {
+  position: -webkit-sticky;
+  position: sticky;
+  right: 80px;
+  z-index: 2;
+  border-bottom: 1px solid rgba(34, 36, 38, .1);
+}
+
+thead .sticky_col:first-child,
+thead .sticky_col2,
+tfoot .sticky_col:first-child,
+thead .sticky_col1 {
+  z-index: 5;
+}
+
+.fix_width {
+  display: inline-block;
+  clear: both;
+}
+
+#employee_table thead th {
+  white-space: nowrap;
+}
+
+#employee_table tbody td {
+  white-space: nowrap;
+}
+
+/*for alert message*/
+#alert {
+  display: none;
+}
+
+.container {
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding-bottom: 30px;
+}
+
+.message {
+  padding: 13px;
+  margin-top: 15px;
+  border-radius: 4px;
+  border: #ccc solid 1px;
+}
+
+.message p {
+  margin: 0px;
+  font-size: 14px;
+  font-weight: normal;
+  font-family: arial;
+}
+
+
+.information {
+  color: #31708C;
+  background-color: #D1E4F1;
+  border: #BCE8EF solid 1px;
+}
+
+
+/*end for alert message*/
+
+/*a href click color*/
+a:focus {
+  background: none;
+}
+
+#sideNavBox {
+  display: none !important;
+}
+
+#contentBox {
+  margin-left: 20px !important;
+}
+
+.ui.celled.table tr td,
+.ui.celled.table tr th {
+  border-left: 1px solid rgba(34, 36, 38, .1) !important;
+}
+
+
+.ui.table tr td {
+  border-top: 1px solid rgba(34, 36, 38, .1) !important;
+}

@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" x-undefined="" />
+	<title>QA or Department Head</title>
+	<link rel="stylesheet" type="text/css" href="/SiteAssets/Scripts/Scorecard System/css/qa_or_department_head.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+
+	<link rel="stylesheet" type="text/css" href="/SiteAssets/Scripts/Scorecard System/assets/alertify.core.css">
+
+	<link rel="stylesheet" type="text/css" href="/SiteAssets/Scripts/Scorecard System/assets/alertify.default.css">
+
+</head>
+
+<body>
+	<div class="ui grid">
+		<div class="sixteen wide column">
+			<div class="ui labeled icon input">
+				<div class="ui label">Department</div>
+				<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="kpi_select_dept_err">
+					<input name="topic" type="hidden" value="" id="filter_department_id">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select Department</div>
+					<div class="menu" id="append_dept_id">
+					</div>
+				</div>
+			</div>&nbsp;&nbsp;
+			<div class="ui labeled icon input">
+				<div class="ui label">Position</div>
+				<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0; width: 180px!important; max-height: 2.71428571em; text-overflow: ellipsis; white-space: nowrap;"
+				 id="kpi_select_pos_err">
+					<input name="topic" type="hidden" value="" id="filter_position_id">
+					<i class="dropdown icon"></i>
+					<div class="default text" style="overflow: hidden;
+					width: 100%;
+					text-overflow: ellipsis;" id="text_pos_id">Select
+						Position</div>
+					<div class="menu" id="append_pos_id">
+					</div>
+				</div>
+			</div>&nbsp;&nbsp;
+			<div class="ui labeled icon input">
+				<div class="ui icon input">
+					<input class="prompt" type="text" id="search-input" placeholder="Search...">
+					<i class="search icon"></i>
+				</div>
+			</div><br>
+			<div style="float:right; margin-top: -2%;">
+				<div class="ui labeled icon input">
+					<div class="ui label">Month</div>
+					<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="">
+						<input name="topic" type="hidden" value="" id="filter_month_id">
+						<i class="dropdown icon"></i>
+						<div class="text" id="currentMonth"></div>
+						<div class="menu" id="listMonth">
+
+						</div>
+					</div>
+				</div>&nbsp;&nbsp;
+				<div class="ui labeled icon input">
+					<div class="ui label">Year</div>
+					<div class="ui selection dropdown" style="border-top-left-radius: 0;border-bottom-left-radius: 0;" id="">
+						<input name="topic" type="hidden" value="" id="filter_year_id">
+						<i class="dropdown icon"></i>
+						<div class="text" id="currentYear"></div>
+						<div class="menu" id="listYear">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 		<div class="ui search"> 
+			<div class="ui icon input">
+				<input class="prompt" type="text" id="search-input" placeholder="Search...">
+				<i class="search icon"></i>
+			</div>
+			<div class="results"></div>
+		</div> -->
+			<div id="table-scroll" class="table-scroll" style="padding-top: 10px;">
+				<table id="main-table" class="ui celled table main-table">
+					<thead>
+						<tr id="employee_table">
+						</tr>
+					</thead>
+					<tbody id="listEmployee">
+
+					</tbody>
+
+				</table>
+			</div>
+			<div class="message information" id="alert">
+				<p><strong>Oops! </strong>There is no available KPI for this position</p>
+			</div>
+		</div>
+		<div class="eight wide column">
+
+
+
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+	<h2 class="ui dividing header">Position: SharePoint Developer<a class="anchor" id="types"></a></h2>
+	<table class="ui celled table" style="text-align: center; width: 100%;font-size: 9.5pt; border-color: #1678C2!important;"
+	 id="table_kpi">
+		<thead>
+			<tr>
+				<th style="background-color: #1678C2!important;color: white; ">Key Result Area</th>
+				<th style="background-color: #1678C2!important;color: white; ">Key Performance Indicator</th>
+				<th style="background-color: #1678C2!important;color: white; ">Data Source</th>
+				<th style="background-color: #1678C2!important;color: white; ">Metrics per KPI</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--  -->
+			<tr style="display: none">
+				<td></td>
+				<td></td>
+				<td style="padding: 0px;">
+					<table class="ui very basic collapsing celled table" style="text-align: center; ">
+						<thead>
+							<tr>
+								<th width="80%"></th>
+								<th></th>
+								<th width="20%"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<!--  -->
+		</tbody>
+	</table>
+	<div class="ui progress" id="kpi_total_progress_id" style="width: 100%;">
+		<div class="bar">
+			<div class="progress"></div>
+		</div>
+		<div class="label" id="kpi_count_label_id"></div>
+	</div>
+
+</body>
+
+<div class="ui longer modal">
+
+	<div class="header">
+
+		<label style="font-family: sans-serif;"><i class="edit outline icon"></i>Performance Review</label> <i style="float: right;
+    margin-top: -5%;"
+		 class="close icon"></i>
+	</div>
+	<table id="employee_view" class="ui compact celled definition table">
+		<tr>
+			<thead class="full-width">
+				<tr>
+					<th colspan="5">
+
+						<img style="margin-right: 40px;" class="ui small right floated image" src=""><!-- https://intranet.houseofit.com.au/PublishingImages/SitePages/QA%20or%20Department%20Head/junreyd%20(1).png -->
+						<form class='ui form'>
+
+							<div class='error field'>
+
+								<div class='ui fluid input' style="max-width: 65%;">
+									<label style="padding-top: 5px; font-family: cursive; font-size: 14px;">Employee name:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type='text' id="name" readonly />
+								</div>
+								<br>
+								<div class='field'>
+									<div class='ui fluid input' style="max-width: 65%;">
+										<label style="padding-top: 5px; font-family: cursive; font-size: 14px;">Job
+											Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type='text' id="position_title" readonly />
+									</div>
+								</div>
+								<br>
+								<div class='field'>
+									<div class='ui fluid input' style="max-width: 65%;">
+										<label style="padding-top: 5px; font-family: cursive; font-size: 14px;">Reviewer:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type='text' />
+									</div>
+								</div>
+								<br>
+								<div class='field'>
+									<div class='ui fluid input' style="max-width: 65%;">
+										<label style="padding-top: 5px; font-family: cursive; font-size: 14px;">Reviewer Period:&nbsp;</label>
+										<input type='text' />
+									</div>
+								</div>
+								<br>
+								<div class='field'>
+									<div class='ui fluid input' style="max-width: 65%;">
+										<label style="padding-top: 5px; font-family: cursive; font-size: 14px;">Status:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<input type='text' />
+									</div>
+								</div>
+							</div>
+					</th>
+				</tr>
+			</thead>
+			<thead class="full-width">
+				<th>Key Performance Indicator</th>
+				<th>Data Source</th>
+				<th>Remarks</th>
+				<th>Score</th>
+				<th>Comments</th>
+		</tr>
+		</thead>
+		<tbody id="KPIdata"></tbody>
+		<tfoot class="full-width">
+			<tr>
+				<th colspan="5">
+					<!-- <div class="ui right floated small warning labeled icon button" onclick="passKPI();">
+						<i class="cancel icon"></i> Cancel
+					</div>
+					<div class="ui right floated small primary labeled icon button" onclick="passKPI();">
+						<i class="save icon"></i> Save
+					</div> -->
+					<div class="ui buttons" style="float: right;">
+						<button class="ui positive button active">Save</button>
+						<div class="or"></div>
+						<button class="ui button">Cancel</button>
+					</div>
+					<div class="ui indicating progress" style="width: 70%;">
+						<div class="bar"></div>
+						<div class="label">Overall Performance</div>
+					</div>
+				</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+
+
+
+
+<script src="/SiteAssets/Scripts/Scorecard System/assets/alertify.min.js"></script>
+
+<script type="text/javascript" src="/SiteAssets/Scripts/Scorecard System/js/qa_or_department_head.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js
+"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.0/semantic.min.js"></script>
+
+</html>
