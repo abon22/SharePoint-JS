@@ -1,0 +1,2392 @@
+﻿<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script><script src="/SiteAssets/jquery.SPServices-2013.02a.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+ 
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/SiteAssets/Scripts/Scorecard System/css/qa_or_department_head.css"
+    />
+
+
+<style type="text/css">
+  
+  .AlignButtonRight{
+  float: right;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+</style>
+
+ <script type="text/javascript">
+  
+  $(document).ready(function() {
+
+  	// setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  // $(".button-collapse").sideNav();
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker  
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+// var CurrentTime =  new Date().toLocaleTimeString('en-US', { hour12: true, 
+//                                              hour: "numeric", 
+//                                              minute: "numeric"});
+
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+ var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+//---------------------------------------------------------------------------------------------------
+
+
+  $('#ModalNewEntry').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() {  } // Callback for Modal close
+    }
+  );
+
+  $('#Modal_Entries').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() {  } // Callback for Modal close
+    }
+  );
+
+
+
+// EXECUTE SCRIPTS
+ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Entries,'sp.js');
+
+
+//------------------------------------------------
+document.getElementById("Div_ErrorType").style.display = "none";
+
+$(document).on('change',"#DP_EntryType", function() { 
+  // alert( $(this).val())
+      if($(this).val() == "Error"){
+
+          document.getElementById("TB_Points").value = "1";
+          document.getElementById("Div_ErrorType").style.display = "block";
+      }
+      else if($(this).val() == "Rework"){
+          document.getElementById("TB_Points").value = "2";
+          document.getElementById("Div_ErrorType").style.display = "none";
+      }      
+});
+
+$(document).on('change',"#DP_EmployeeName_Individual", function() { 
+       // var ID = IT_Employees_ID[IT_Employees.indexOf($(this).val())];
+       // alert(ID);
+
+      // var div_IndividualErrors = document.getElementById("div_IndividualErrors");
+      // var div_IndividualReworks = document.getElementById("div_IndividualReworks");
+      // var div_IndividuaMonthly = document.getElementById("div_IndividuaMonthly");
+
+      // $('#div_IndividualErrors').empty();
+      // $('#div_IndividualReworks').empty();
+      // $('#div_IndividuaMonthly').empty();
+
+      // var chart_Individual_Errors = document.createElement('chart_Individual_Errors');
+      // var chart_Individual_Reworks = document.createElement('chart_Individual_Reworks');
+      // var chart_Individual_Monthly = document.createElement('chart_Individual_Monthly');
+
+      // chart_Individual_Errors.id = "div_IndividualErrors";
+      // chart_Individual_Errors.height = 200;
+      // div_IndividualErrors.appendChild(chart_Individual_Errors)
+
+      // chart_Individual_Reworks.id = "div_IndividualReworks";
+      // chart_Individual_Reworks.height = 200;
+      // div_IndividualReworks.appendChild(chart_Individual_Reworks)
+
+      // chart_Individual_Monthly.id = "chart_Individual_Monthly";
+      // chart_Individual_Monthly.height = 200;
+      // div_IndividuaMonthly.appendChild(chart_Individual_Monthly)
+
+       ExecuteOrDelayUntilScriptLoaded(GetIndividual_Errors,'sp.js');
+       ExecuteOrDelayUntilScriptLoaded(GetIndividual_Reworks,'sp.js');
+       ExecuteOrDelayUntilScriptLoaded(GetIndividual_Monthly,'sp.js');
+});
+
+
+
+swal({
+  type: 'success',
+  title: 'Successfully Loaded',
+  showConfirmButton: false,
+  timer: 1500
+})
+
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+
+
+var Chart_Errors;
+var Chart_Reworks;
+var Chart_AccumulatedPoints;
+var Chart_OverAllMonthly;
+
+
+//---------------------> GET CURRENT USER <---------------------------------------------------------
+
+  function onSuccess(data, request){
+    var loginName = data.d.Title;
+    // alert(loginName);
+
+    // if(loginName != "Scott Osgood" && loginName != "Artem Soukhomlinov" && loginName != "Matthew Milner" && loginName != "Fernando Durano Singson Jr."){
+    //   document.getElementById("div_Entries").remove();
+    //   document.getElementById("div_NewEntry").remove();
+    // }
+
+    if(loginName != "Scott Osgood" && loginName != "Artem Soukhomlinov" && loginName != "Matthew Milner" && loginName != "Fernando Durano Singson Jr." && loginName != "Victor Surita" && loginName != "Carl James Ambowang" && loginName != "Idrian Belleza" && loginName != "Lito Abon Jr." && loginName != "Nino Rey Cresencio"){
+      document.getElementById("div_Entries").style.display = "none";
+      document.getElementById("div_NewEntry").style.display = "none";
+    }
+  }
+  function onError(error) {
+    alert("error");
+  }
+
+  // IF EMPTY OR WHITE SPACE ----------------------------------------------------------------------------------------------
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+//----------------------------------------------------------------------------------------------
+// OPEN MODALS
+
+function AddEntry_Clicked(){
+  Entry_Function = "Add";
+  OpenNewEntry_Modal();
+}
+
+function OpenNewEntry_Modal(){
+  $('#ModalNewEntry').modal('open');
+}
+function CloseNewEntry_Modal(){
+  $('#ModalNewEntry').modal('close');
+  Clear_EntryFormFields();
+}
+
+
+function Open_Entries_Modal(){
+  $('#Modal_Entries').modal('open');
+}
+function Close_Entries_Modal(){
+  $('#Modal_Entries').modal('close');
+}
+
+function Open_IndividualEntries_Modal(){
+  $('#Modal_Individual_Entries').modal('open');
+}
+function Close_IndividualEntries_Modal(){
+  $('#Modal_Individual_Entries').modal('close');
+}
+
+function Open_ExtractReport_Modal(){
+  $('#Modal_ExtractReport').modal('open');
+}
+function Close_ExtractReport_Modal(){
+  $('#Modal_ExtractReport').modal('close');
+}
+
+//-------------------------------------------------------------------------------------
+
+function Clear_EntryFormFields(){
+  document.getElementById('DP_EmployeeName').selectedIndex = 0;
+  document.getElementById('DP_Section').selectedIndex = 0;
+  document.getElementById('DP_EntryType').selectedIndex = 0;
+  document.getElementById("TB_Points").value = "";
+  document.getElementById("Date_EntryDate").value = "";
+  document.getElementById("TB_TicketNumber").value = "";
+  document.getElementById("Txt_Description").value = "";
+  document.getElementById("Div_ErrorType").style.display = "none";
+  document.getElementById('DP_ErrorType').selectedIndex = 0;
+}
+
+//------------------------------------------------------------------------------------------------------------------
+// VARIABLES
+
+  var CurrentYear = (new Date()).getFullYear();
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var current_date = new Date();
+  var current_month = months[current_date.getMonth()];
+
+
+//------------------------------------------------------------------------------------------
+
+var Entry_Function;
+var IT_Employees = [];
+var IT_Employees_ID = [];
+var TotalPoints_Error_PerEmployee = [];
+
+var IT_Employees_Items;
+
+function Load_EmployeeNames() {
+  var siteUrl = 'https://intranet.houseofit.com.au/it/';
+  var clientContext = new SP.ClientContext(siteUrl);
+
+  // Department
+  var Departments = clientContext.get_web().get_lists().getByTitle("IT Members");
+  var camlQuery_Department = new SP.CamlQuery();
+      camlQuery_Department.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+          
+      '<Eq>'+
+      '<FieldRef Name=\'Status\'/>' + 
+      '<Value Type=\'Text\'>'+"Active"+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '</View>');
+  this.IT_Employees_Items = Departments.getItems(camlQuery_Department);
+
+  clientContext.load(IT_Employees_Items);
+  clientContext.executeQueryAsync(Read_Employee_Succeeded, onQueryFailed);
+
+}
+
+function Read_Employee_Succeeded(sender, args) {
+    var listItemsCollection = IT_Employees_Items.getEnumerator();
+    var Array_Employee= [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Employee.push(listItem.get_item('Title'));
+        IT_Employees.push(listItem.get_item('Title'));
+        IT_Employees_ID.push(listItem.get_item('Employee_ID'));
+
+      //  console.log(IT_Employees + " = " + IT_Employees_ID);
+    }
+
+    for (var i = 0; i<=Array_Employee.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_Employee[i];
+        opt.value = Array_Employee[i];
+      document.getElementById('DP_EmployeeName').appendChild(opt);
+    }
+
+    for (var i = 0; i<=Array_Employee.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_Employee[i];
+        opt.value = Array_Employee[i];
+      document.getElementById('DP_EmployeeName_Filter').appendChild(opt);
+    }
+
+    for (var i = 0; i<=Array_Employee.length-1; i++){
+        var opt = document.createElement('option');
+        opt.innerHTML = Array_Employee[i];
+        opt.value = Array_Employee[i];
+      document.getElementById('DP_EmployeeName_Individual').appendChild(opt);
+    }
+
+    $('select').material_select();
+
+    // EXECUTE SCIPTS TO LOAD CHARTS
+    ExecuteOrDelayUntilScriptLoaded(LoadErrors,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(LoadReworks,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Load_Monthly_PerEmployee,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Load_Monthly_OverAll,'sp.js');
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+var oListItem_Points;
+function AddEntry(){
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+  var V_CurrentTime =  new Date().toLocaleTimeString('en-US', { hour12: true, 
+                                               hour: "numeric", 
+                                               minute: "numeric"});
+
+    var EntryDate = new Date(document.getElementById("Date_EntryDate").value); 
+    var Moth_EntryDate = EntryDate.getMonth()+1;
+
+    var V_MonthEntryDate = months[parseInt(Moth_EntryDate)-1];
+    var V_YearEntryDate = EntryDate.getFullYear();    
+    
+
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+
+  var itemCreateInfo = new SP.ListItemCreationInformation();
+  this.oListItem_Points = oList.addItem(itemCreateInfo);
+
+  oListItem_Points.set_item('LI_EmployeeID', IT_Employees_ID[IT_Employees.indexOf(document.getElementById('DP_EmployeeName').value)]);
+  oListItem_Points.set_item('LI_EmployeeName', document.getElementById('DP_EmployeeName').value);
+  oListItem_Points.set_item('LI_Section', document.getElementById('DP_Section').value);
+  oListItem_Points.set_item('LI_EntryType', document.getElementById('DP_EntryType').value);
+
+  if(document.getElementById('DP_EntryType').value == "Error"){
+    oListItem_Points.set_item('LI_ErrorType', document.getElementById('DP_ErrorType').value);
+  }
+  else if(document.getElementById('DP_EntryType').value == "Rework"){
+    oListItem_Points.set_item('LI_ErrorType', "None");
+  }
+
+  oListItem_Points.set_item('LI_EntryPoints', document.getElementById('TB_Points').value);
+  oListItem_Points.set_item('LI_TicketNumber', document.getElementById('TB_TicketNumber').value);
+  oListItem_Points.set_item('LI_EntryDescription', document.getElementById('Txt_Description').value);
+  oListItem_Points.set_item('LI_EntryDate', document.getElementById('Date_EntryDate').value);
+  oListItem_Points.set_item('LI_EntryMonth', V_MonthEntryDate);
+  oListItem_Points.set_item('LI_EntryYear', V_YearEntryDate);
+  oListItem_Points.set_item('LI_TimeAdded', V_CurrentTime);
+
+  oListItem_Points.update();
+  clientContext.load(oListItem_Points);
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded_AddPoints), Function.createDelegate(this, this.onQueryFailed));
+}
+
+
+function onQuerySucceeded_AddPoints() {
+
+swal({
+  type: 'success',
+  title: 'Entry has been saved',
+  showConfirmButton: false,
+  timer: 1000
+})
+
+  Clear_EntryFormFields();
+  CloseNewEntry_Modal();
+
+  for(var i=document.getElementById("Table_Entries").rows.length;i>1;i--) {
+  document.getElementById("Table_Entries").deleteRow(i-1);}
+    ExecuteOrDelayUntilScriptLoaded(Get_Entries, "sp.js");
+
+
+    ExecuteOrDelayUntilScriptLoaded(LoadErrors,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(LoadReworks,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Load_Monthly_PerEmployee,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Load_Monthly_OverAll,'sp.js');
+    
+}
+
+function EditEntry(){
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+  var V_CurrentTime =  new Date().toLocaleTimeString('en-US', { hour12: true, 
+                                               hour: "numeric", 
+                                               minute: "numeric"});
+
+
+    var EntryDate = new Date(document.getElementById("Date_EntryDate").value); 
+    var Moth_EntryDate = EntryDate.getMonth()+1;
+
+    var V_MonthEntryDate = months[parseInt(Moth_EntryDate)-1];
+    var V_YearEntryDate = EntryDate.getFullYear();    
+    
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+
+  this.oListItem_Points = oList.getItemById(Entry_ID_ToEdit);
+
+  oListItem_Points.set_item('LI_EmployeeID', IT_Employees_ID[IT_Employees.indexOf(document.getElementById('DP_EmployeeName').value)]);
+  oListItem_Points.set_item('LI_EmployeeName', document.getElementById('DP_EmployeeName').value);
+  oListItem_Points.set_item('LI_Section', document.getElementById('DP_Section').value);
+  oListItem_Points.set_item('LI_EntryType', document.getElementById('DP_EntryType').value);
+  oListItem_Points.set_item('LI_EntryPoints', document.getElementById('TB_Points').value);
+
+  if(document.getElementById('DP_EntryType').value == "Error"){
+    oListItem_Points.set_item('LI_ErrorType', document.getElementById('DP_ErrorType').value);
+  }
+  else if(document.getElementById('DP_EntryType').value == "Rework"){
+    oListItem_Points.set_item('LI_ErrorType', "None");
+  }
+
+  oListItem_Points.set_item('LI_TicketNumber', document.getElementById('TB_TicketNumber').value);
+  oListItem_Points.set_item('LI_EntryDescription', document.getElementById('Txt_Description').value);
+  oListItem_Points.set_item('LI_EntryDate', document.getElementById('Date_EntryDate').value);
+  oListItem_Points.set_item('LI_EntryMonth', V_MonthEntryDate);
+  oListItem_Points.set_item('LI_EntryYear', V_YearEntryDate);
+  oListItem_Points.set_item('LI_TimeAdded', V_CurrentTime);
+
+  oListItem_Points.update();
+  clientContext.load(oListItem_Points);
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded_AddPoints), Function.createDelegate(this, this.onQueryFailed));
+}
+
+function Validate_PointsFields(){
+  if(isEmptyOrSpaces(document.getElementById("DP_EmployeeName").options[ document.getElementById("DP_EmployeeName").selectedIndex ].value) ||
+    isEmptyOrSpaces(document.getElementById("DP_Section").options[ document.getElementById("DP_Section").selectedIndex ].value) ||
+    isEmptyOrSpaces(document.getElementById("DP_EntryType").options[ document.getElementById("DP_EntryType").selectedIndex ].value) ||
+    isEmptyOrSpaces(document.getElementById('TB_Points').value) ||
+    isEmptyOrSpaces(document.getElementById('Date_EntryDate').value) ||
+    isEmptyOrSpaces(document.getElementById('Txt_Description').value)){
+
+      swal(
+      'Oops...',
+      'Please fill all the required fields!',
+      'error'
+    )
+
+  }
+  else{
+    if(Entry_Function == "Add"){
+      AddEntry();
+    }
+    else if(Entry_Function == "Edit"){
+      EditEntry();
+    }   
+
+  }
+
+}
+
+var Entry_Items;
+function Get_Entries(){
+  var context = SP.ClientContext.get_current();
+
+  var Entries = context.get_web().get_lists().getByTitle("IT Point System");
+  var camlQuery = SP.CamlQuery.createAllItemsQuery();
+  this.Entry_Items = Entries.getItems(camlQuery);
+
+  context.load(Entry_Items);
+  context.executeQueryAsync(GetEntries_Succeeded, onQueryFailed);
+}
+
+function RefreshEntries(){
+document.getElementById('DP_EmployeeName_Filter').selectedIndex = 0;
+document.getElementById('DP_Month_Filter').selectedIndex = 0;
+
+  for(var i=document.getElementById("Table_Entries").rows.length;i>1;i--) {
+  document.getElementById("Table_Entries").deleteRow(i-1);}
+    ExecuteOrDelayUntilScriptLoaded(Get_Entries, "sp.js");
+}
+
+function SearchEntry_Clicked(){
+
+  for(var i=document.getElementById("Table_Entries").rows.length;i>1;i--) {
+  document.getElementById("Table_Entries").deleteRow(i-1);}
+  if (document.getElementById("DP_EmployeeName_Filter").options[ document.getElementById("DP_EmployeeName_Filter").selectedIndex ].value == "Select All") {
+  	ExecuteOrDelayUntilScriptLoaded(FilterByMonth, "sp.js");
+  }
+  else{
+  	ExecuteOrDelayUntilScriptLoaded(FilterByName, "sp.js");
+  }
+    
+
+    // FilterByName();
+}
+function FilterByName(){
+
+  if(isEmptyOrSpaces(document.getElementById("DP_EmployeeName_Filter").options[ document.getElementById("DP_EmployeeName_Filter").selectedIndex ].value) &&
+    isEmptyOrSpaces(document.getElementById("DP_Month_Filter").options[ document.getElementById("DP_Month_Filter").selectedIndex ].value)){
+      swal(
+      'Oops...',
+      'Please select a Name and Month',
+      'error'
+      )    
+  }
+  else{
+    var CurrentYear = (new Date()).getFullYear();
+    var ID = IT_Employees_ID[IT_Employees.indexOf(document.getElementById('DP_EmployeeName_Filter').value)];
+    // alert(ID +"\n"+CurrentYear+"\n"+document.getElementById("DP_Month_Filter").value);
+    var siteUrl = 'https://intranet.houseofit.com.au/';
+    var clientContext = new SP.ClientContext(siteUrl);
+    var oList = clientContext.get_web().get_lists().getByTitle("IT Point System");
+    var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(
+        '<View>'+
+        '<Query>'+
+        '<Where>'+          
+        '<And>'+
+        '<Eq>'+
+        '<FieldRef Name=\'LI_EmployeeID\'/>' + 
+        '<Value Type=\'Text\'>'+ID+'</Value>'+
+        '</Eq>'+
+        '<And>'+
+        '<Eq>'+
+        '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+        '<Value Type=\'Text\'>'+document.getElementById("DP_Month_Filter").value+'</Value>'+
+        '</Eq>'+ 
+        '<Eq>'+
+        '<FieldRef Name=\'LI_EntryYear\'/>' + 
+        '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+        '</Eq>'+        
+        '</And>'+
+        '</And>'+
+        '</Where>'+
+        '</Query>'+
+        '</View>');
+    this.Entry_Items = oList.getItems(camlQuery);
+    clientContext.load(Entry_Items);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.GetEntries_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+  }
+
+}
+function FilterByMonth(){
+	var CurrentYear = (new Date()).getFullYear();
+
+    var siteUrl = 'https://intranet.houseofit.com.au/';
+    var clientContext = new SP.ClientContext(siteUrl);
+    var oList = clientContext.get_web().get_lists().getByTitle("IT Point System");
+    var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(
+        '<View>'+
+        '<Query>'+
+        '<Where>'+          
+        '<And>'+
+        '<Eq>'+
+        '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+        '<Value Type=\'Text\'>'+document.getElementById("DP_Month_Filter").value+'</Value>'+
+        '</Eq>'+ 
+        '<Eq>'+
+        '<FieldRef Name=\'LI_EntryYear\'/>' + 
+        '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+        '</Eq>'+        
+        '</And>'+
+        '</Where>'+
+        '</Query>'+
+        '</View>');
+    this.Entry_Items = oList.getItems(camlQuery);
+    clientContext.load(Entry_Items);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.GetEntries_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+
+function GetEntries_Succeeded(sender, args) {
+
+    var listItemsCollection = Entry_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+       var var_ItemID = listItem.get_item('ID');
+
+       var ErrorType = listItem.get_item('LI_ErrorType');
+       var TicketNumber = listItem.get_item('LI_TicketNumber');
+
+       if(ErrorType == null){
+        ErrorType = "N/A";
+       }
+
+       if(TicketNumber == null){
+        TicketNumber = "N/A";
+       }
+
+                              $("#Table_Entries").append("<tr align='middle'>" +
+                               "<td align='left'>"+listItem.get_item('LI_EmployeeName')+"</td>" +
+                               "<td align='left'>"+listItem.get_item('LI_Section')+"</td>" +
+                               "<td align='left'>"+listItem.get_item('LI_EntryType')+"</td>"  +
+                               "<td align='left'>"+ErrorType+"</td>"  +
+                               "<td align='left'>"+listItem.get_item('LI_EntryPoints')+"</td>"  +
+                               "<td align='left'>"+TicketNumber+"</td>"  +
+                               "<td align='left'>"+listItem.get_item('LI_EntryDescription')+"</td>"  +
+                               "<td align='left'>"+listItem.get_item('LI_EntryDate')+"</td>"  +
+                               "<td align='left'>"+listItem.get_item('LI_TimeAdded')+"</td>"  +
+                               '<td><a class="btn-floating waves-effect waves-light light-blue z-depth-2 hoverable" id="'+var_ItemID+'"     onclick="EditEntry_Clicked(this)" ><i class=" material-icons">mode_edit</i></a></td>' +
+                               '<td><a class="btn-floating waves-effect waves-light light-blue z-depth-2 hoverable" id="'+var_ItemID+'" onclick="DeleteEntry_Clicked(this)" ><i class=" material-icons">delete</i></a></td>' +                               
+                               "</tr>");
+
+
+    }
+}
+
+var Entry_ID_ToEdit;
+function EditEntry_Clicked(objButton){
+  Entry_ID_ToEdit = objButton.id;
+  ExecuteOrDelayUntilScriptLoaded(GetEntry_ToEdit,'sp.js');
+  Entry_Function = "Edit";
+}
+
+var Entry_ToEdit;
+function GetEntry_ToEdit(){
+   var clientContext = new SP.ClientContext(); 
+     var targetList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+     Entry_ToEdit = targetList.getItemById(Entry_ID_ToEdit);
+     clientContext.load(Entry_ToEdit);
+     clientContext.executeQueryAsync(Function.createDelegate(this, this.GetEntry_ToEdit_Success), Function.createDelegate(this, this.onQueryFailed));
+}
+function GetEntry_ToEdit_Success(){
+  document.getElementById("DP_EmployeeName").value = Entry_ToEdit.get_item('LI_EmployeeName');
+  document.getElementById("DP_Section").value = Entry_ToEdit.get_item('LI_Section');
+  document.getElementById("DP_EntryType").value = Entry_ToEdit.get_item('LI_EntryType');
+  document.getElementById("TB_Points").value = Entry_ToEdit.get_item('LI_EntryPoints');
+  document.getElementById("Date_EntryDate").value = Entry_ToEdit.get_item('LI_EntryDate');
+  document.getElementById("TB_TicketNumber").value = Entry_ToEdit.get_item('LI_TicketNumber');
+  document.getElementById("Txt_Description").value = Entry_ToEdit.get_item('LI_EntryDescription');
+
+  if(Entry_ToEdit.get_item('LI_EntryType') == "Error"){
+    document.getElementById("DP_ErrorType").value = Entry_ToEdit.get_item('LI_ErrorType');
+    document.getElementById("Div_ErrorType").style.display = "block";
+  }
+  else if(Entry_ToEdit.get_item('LI_EntryType') == "Rework"){
+    document.getElementById("DP_ErrorType").value = "";
+  }
+
+
+  Close_Entries_Modal();
+  OpenNewEntry_Modal();
+}
+
+var oListItem_Delete; 
+function DeleteEntry_Clicked(objButton){
+  // alert(objButton.id);
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+  this.oListItem_Points = oList.getItemById(objButton.id);
+  oListItem_Points.deleteObject();
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.DeleteEntry_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function DeleteEntry_Succeeded(){
+  swal({
+  type: 'success',
+  title: 'Entry has been Deleted',
+  showConfirmButton: false,
+  timer: 1000
+})
+
+
+  Close_Entries_Modal();
+
+    ExecuteOrDelayUntilScriptLoaded(LoadErrors,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(LoadReworks,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Load_Monthly_PerEmployee,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Load_Monthly_OverAll,'sp.js');
+
+
+
+
+
+}
+
+//////////////////////////////////////////// LOAD CHARTS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+var Get_Errors_Items;
+
+function LoadErrors(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+	
+	// alert(current_month);
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryType\'/>' + 
+          '<Value Type=\'Text\'>'+"Error"+'</Value>'+
+          '</Eq>'+  
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+ 
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+      
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Errors_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Errors_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.LoadErrors_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+
+}
+function LoadErrors_Succeeded(){
+
+    var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Errors_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EmployeeID')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EmployeeID'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+      }
+    //   console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_id = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_id[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Employees_ID_final_points=[]
+
+        for(var i=0; i<=IT_Employees_ID.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+
+        if(IT_Employees_ID[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_id[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Employees_ID_final_points[i]=point;
+      }
+
+      //console.log("point: "+point);
+// console.log("IT_Employees_ID: "+IT_Employees_ID)
+      // console.log("IT_Employees_ID_final: "+IT_Employees_ID_final_points)
+
+    
+// console.log("---------------------------------------------------------------------------")
+      
+      
+
+    }
+      for (var i = 0 ; i <= IT_Employees_ID.length - 1; i++){
+        // console.log("IT_Employees_ID: "+ IT_Employees_ID[i] +" = "+IT_Employees_ID_final_points[i])
+      }
+var i;
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+
+  $('#chart_Errors').remove();
+  $('#div_TeamErrors').append('<div><canvas id="chart_Errors" width="832" height="700"><canvas></div>');
+
+chart_Errors = new Chart(document.getElementById("chart_Errors"), {
+    type: 'horizontalBar',
+    data: {
+      labels: IT_Employees, 
+      datasets: [
+        {
+          label: "Accumulated Points",
+          backgroundColor: "#3cba9f",
+          data: IT_Employees_ID_final_points,
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'ERRORS ('+current_month+')'
+      },
+              scales: {
+            xAxes: [{
+                ticks: {
+                  stepSize: 1,
+                    beginAtZero:true,
+                    max:5,
+                    fontSize: 20
+                }
+            }],
+        },
+    }
+});
+
+
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+//------------- LOAD REWORKS CHART
+
+var Get_Reworks_Items;
+
+function LoadReworks(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryType\'/>' + 
+          '<Value Type=\'Text\'>'+"Rework"+'</Value>'+
+          '</Eq>'+  
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+ 
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+      
+          '</And>'+
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Reworks_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Reworks_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.LoadReworks_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+function LoadReworks_Succeeded(){
+
+    var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Reworks_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EmployeeID')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EmployeeID'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+      }
+    //   console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_id = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_id[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Employees_ID_final_points=[]
+
+        for(var i=0; i<=IT_Employees_ID.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+
+        if(IT_Employees_ID[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_id[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Employees_ID_final_points[i]=point;
+      }
+
+      //console.log("point: "+point);
+      // console.log("IT_Employees_ID: "+IT_Employees_ID)
+      // console.log("IT_Employees_ID_final: "+IT_Employees_ID_final_points)
+
+    
+// console.log("---------------------------------------------------------------------------")
+      
+      
+
+    }
+      for (var i = 0 ; i <= IT_Employees_ID.length - 1; i++){
+        // console.log("IT_Employees_ID: "+ IT_Employees_ID[i] +" = "+IT_Employees_ID_final_points[i])
+      }
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+  $('#chart_Reworks').remove();
+  $('#div_TeamReworks').append('<canvas id="chart_Reworks" width="832" height="700"><canvas>');
+
+Chart_Reworks = new Chart(document.getElementById("chart_Reworks"), {
+    type: 'horizontalBar',
+    data: {
+      labels: IT_Employees,
+      datasets: [
+        {
+          label: "Accumulated Points",
+          backgroundColor: "#3e95cd",
+          data: IT_Employees_ID_final_points
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'REWORKS ('+current_month+')'
+      },
+                    scales: {
+            xAxes: [{
+                ticks: {
+                  stepSize: 2,
+                    beginAtZero:true,
+                    max:4,
+                    fontSize: 20
+                }
+            }]
+        },
+    }
+});
+
+
+}
+
+//----------------------------------------------------------------------------------------------
+//----------- LOAD MONTHLY TOTAL PER EMPLOYEEE
+
+var Get_Monthly_PerEmployee_Items;
+
+function Load_Monthly_PerEmployee(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+          '<Value Type=\'Text\'>'+current_month+'</Value>'+
+          '</Eq>'+ 
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+      
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Monthly_PerEmployee_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Monthly_PerEmployee_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Load_Monthly_PerEmployee_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+function Load_Monthly_PerEmployee_Succeeded(){
+
+    var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Monthly_PerEmployee_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EmployeeID')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EmployeeID'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+      }
+    //   console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_id = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_id[i]=point;
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Employees_ID_final_points=[]
+
+        for(var i=0; i<=IT_Employees_ID.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+
+        if(IT_Employees_ID[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_id[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Employees_ID_final_points[i]=point;
+      }
+
+      //console.log("point: "+point);
+// console.log("IT_Employees_ID: "+IT_Employees_ID)
+      // console.log("IT_Employees_ID_final: "+IT_Employees_ID_final_points)
+
+    
+// console.log("---------------------------------------------------------------------------")
+      
+      
+
+    }
+      for (var i = 0 ; i <= IT_Employees_ID.length - 1; i++){
+        // console.log("IT_Employees_ID: "+ IT_Employees_ID[i] +" = "+IT_Employees_ID_final_points[i])
+      }
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+  $('#chart_TotalPoints_CurrentMonth').remove();
+  $('#div_TeamAccumulated').append('<canvas id="chart_TotalPoints_CurrentMonth" width="832" height="700"><canvas>');
+
+Chart_AccumulatedPoints = new Chart(document.getElementById("chart_TotalPoints_CurrentMonth"), {
+    type: 'horizontalBar',
+    data: {
+      labels: IT_Employees,
+      datasets: [
+        {
+          label: "Accumulated Points",
+          backgroundColor: "#c45850",
+          data: IT_Employees_ID_final_points
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Accumulated Points ("+current_month+")"
+      },
+                    scales: {
+            xAxes: [{
+                ticks: {
+                  stepSize: 1,
+                    beginAtZero:true,
+                    max:10,
+                    fontSize: 20
+                }
+            }]
+        },
+    }
+});
+
+
+}
+//--------------------------------------------------------------------------------------------------
+//----------------LOAD OVER ALL MONTHLY
+
+var Get_Monthly_OverAll_Items;
+
+function Load_Monthly_OverAll(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var current_date = new Date();
+  var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+      
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Monthly_OverAll_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Monthly_OverAll_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Load_Monthly_OverAll_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Load_Monthly_OverAll_Succeeded(){
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+
+ var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Monthly_OverAll_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EntryMonth')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EntryMonth'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+      }
+    // console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_month = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_month[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Monthly_final_points=[]
+
+        for(var i=0; i<=months.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+        if(months[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_month[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Monthly_final_points[i]=point;
+      }
+    }
+
+      // for (var i = 0 ; i <= months.length - 1; i++){
+      //   console.log("Month: "+ months[i] +" = "+IT_Monthly_final_points[i])
+      // }
+
+  $('#chart_TotalPoints_perMonth').remove();
+  $('#div_TeamMonthly').append('<canvas id="chart_TotalPoints_perMonth" width="832" height="700"><canvas>');
+
+new Chart(document.getElementById("chart_TotalPoints_perMonth"), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "Accumulated Points",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd","#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2"],
+          data: IT_Monthly_final_points
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      ticks: {beginAtZero:true},
+      title: {
+        display: true,
+        text: 'Over All Monthly'
+      },
+
+      scales: {
+            yAxes: [{
+                ticks: {
+                  stepSize: 1,
+                    beginAtZero:true
+                }
+            }]
+        },
+    }
+});
+
+
+
+}
+//------------------------------------------------------------------------------------------------------------
+/////////////////////////////////////// >> INDIVIDUAL ERRORS << \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+var Get_Individual_Errors_Items;
+
+function GetIndividual_Errors(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var current_date = new Date();
+  var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+
+var ID = IT_Employees_ID[IT_Employees.indexOf(document.getElementById('DP_EmployeeName_Individual').value)];
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryType\'/>' + 
+          '<Value Type=\'Text\'>'+"Error"+'</Value>'+
+          '</Eq>'+            
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeID\'/>' + 
+          '<Value Type=\'Text\'>'+ID+'</Value>'+
+          '</Eq>'+            
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+     
+          '</And>'+ 
+          '</And>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Individual_Errors_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Individual_Errors_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.GetIndividual_Errors_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function GetIndividual_Errors_Succeeded(){
+    var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+
+ var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Individual_Errors_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EntryMonth')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EntryMonth'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+      }
+    // console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_month = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_month[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Monthly_final_points=[]
+
+        for(var i=0; i<=months.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+        if(months[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_month[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Monthly_final_points[i]=point;
+      }
+    }
+
+      // for (var i = 0 ; i <= months.length - 1; i++){
+      //   console.log("Month: "+ months[i] +" = "+IT_Monthly_final_points[i])
+      // }
+
+  $('#chart_Individual_Errors').remove();
+  $('#div_IndividualErrors').append('<canvas id="chart_Individual_Errors" height="200"><canvas>');
+
+new Chart(document.getElementById("chart_Individual_Errors"), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "No. of Errors",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd","#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2"],
+          data: IT_Monthly_final_points
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      ticks: {beginAtZero:true},
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      title: {
+        display: true,
+        text: 'Monthly Error Count'
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                  stepSize: 1,
+                    beginAtZero:true,
+                    max:10
+                }
+            }]
+        },
+    }
+});
+}
+
+//------------------------------------------------------------------------------------------------------------
+/////////////////////////////////////// >> INDIVIDUAL REWORKS << \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+var Get_Individual_Reworks_Items;
+
+function GetIndividual_Reworks(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var current_date = new Date();
+  var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+
+var ID = IT_Employees_ID[IT_Employees.indexOf(document.getElementById('DP_EmployeeName_Individual').value)];
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryType\'/>' + 
+          '<Value Type=\'Text\'>'+"Rework"+'</Value>'+
+          '</Eq>'+            
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeID\'/>' + 
+          '<Value Type=\'Text\'>'+ID+'</Value>'+
+          '</Eq>'+            
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+     
+          '</And>'+ 
+          '</And>'+ 
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Individual_Reworks_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Individual_Reworks_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.GetIndividual_Reworks_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function GetIndividual_Reworks_Succeeded(){
+    var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+
+ var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Individual_Reworks_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EntryMonth')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EntryMonth'));
+        // Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_Points.push("1"); 
+      }
+    // console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_month = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_month[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Monthly_final_points=[]
+
+        for(var i=0; i<=months.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+        if(months[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_month[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Monthly_final_points[i]=point;
+      }
+    }
+
+      // for (var i = 0 ; i <= months.length - 1; i++){
+      //   console.log("Month: "+ months[i] +" = "+IT_Monthly_final_points[i])
+      // }
+
+  $('#chart_Individual_Reworks').remove(); // this is my <canvas> element
+  $('#div_IndividualReworks').append('<canvas id="chart_Individual_Reworks" height="200"><canvas>');
+
+new Chart(document.getElementById("chart_Individual_Reworks"), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "No. of Rework",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd","#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2"],
+          data: IT_Monthly_final_points
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      ticks: {beginAtZero:true},
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      title: {
+        display: true,
+        text: 'Monthly Rework Count'
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                  stepSize: 1,
+                    beginAtZero:true,
+                    max:10
+                }
+            }]
+        },
+    }
+});
+}
+
+/////////////////////////////////////// >> INDIVIDUAL OVERALL << \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+var Get_Individual_Overall_Items;
+
+function GetIndividual_Monthly(){
+  var CurrentYear = (new Date()).getFullYear();
+
+  var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+  var current_date = new Date();
+  var current_month = months[current_date.getMonth()];
+
+// console.log("IT_Employees_ID: " +IT_Employees_ID)
+
+var ID = IT_Employees_ID[IT_Employees.indexOf(document.getElementById('DP_EmployeeName_Individual').value)];
+
+       var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Point System');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(
+        '<View>'+
+          '<Query>'+
+          '<Where>'+       
+          '<And>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeID\'/>' + 
+          '<Value Type=\'Text\'>'+ID+'</Value>'+
+          '</Eq>'+          
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EntryYear\'/>' + 
+          '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+          '</Eq>'+  
+          '</And>'+   
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_Individual_Overall_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Individual_Overall_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.GetIndividual_Monthly_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function GetIndividual_Monthly_Succeeded(){
+    var months = [ "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December" ];
+
+ var Array_ID_Points = [];
+    var Arrayy_Temp_Points = [];
+    var Arrayy_Temp_ID = [];
+
+    var var_Arrayy_Temp_ID = [];
+
+      var listItemsCollection = Get_Individual_Overall_Items.getEnumerator();
+      while (listItemsCollection.moveNext()) {
+        var listItem = listItemsCollection.get_current();
+        Array_ID_Points.push(listItem.get_item('LI_EntryMonth')+" : "+listItem.get_item('LI_EntryPoints')); 
+        Arrayy_Temp_ID.push(listItem.get_item('LI_EntryMonth'));
+        Arrayy_Temp_Points.push(listItem.get_item('LI_EntryPoints')); 
+
+      }
+    // console.log(Array_ID_Points);
+    // console.log(Arrayy_Temp_ID);
+    // console.log(Arrayy_Temp_Points);
+
+
+    var uniqueItems = Array.from(new Set(Arrayy_Temp_ID))
+    // console.log("uniqueItems: "+uniqueItems);
+    var final_array_total_points_per_month = [];
+
+    var temp_add;
+
+    for(var i=0; i<=uniqueItems.length-1;i++){
+      var point=0;
+      for(var c=0; c<=Arrayy_Temp_ID.length-1;c++){
+        // console.log("uniqueItems[i]: "+uniqueItems[i]);
+        // console.log("Arrayy_Temp_ID[c]: "+Arrayy_Temp_ID[c]);
+        if(uniqueItems[i]==Arrayy_Temp_ID[c]){
+          point= parseInt(point)+ parseInt(Arrayy_Temp_Points[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }
+      }
+
+      // console.log("point: "+point);
+
+      final_array_total_points_per_month[i]=point;
+      
+
+    }
+//    console.log("uniqueItems: "+uniqueItems);
+//    console.log("final_array_total_points_per_id: "+final_array_total_points_per_id);
+// console.log("----------------------------mmmmmmmmmmmmmmmmmmmmmmm-----------------------------------------------")
+var IT_Monthly_final_points=[]
+
+        for(var i=0; i<=months.length-1;i++){
+      var point=0;
+      for(var c=0; c<=uniqueItems.length-1;c++){
+        // console.log("IT_Employees_ID[i]: "+IT_Employees_ID[i]);
+        // console.log("final_array_total_points_per_id[c]: "+uniqueItems[c]);
+
+        if(months[i]==uniqueItems[c]){
+          // console.log("c: "+c)
+          point= parseInt(final_array_total_points_per_month[c]);
+          //temp_add+=Arrayy_Temp_Points[c];
+
+        }else{
+          
+        }
+        IT_Monthly_final_points[i]=point;
+      }
+    }
+
+      // for (var i = 0 ; i <= months.length - 1; i++){
+      //   console.log("Month: "+ months[i] +" = "+IT_Monthly_final_points[i])
+      // }
+
+  $('#chart_Individual_Monthly').remove(); // this is my <canvas> element
+  $('#div_IndividuaMonthly').append('<canvas id="chart_Individual_Monthly" height="200"><canvas>');
+
+new Chart(document.getElementById("chart_Individual_Monthly"), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "Accumulated Points",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd","#8e5ea2","#3cba9f","#e8c3b9","#c45850","#3e95cd", "#8e5ea2"],
+          data: IT_Monthly_final_points
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      ticks: {beginAtZero:true},
+
+      responsive: true,
+      maintainAspectRatio: false,
+
+      title: {
+        display: true,
+        text: 'Monthly Over All'
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                  stepSize: 1,
+                    beginAtZero:true,
+                    max:10
+                }
+            }]
+        },
+    }
+});
+}
+
+
+function ResetCanvas_Team(){
+
+
+$('.div_TeamErrors').children().eq(1).remove();
+$('.div_TeamReworks').children().eq(1).remove();
+$('.div_TeamAccumulated').children().eq(0).remove();
+$('.div_TeamMonthly').children().eq(0).remove();
+
+// var divElements = document.getElementsByClassName("chartjs-size-monitor");
+// divElements[0].parentNode.removeChild(divElements[0]);
+
+
+// $('#div_TeamErrors').append('<canvas id="chart_Errors" width="830" height="350"><canvas>');
+// $('#div_TeamReworks').append('<canvas id="chart_Reworks" width="830" height="350"><canvas>');
+// $('#div_TeamAccumulated').append('<canvas id="chart_TotalPoints_CurrentMonth" width="830" height="350"><canvas>');
+// $('#div_TeamMonthly').append('<canvas id="chart_TotalPoints_perMonth" width="830" height="350"><canvas>');
+
+    // ExecuteOrDelayUntilScriptLoaded(LoadErrors,'sp.js');
+    // ExecuteOrDelayUntilScriptLoaded(LoadReworks,'sp.js');
+    // ExecuteOrDelayUntilScriptLoaded(Load_Monthly_PerEmployee,'sp.js');
+    // ExecuteOrDelayUntilScriptLoaded(Load_Monthly_OverAll,'sp.js');
+
+}
+
+
+//---------------------------------------------------------------------------------------------------------
+
+function GetItemsToExtract(){
+
+  var CurrentYear = (new Date()).getFullYear();
+
+  // var months = [ "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December" ];
+  // var current_date = new Date();
+  // var current_month = months[current_date.getMonth()];
+
+  var current_month = document.getElementById("DP_ReportMonth").value;
+
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList_Department = clientContext.get_web().get_lists().getByTitle('IT Point System');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<And>'+
+      '<Eq>'+
+      '<FieldRef Name=\'LI_EntryMonth\'/>' + 
+      '<Value Type=\'Text\'>'+current_month+'</Value>'+
+      '</Eq>'+  
+      '<Eq>'+
+      '<FieldRef Name=\'LI_EntryYear\'/>' + 
+      '<Value Type=\'Text\'>'+CurrentYear+'</Value>'+
+      '</Eq>'+      
+      '</And>'+
+      '</Where>'+
+      '</Query>'+
+      '</View>');
+    this.collListItem = oList_Department.getItems(camlQuery);
+    clientContext.load(collListItem);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.onQuerySucceeded_ExtractData), Function.createDelegate(this, this.onQueryFailed));  
+}
+
+function onQuerySucceeded_ExtractData(sender, args) {
+
+    var listItemInfo = '';
+
+    var listItemEnumerator = collListItem.getEnumerator();
+        listItemInfo += '<tr><th>Employee ID</th><th>Name</th><th>Entry Date</th><th>Entry Type</th><th>Entry Description</th></tr>'
+    while (listItemEnumerator.moveNext()) {
+        var oListItem = listItemEnumerator.get_current();
+
+        listItemInfo += 
+          '</td><td>' + oListItem.get_item('LI_EmployeeID') +
+            '</td><td>' + oListItem.get_item('LI_EmployeeName') +
+            '</td><td>' + oListItem.get_item('LI_EntryDate') + 
+            '</td><td>' + oListItem.get_item('LI_EntryType')+
+            '</td><td>' + oListItem.get_item('LI_EntryDescription')+'</td></tr>';
+    }
+//listItemInfo +='</table>';
+var tbl_obj=document.createElement("TABLE");
+tbl_obj.innerHTML=listItemInfo;
+tbl_obj.setAttribute("id","headerTable");
+
+    // console.log(listItemInfo.toString());
+fnExcelReport(tbl_obj);
+}
+
+function fnExcelReport(tbl)
+{
+    var tab_text="<table border='2px'><tr>";
+    var textRange; var j=0;
+    tab = tbl;//document.getElementById('headerTable'); // id of table
+
+    for(j = 0 ; j < tab.rows.length ; j++) 
+    {     
+        tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        //tab_text=tab_text+"</tr>";
+    }
+
+    tab_text=tab_text+"</table>";
+    tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+    tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+    tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE "); 
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+/*var _iframe=document.createElement("iframe");
+_iframe.setAttribute("id","txtArea1");
+_iframe.document.open("txt/html","replace");
+        _iframe.document.write(tab_text);
+        _iframe.document.close();
+        _iframe.focus(); 
+        sa=_iframe.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");*/
+document.body.innerHTML = '<iframe id="txtArea1" style="display:none"></iframe>';
+
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus(); 
+        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+    }  
+    else                 //other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+    return (sa);
+}
+
+function ClickShowExcel(){
+  if(document.getElementById('DP_ReportMonth').selectedIndex > 0){
+    ExecuteOrDelayUntilScriptLoaded(GetItemsToExtract, "sp.js");
+  }
+  else
+  {
+    swal(
+      'Oops...',
+      'Please select a month',
+      'error'
+    )
+  }
+
+}
+
+function Choose_Month_Selected(obj){
+  // alert(obj.id);
+
+  current_month = obj.id;
+
+  	swal({
+	  type: 'success',
+	  title: current_month,
+	  showConfirmButton: false,
+	  timer: 800
+	});
+
+  chart_Errors.destroy();
+  ExecuteOrDelayUntilScriptLoaded(LoadErrors,'sp.js');
+
+  Chart_Reworks.destroy();
+  ExecuteOrDelayUntilScriptLoaded(LoadReworks,'sp.js');
+
+  Chart_AccumulatedPoints.destroy();
+  ExecuteOrDelayUntilScriptLoaded(Load_Monthly_PerEmployee,'sp.js');
+
+}
+
+ </script>
+
+<body>
+
+<main>
+
+    <div class="row" id="div_Entries">
+    	<div class="col s9">
+        	<a class='dropdown-button btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight' href='#' data-activates='DropdownChoices'><i class="large material-icons icon-blue">date_range</i></a>    		
+    	</div>
+        <div class="col s1" >
+            <a class="dropdown-button btn-large btn-floating btn-flat AlignButtonRight light-blue lighten-5 tooltipped " id="lnk_DownloadReport" data-position="bottom" data-delay="40" data-tooltip="Download Report" onclick="Open_ExtractReport_Modal()"><i class="large material-icons icon-blue">file_download</i></a>
+        </div>      
+        <div class="col s1" >
+            <a class="dropdown-button btn-large btn-floating btn-flat AlignButtonRight light-blue lighten-5 tooltipped " id="lnk_IndividualEntries" data-position="bottom" data-delay="40" data-tooltip="Show Individual Charts" onclick="Open_IndividualEntries_Modal()"><i class="large material-icons icon-blue">poll</i></a>
+        </div>
+        <div class="col s1">
+            <a class="dropdown-button btn-large btn-floating btn-flat light-blue lighten-5 AlignButtonRight tooltipped " id="lnk_OpenEntries" data-position="bottom" data-delay="40" data-tooltip="Show Entries" onclick="Open_Entries_Modal()"><i class="large material-icons icon-blue">open_in_new</i></a>          
+        </div>
+    </div>
+
+<div class="row card-panel">
+
+<div class="col s6">
+  <div class="card-panel col z-depth-2" id="div_TeamErrors">
+    <canvas id="chart_Errors">
+    </canvas>
+  </div>
+</div>
+
+<div class="col s6">
+  <div class="card-panel col z-depth-2" id="div_TeamReworks">
+    <canvas id="chart_Reworks" >
+      
+    </canvas>
+  </div>
+</div>
+
+<div class="col s6">
+  <div class="card-panel col z-depth-2" id="div_TeamAccumulated">
+    <canvas id="chart_TotalPoints_CurrentMonth" >
+      
+    </canvas>
+  </div>
+</div>
+
+<div class="col s6">
+  <div class="card-panel col z-depth-2" id="div_TeamMonthly">
+    <canvas id="chart_TotalPoints_perMonth"  >
+      
+    </canvas>
+  </div>
+</div>
+
+</div>
+
+<div class="fixed-action-btn" id="div_NewEntry">
+    <a class="btn-floating btn-large waves-effect waves-light orange z-depth-1 btn-large hoverable" onclick="AddEntry_Clicked()">
+      <i class="large material-icons">add</i>
+    </a>
+</div>
+
+</main>
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+<div id="ModalNewEntry" class="modal ModalTopDistance">
+    <div id="ModalNewEntryContent" class="modal-content">
+          <div class="row">
+              <a class="btn-floating red AlignButtonRight" onclick="CloseNewEntry_Modal()"><i class=" material-icons">close</i></a>
+          </div>
+
+        <div class="row">
+            <div class="col s4"></div>
+            <div class="col s4">
+                  <div class="card-panel z-depth-2">
+                      <div class="input-field row">
+                          <select id="DP_EmployeeName">
+                            <option value="" disabled selected>Choose an Employee</option>
+                          </select>
+                          <label>Name</label>
+                      </div>                      
+                      <div class="input-field row">
+                          <select id="DP_Section" >
+                            <option value="" disabled selected>Choose a Section</option>
+                            <option value="Manage Office">Manage Office</option>
+                            <option value="Internal Tech">Internal Tech</option>
+                            <option value="Fiber Tech">Fiber Tech</option>
+                            <option value="SharePoint Developer">SharePoint Developer</option>
+                          </select>
+                          <label>Section</label>
+                      </div>
+                      <div class="input-field row">
+                          <select id="DP_EntryType" >
+                            <option value="" disabled selected>Choose a Type</option>
+                            <option value="Error">Error</option>
+                            <option value="Rework">Rework</option>
+                          </select>
+                          <label>Type</label>
+                      </div>      
+                      <div class="input-field row" id="Div_ErrorType">
+                          <select id="DP_ErrorType" >
+                            <option value="" disabled selected>Choose an Error Type</option>
+                            <option value="Technical Support">Technical Support</option>
+                            <option value="Customer Service Satisfaction">Customer Service Satisfaction</option>
+                          </select>
+                          <label>Error Type</label>
+                      </div>      
+                      <div class="input-field row">
+                            <input id="TB_Points" type="text" disabled placeholder="">
+                            <label for="TB_Points">Points</label>
+                      </div>
+                      <div class="input-field row">
+                            <label>Date</label>
+                            <input type = "text" class = "datepicker" id="Date_EntryDate" placeholder="">    
+                      </div>
+                      <div class="input-field row">
+                            <input id="TB_TicketNumber" type="text"  placeholder="">
+                            <label for="TB_TicketNumber">Ticket Number</label>
+                      </div>                  
+                      <div class="input-field row">
+                        <textarea id="Txt_Description" class="materialize-textarea" placeholder=""></textarea>
+                        <label for="Txt_Description">Description</label>
+                      </div>                  
+                      <div class="row">
+                        <a class="waves-effect waves-light btn light-blue darken-1 AlignButtonRight hoverable" onclick="Validate_PointsFields()">Save</a>
+                      </div>
+                  </div>      
+            </div>         
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<div id="Modal_Entries" class="modal ModalTopDistance">
+    <div id="Modal_EntriesContent" class="modal-content">
+      <div class="row">
+    <a class="btn-floating red AlignButtonRight waves-effect waves-light" onclick="Close_Entries_Modal()"><i class=" material-icons">close</i></a>
+    </div>
+    <div class="row">
+                      <div class="input-field col s4">
+                          <select id="DP_EmployeeName_Filter">
+                            <option value="" disabled selected>Choose an Employee</option>
+                            <option value="Select All" >Select All</option>
+                          </select>
+                          <label>Name</label>
+                      </div>  
+                      <div class="input-field col s2">
+                          <select id="DP_Month_Filter">
+                            <option value="" disabled selected>Choose a Month</option>
+                            <option value="January" >January</option>
+                            <option value="February" >February</option>
+                            <option value="March" >March</option>
+                            <option value="April" >April</option>
+                            <option value="May" >May</option>
+                            <option value="June" >June</option>
+                            <option value="July" >July</option>
+                            <option value="August" >August</option>
+                            <option value="September" >September</option>
+                            <option value="October" >October</option>
+                            <option value="November" >November</option>
+                            <option value="December" >December</option>
+                          </select>
+                          <label>Name</label>
+                      </div>   
+                      <div class="input-field col s2">
+                            <a class="light-blue btn waves-effect waves-light" onclick="SearchEntry_Clicked()"><i class=" material-icons">search</i></a>   
+                      </div>   
+                      <div class="input-field col s4">
+                            <a class="light-blue AlignButtonRight btn waves-effect waves-light" onclick="RefreshEntries()"><i class=" material-icons">refresh</i></a>   
+                      </div>                                               
+    </div>
+    <div class="row">
+          <table class="bordered responsive-table card-panel z-depth-2" id="Table_Entries">
+                  <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Section</th>
+                        <th>Type</th>
+                        <th>Error Type</th>
+                        <th>Points</th>
+                        <th>Ticket Number</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Entry Time</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                  </thead>
+              </table>  
+      </div>
+    </div>
+</div>
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+<div id="Modal_Individual_Entries" class="modal ModalTopDistance">
+    <div id="Modal_IndividualEntriesContent" class="modal-content">
+      <div class="row">
+          <div class="row">
+              <a class="btn-floating red AlignButtonRight waves-effect waves-light" onclick="Close_IndividualEntries_Modal()"><i class=" material-icons">close</i></a>
+          </div>      
+          <div class="row">
+                      <div class="input-field col s4">
+                          <select id="DP_EmployeeName_Individual">
+                            <option value="" disabled selected>Choose an Employee</option>
+                          </select>
+                          <label>Name</label>
+                      </div>             
+          </div>
+          <div class="row">
+              <div class="col s12 card-panel" id="div_IndividualErrors">
+                  <canvas id="chart_Individual_Errors" height="200"></canvas>
+              </div>
+              <div class="col s12 card-panel" id="div_IndividualReworks">
+                  <canvas id="chart_Individual_Reworks" height="200"></canvas>
+              </div>           
+              <div class="col s12 card-panel" id="div_IndividuaMonthly">
+                  <canvas id="chart_Individual_Monthly" height="200"></canvas>
+              </div>                              
+          </div> 
+      </div>    
+    </div>
+</div>
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- EXTRACT REPORT
+ -->
+<div id="Modal_ExtractReport" class="modal ModalTopDistance">
+    <div id="Modal_ExtractReportContent" class="modal-content">
+      <div class="row">
+          <div class="row">
+              <a class="btn-floating red AlignButtonRight waves-effect waves-light" onclick="Close_ExtractReport_Modal()"><i class=" material-icons">close</i></a>
+          </div>      
+          <div class="row">
+                      <div class=" col s4"></div>
+                      <div class=" col s4">
+                      <div class="input-field row">
+                          <select id="DP_ReportMonth">
+                            <option value="" disabled selected>Choose an Month</option>
+                            <option value="January" >January</option>
+                            <option value="February" >February</option>
+                            <option value="March" >March</option>
+                            <option value="April" >April</option>
+                            <option value="May" >May</option>
+                            <option value="June" >June</option>
+                            <option value="July" >July</option>
+                            <option value="August" >August</option>
+                            <option value="September" >September</option>
+                            <option value="October" >October</option>
+                            <option value="November" >November</option>
+                            <option value="December" >December</option>
+                          </select>
+                      </div>     
+                      <div class="input-field row">
+                        <a class="waves-effect waves-light btn light-blue darken-1 AlignButtonRight hoverable" onclick="ClickShowExcel()">Download</a>
+                      </div>    
+                      </div>                        
+          </div>  
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>
+          <div class="row"><h2> </h2></div>                    
+      </div>    
+    </div>
+</div>
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+  <!-- Dropdown Structure -->
+  <ul id='DropdownChoices' class='dropdown-content'>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="January" >January</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="February" >February</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="March" >March</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="April" >April</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="May" >May</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="June" >June</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="July" >July</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="August" >August</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="September" >September</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="October" >October</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="November" >November</a></li>
+    <li ><a  onclick="Choose_Month_Selected(this)" id="December" >December</a></li>
+  </ul>
+
+<!-- --------------------------------------------------------------------------------------------------------------------- -->
+
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>           
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/CSR%20TEMPLATE/EmployeeProfile/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+ 
+</html>

@@ -1,0 +1,1972 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="/_layouts/15/SP.dateTimeUtil.js"></script><script src="/SiteAssets/jquery.SPServices-2013.02a.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+
+  .AlignButtonRight{
+  float: right;
+}
+
+  .AlignButtonLeft{
+  float: left;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TrainingHeight { height:auto !important; }
+
+
+
+</style>
+
+ <script type="text/javascript">
+
+  $(document).ready(function() {
+
+    // setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  $('.tabs').tabs();
+  // $(".button-collapse").sideNav();
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+//   $('li').hover(
+
+//     document.getElementById($(this)).classList.add("grey lighten-2");
+//   });
+
+
+
+// $('li.collection-item').hover(function(){
+//   $('li.collection-item').addClass('grey lighten-2');
+// });
+
+// $('li.collection').mouseleave(function(){
+//   $('li.collection-item').removeClass('grey lighten-2');
+// });
+
+
+// var CurrentTime =  new Date().toLocaleTimeString('en-US', { hour12: true,
+//                                              hour: "numeric",
+//                                              minute: "numeric"});
+
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+//---------------------------------------------------------------------------------------------------
+
+  $('#Modal_TrainingForm').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+
+
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+
+
+
+// if( !$.trim( $('#Div_Staff_TrainingList').html() ).length ){
+//           $("#Div_Staff_Filler").append(
+
+//           "<div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div>"
+
+//         );
+// }
+
+// if( !$.trim( $('#Div_Supervisory_TrainingList').html() ).length ){
+//           $("#Div_Supervisory_Filler").append(
+
+//           "<div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div>"
+
+//         );
+// }
+
+// if( !$.trim( $('#Div_Manager_TrainingList').html() ).length ){
+//           $("#Div_Manager_Filler").append(
+
+//           "<div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div><div class = 'row'></div>"
+
+//         );
+// }
+
+//-------------------------------------------------------------------------------------------
+
+
+ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Training, "sp.js");
+
+// document.getElementById("Div_IT_Trainings").style.display = "none";
+
+
+
+
+// ADD CHIPS WHEN SELECTING EMPLOYEE
+
+
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+
+
+var IT_Employees = [];
+var IT_Employees_ID = [];
+
+
+var IT_Employees_Items;
+
+function Load_EmployeeNames() {
+  var siteUrl = 'https://intranet.houseofit.com.au/it/';
+  var clientContext = new SP.ClientContext(siteUrl);
+
+  // Department
+  var Departments = clientContext.get_web().get_lists().getByTitle("IT Members");
+  var camlQuery_Department = new SP.CamlQuery();
+      camlQuery_Department.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+      '<FieldRef Name=\'Status\'/>' +
+      '<Value Type=\'Text\'>'+"Active"+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '</View>');
+  this.IT_Employees_Items = Departments.getItems(camlQuery_Department);
+
+  clientContext.load(IT_Employees_Items);
+  clientContext.executeQueryAsync(Read_Employee_Succeeded, onQueryFailed);
+
+}
+
+function Read_Employee_Succeeded(sender, args) {
+    var listItemsCollection = IT_Employees_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        IT_Employees.push(listItem.get_item('Title'));
+        IT_Employees_ID.push(listItem.get_item('Employee_ID'));
+    }
+
+    for (var i = 0 ; i <= IT_Employees.length - 1; i++){
+
+      $("#TBL_IT_Members").append("<tr align='middle'>" +
+      "<td onClick='EmployeeName_Clicked(this)' id='Name-"+IT_Employees_ID[i]+"'' >"+
+      "<span style='margin-left: 60px !important;cursor: pointer'>"+IT_Employees[i]+"</span>"+
+      "</td>" +
+      "</tr>");
+
+      // $("#TBL_IT_Members").append(
+      // "<tr onclick='selectRow(this)'>" +
+      // "<td>"+
+      // "<input type='checkbox' id='"+IT_Employees_ID[i]+"' onChange='CheckBox_Name_Checked(this)' value='"+IT_Employees[i]+"' />"+
+      // "<label for='"+IT_Employees_ID[i]+"' class='grey-text text-darken-2'>"+
+      // IT_Employees[i]+
+      // "</label>"+
+      // "</td>"+
+      // "</tr>");
+
+    }
+
+// var offsetHeight = document.getElementById('Div_IT_Members').offsetHeight;
+// document.getElementById('Div_CompletedTrainings').style.height = offsetHeight+'px';
+
+
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+function EmployeeName_Clicked(Obj){
+  // alert(Obj.id);
+
+  // if(Obj.id != EmployeeSelected_ID){
+  // EmployeeSelected_ID = Obj.id;
+  // EmployeeSelected_Name = IT_Employees[IT_Employees_ID.indexOf(Obj.id)];
+
+  // // document.getElementById("lnk_OpenEntries").click();
+  // document.getElementById("Span_SelectedEmployee").innerText = EmployeeSelected_Name;
+
+  // ExecuteOrDelayUntilScriptLoaded(Get_Training_Completed, "sp.js");
+  // }
+  if(Obj.id.split("-").pop() != EmployeeSelected_ID){
+	  TD_Name_Selected = Obj.id;
+	  EmployeeSelected_ID = Obj.id.split("-").pop();
+	  EmployeeSelected_Name = IT_Employees[IT_Employees_ID.indexOf(Obj.id.split("-").pop())];
+
+	  // document.getElementById("lnk_OpenEntries").click();
+	  document.getElementById("Span_SelectedEmployee").innerText = EmployeeSelected_Name;
+
+	  ExecuteOrDelayUntilScriptLoaded(Get_Training_Completed, "sp.js");
+	}
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+//-----------------------------------------------------------------------------------------------------------------
+// ADD TRAINING
+
+var oListItem_AddTraining;
+function Add_Training(){
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+
+  var itemCreateInfo = new SP.ListItemCreationInformation();
+  this.oListItem_AddTraining = oList.addItem(itemCreateInfo);
+
+    oListItem_AddTraining.set_item('LI_JobLevel', document.getElementById("DP_JobLevel").value);
+    oListItem_AddTraining.set_item('LI_PositionTitle', document.getElementById("DP_Position").value);
+    oListItem_AddTraining.set_item('LI_Prerequisite', document.getElementById("TB_PrerequisiteTechnicalCertification").value);
+
+    oListItem_AddTraining.update();
+    clientContext.load(oListItem_AddTraining);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Add_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Add_Training_Succeeded(){
+  swal({
+  type: 'success',
+  title: 'Training has ben Added',
+  showConfirmButton: false,
+  timer: 700
+});
+
+  CloseTrainingForm();
+ExecuteOrDelayUntilScriptLoaded(Get_Training, "sp.js");
+document.getElementById('DP_JobLevel').selectedIndex = 0;
+document.getElementById('DP_Position').selectedIndex = 0;
+document.getElementById("TB_PrerequisiteTechnicalCertification").value = "";
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+// RETRIEVE STAFF TRAINING
+
+var Training_ID_All = [];
+
+var Get_StaffTraining_Items;
+function Get_Training(){
+        Training_ID_All = [];
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Geq><FieldRef Name=\'ID\'/>' +
+        '<Value Type=\'Number\'>1</Value></Geq></Where></Query><RowLimit></RowLimit></View>');
+        this.Get_StaffTraining_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_StaffTraining_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+function Get_Training_Succeeded(){
+    var listItemsCollection = Get_StaffTraining_Items.getEnumerator();
+
+    // STAFF----------------------------------------------------
+    var Array_Staff_Tier1_ID = [];
+    var Array_Staff_Tier1_Training = [];
+
+    var Array_Staff_Tier2_ID = [];
+    var Array_Staff_Tier2_Training = [];
+
+    var Array_Staff_Tier3_ID = [];
+    var Array_Staff_Tier3_Training = [];
+
+    //----------------------------------------------------------
+
+    // SUPERVISORY----------------------------------------------------
+    var Array_Supervisory_ITTeamLead_ID = [];
+    var Array_Supervisory_ITTeamLead_Training = [];
+
+    var Array_Supervisory_SRITTeamLead_ID = [];
+    var Array_Supervisory_SRITTeamLead_Training = [];
+
+    //----------------------------------------------------------
+
+    // MANAGERIAL----------------------------------------------------
+    var Array_Managerial_ITManager_ID = [];
+    var Array_Managerial_ITManager_Training = [];
+
+    var Array_Managerial_SRITManager_ID = [];
+    var Array_Managerial_SRITManager_Training = [];
+
+    //----------------------------------------------------------
+
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      var var_ItemID = listItem.get_item('ID');
+      var var_JobLevel = listItem.get_item('LI_JobLevel');
+      var var_Position = listItem.get_item('LI_PositionTitle');
+      var var_Training = listItem.get_item('LI_Prerequisite');
+
+      Training_ID_All.push(var_ItemID);
+
+      // STAFF
+      if(var_JobLevel == "Staff" && var_Position == "Tier 1 Jr Tech Support"){
+        Array_Staff_Tier1_ID.push(var_ItemID);
+        Array_Staff_Tier1_Training.push(var_Training);
+      }
+      else if(var_JobLevel == "Staff" && var_Position == "Tier 2 Jr Tech Support"){
+        Array_Staff_Tier2_ID.push(var_ItemID);
+        Array_Staff_Tier2_Training.push(var_Training);
+      }
+      else if(var_JobLevel == "Staff" && var_Position == "Tier 3 Sr Tech Support"){
+        Array_Staff_Tier3_ID.push(var_ItemID);
+        Array_Staff_Tier3_Training.push(var_Training);
+      }
+      else if(var_JobLevel == "Staff" && var_Position == "Tier 3 Sr System Admin"){
+        Array_Staff_Tier3_ID.push(var_ItemID);
+        Array_Staff_Tier3_Training.push(var_Training);
+      }
+      // SUPERVISORY
+      else if(var_JobLevel == "Supervisory" && var_Position == "IT Team Leader"){
+        Array_Supervisory_ITTeamLead_ID.push(var_ItemID);
+        Array_Supervisory_ITTeamLead_Training.push(var_Training);
+      }
+      else if(var_JobLevel == "Supervisory" && var_Position == "Sr IT Team Leader"){
+        Array_Supervisory_SRITTeamLead_ID.push(var_ItemID);
+        Array_Supervisory_SRITTeamLead_Training.push(var_Training);
+      }
+      // MANAGERIAL
+      else if(var_JobLevel == "Managerial" && var_Position == "IT Manager"){
+        Array_Managerial_ITManager_ID.push(var_ItemID);
+        Array_Managerial_ITManager_Training.push(var_Training);
+      }
+      else if(var_JobLevel == "Managerial" && var_Position == "Sr IT Manager"){
+        Array_Managerial_SRITManager_ID.push(var_ItemID);
+        Array_Managerial_SRITManager_Training.push(var_Training);
+      }
+
+
+    }
+
+    // console.log("Training_ID_All :"+Training_ID_All);
+
+        // STAFF TIER 1
+        $('#UL_Tier1').empty();
+        for (var i = 0; i<=Array_Staff_Tier1_ID.length-1; i++){
+        $("#UL_Tier1").append(
+          "<li class='collection-item' id='LI-"+Array_Staff_Tier1_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10 '>"+
+          "<input type='checkbox' id='CB-"+Array_Staff_Tier1_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='TIER 1 JR TECH SUPPORT' value='"+Array_Staff_Tier1_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Staff_Tier1_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Staff_Tier1_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+      // STAFF TIER 1 --> LIST
+
+        $('#UL_List_Tier1').empty();
+        for (var i = 0; i<=Array_Staff_Tier1_ID.length-1; i++){
+        $("#UL_List_Tier1").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Staff_Tier1_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Staff_Tier1_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Staff_Tier1_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+
+        // STAFF TIER 2
+        $('#UL_Tier2').empty();
+        for (var i = 0; i<=Array_Staff_Tier2_ID.length-1; i++){
+        $("#UL_Tier2").append(
+          "<li class='collection-item' id='LI-"+Array_Staff_Tier2_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row' >"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10'>"+
+          "<input type='checkbox' id='CB-"+Array_Staff_Tier2_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='TIER 2 JR TECH SUPPORT' value='"+Array_Staff_Tier2_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Staff_Tier2_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Staff_Tier2_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+
+        $('#UL_List_Tier2').empty();
+        for (var i = 0; i<=Array_Staff_Tier2_ID.length-1; i++){
+        $("#UL_List_Tier2").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Staff_Tier2_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Staff_Tier2_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Staff_Tier2_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------      
+
+        // STAFF TIER 3
+        $('#UL_Tier3').empty();
+        for (var i = 0; i<=Array_Staff_Tier3_ID.length-1; i++){
+        $("#UL_Tier3").append(
+          "<li class='collection-item' id='LI-"+Array_Staff_Tier3_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10 '>"+
+          "<input type='checkbox' id='CB-"+Array_Staff_Tier3_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='TIER 3 SR SYSTEM ADMIN / SR TECH SUPPORT' value='"+Array_Staff_Tier3_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Staff_Tier3_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Staff_Tier3_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+
+        // STAFF TIER 3 --> LIST
+        $('#UL_List_Tier3').empty();
+        for (var i = 0; i<=Array_Staff_Tier3_ID.length-1; i++){
+        $("#UL_List_Tier3").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Staff_Tier3_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Staff_Tier3_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Staff_Tier3_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+        // SUPERVISORY IT TEAMLEAD
+        $('#UL_IT_TeamLead').empty();
+        for (var i = 0; i<=Array_Supervisory_ITTeamLead_ID.length-1; i++){
+        $("#UL_IT_TeamLead").append(
+          "<li class='collection-item' id='LI-"+Array_Supervisory_ITTeamLead_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10 '>"+
+          "<input type='checkbox' id='CB-"+Array_Supervisory_ITTeamLead_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='IT TEAM LEADER' value='"+Array_Supervisory_ITTeamLead_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Supervisory_ITTeamLead_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Supervisory_ITTeamLead_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+      // SUPERVISORY IT TEAMLEAD --> LIST
+        $('#UL_List_IT_TeamLead').empty();
+        for (var i = 0; i<=Array_Supervisory_ITTeamLead_ID.length-1; i++){
+        $("#UL_List_IT_TeamLead").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Supervisory_ITTeamLead_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Supervisory_ITTeamLead_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Supervisory_ITTeamLead_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+        // SUPERVISORY SR IT TEAMLEAD
+        $('#UL_SR_IT_TeamLead').empty();
+        for (var i = 0; i<=Array_Supervisory_SRITTeamLead_ID.length-1; i++){
+        $("#UL_SR_IT_TeamLead").append(
+          "<li class='collection-item' id='LI-"+Array_Supervisory_SRITTeamLead_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10 '>"+
+          "<input type='checkbox' id='CB-"+Array_Supervisory_SRITTeamLead_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='SR IT TEAM LEADER' value='"+Array_Supervisory_SRITTeamLead_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Supervisory_SRITTeamLead_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Supervisory_SRITTeamLead_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+      // SUPERVISORY SR IT TEAMLEAD --> LIST
+        $('#UL_List_SR_IT_TeamLead').empty();
+        for (var i = 0; i<=Array_Supervisory_SRITTeamLead_ID.length-1; i++){
+        $("#UL_List_SR_IT_TeamLead").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Supervisory_SRITTeamLead_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Supervisory_SRITTeamLead_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Supervisory_SRITTeamLead_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+        // MANAGERIAL IT MANAGER
+        $('#UL_IT_Manager').empty();
+        for (var i = 0; i<=Array_Managerial_ITManager_ID.length-1; i++){
+        $("#UL_IT_Manager").append(
+          "<li class='collection-item' id='LI-"+Array_Managerial_ITManager_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10 '>"+
+          "<input type='checkbox' id='CB-"+Array_Managerial_ITManager_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='IT MANAGER' value='"+Array_Managerial_ITManager_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Managerial_ITManager_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Managerial_ITManager_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+      // MANAGERIAL IT MANAGER --> LIST
+        $('#UL_List_IT_Manager').empty();
+        for (var i = 0; i<=Array_Managerial_ITManager_ID.length-1; i++){
+        $("#UL_List_IT_Manager").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Managerial_ITManager_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Managerial_ITManager_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Managerial_ITManager_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+        // MANAGERIAL SR IT MANAGER
+        $('#UL_SR_IT_Manager').empty();
+        for (var i = 0; i<=Array_Managerial_SRITManager_ID.length-1; i++){
+        $("#UL_SR_IT_Manager").append(
+          "<li class='collection-item' id='LI-"+Array_Managerial_SRITManager_ID[i]+"' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+          "<div class = 'col s10 '>"+
+          "<input type='checkbox' id='CB-"+Array_Managerial_SRITManager_ID[i]+"' onChange='CheckBox_Training_Staff_Checked(this)' name='SR IT MANAGER' value='"+Array_Managerial_SRITManager_Training[i]+"'/>"+
+          "<label for='CB-"+Array_Managerial_SRITManager_ID[i]+"' class='grey-text text-darken-2 TrainingHeight'>"+
+          Array_Managerial_SRITManager_Training[i]+
+          "</label>"+
+          "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+      // MANAGERIAL SR IT MANAGER --> LIST
+        $('#UL_List_SR_IT_Manager').empty();
+        for (var i = 0; i<=Array_Managerial_SRITManager_ID.length-1; i++){
+        $("#UL_List_SR_IT_Manager").append(
+          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+          "<div class='row'>"+
+
+          "<div class = 'row' style='padding-right:15px !important'>"+
+
+              "<div class='col s10'>"+
+              "<span >"+Array_Managerial_SRITManager_Training[i]+"</span>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='AlignButtonLeft' style='cursor: pointer;' id='"+Array_Managerial_SRITManager_ID[i]+"' onclick='Edit_Training_Staff_Clicked(this)'><i class='material-icons' >mode_edit</i></a>"+
+              "</div>"+
+
+              "<div class = 'col s1 '>"+
+              "<a class='' style='cursor: pointer;' id='"+Array_Managerial_SRITManager_ID[i]+"' onclick='Delete_Training_Staff_Tier1(this)'><i class='material-icons' style='color: #ef5350;'>delete_forever</i></a>"+
+              "</div>"+
+
+          "</div>"+
+
+          "</div>"+
+          "</li>"
+        );
+      }
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function selectRow(row)
+{
+    var firstInput = row.getElementsByTagName('input')[0];
+    firstInput.checked = !firstInput.checked;
+    firstInput.click();
+}
+
+function CheckBox_Name_Checked(Checkbox){
+  if(Checkbox.checked == true){
+      // alert(Checkbox.value +"\n"+ Checkbox.id);
+  }
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// ARRAY
+
+var Array_TrainingSelected_ID = [];
+var Array_TrainingSelected_Name = [];
+var Array_TrainingSelected_Position = [];
+var EmployeeSelected_ID = "";
+var EmployeeSelected_Name = "";
+var TD_Name_Selected;
+//-----------------------------------------------------------------------------------------------------------------
+
+function CheckBox_Training_Staff_Checked(Checkbox){
+
+  if(Checkbox.checked == true){
+
+      Array_TrainingSelected_ID.push(Checkbox.id.split("-").pop());
+      Array_TrainingSelected_Name.push(Checkbox.value);
+      Array_TrainingSelected_Position.push(Checkbox.name);
+
+  }
+  else if(Checkbox.checked == false){
+    var i = Array_TrainingSelected_ID.indexOf(Checkbox.id.split("-").pop());
+    if(i != -1) {Array_TrainingSelected_ID.splice(i, 1);}
+
+    var i = Array_TrainingSelected_Name.indexOf(Checkbox.id.split("-").pop());
+    if(i != -1) {Array_TrainingSelected_Name.splice(i, 1);}
+
+    var i = Array_TrainingSelected_Position.indexOf(Checkbox.id.split("-").pop());
+    if(i != -1) {Array_TrainingSelected_Position.splice(i, 1);}
+
+
+  }
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+var TrainingID;
+function Edit_Training_Staff_Clicked(Edit){
+  // alert(Edit.id);
+  TrainingID = Edit.id;
+  OpenTrainingForm();
+  ExecuteOrDelayUntilScriptLoaded(Get_Training_To_Update, "sp.js");
+  TrainingButton_Func = "Edit";
+}
+//------------------------------------------------------------------------------------------------------------------
+// DELETE Training
+function Delete_Training_Staff_Tier1(Training){
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+  this.oListItem_Points = oList.getItemById(Training.id);
+  oListItem_Points.deleteObject();
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.Delete_Training_Staff_Tier1_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Delete_Training_Staff_Tier1_Succeeded(){
+  swal({
+  type: 'success',
+  title: 'Training Has Been Deleted',
+  showConfirmButton: false,
+  timer: 1000
+});
+ExecuteOrDelayUntilScriptLoaded(Get_Training, "sp.js");
+}
+//------------------------------------------------------------------------------------------------------------------
+// EDIT TRAINING
+
+// GET TRAINING TO UPDATE
+
+var Get_Training_Items;
+function Get_Training_To_Update(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Geq><FieldRef Name=\'ID\'/>' +
+        '<Value Type=\'Number\'>'+TrainingID+'</Value></Geq></Where></Query><RowLimit>1</RowLimit></View>');
+        this.Get_Training_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Training_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_To_Update_Suceeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Training_To_Update_Suceeded(){
+  var listItemsCollection = Get_Training_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      document.getElementById("DP_JobLevel").value = listItem.get_item('LI_JobLevel');
+      $('#DP_JobLevel').material_select();
+      document.getElementById("DP_Position").value = listItem.get_item('LI_PositionTitle');
+      $('#DP_Position').material_select();
+      document.getElementById("TB_PrerequisiteTechnicalCertification").value = listItem.get_item('LI_Prerequisite');
+
+    }
+      
+}
+
+// UPDATE TRAINING
+var oListItem_UpdateTraining;
+function Update_Training(){
+    var siteUrl = 'https://intranet.houseofit.com.au/';
+    var clientContext = new SP.ClientContext(siteUrl);
+    var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+
+    this.oListItem_UpdateTraining = oList.getItemById(TrainingID);
+
+    oListItem_UpdateTraining.set_item('LI_JobLevel', document.getElementById("DP_JobLevel").value);
+    oListItem_UpdateTraining.set_item('LI_PositionTitle', document.getElementById("DP_Position").value);
+    oListItem_UpdateTraining.set_item('LI_Prerequisite', document.getElementById("TB_PrerequisiteTechnicalCertification").value)
+
+    oListItem_UpdateTraining.update();
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Update_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+
+function Update_Training_Succeeded(){
+  swal({
+  type: 'success',
+  title: 'Training Has Been Updated',
+  showConfirmButton: false,
+  timer: 700
+});
+CloseTrainingForm();
+ExecuteOrDelayUntilScriptLoaded(Get_Training, "sp.js");
+document.getElementById('DP_JobLevel').selectedIndex = 0;
+document.getElementById('DP_PositionTitle').selectedIndex = 0;
+document.getElementById("TB_PrerequisiteTechnicalCertification").value = "";
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+
+function Validate_Add_Edit_Staff_Training_Form() {
+
+  if(isEmptyOrSpaces(document.getElementById('DP_JobLevel').value) ||
+    isEmptyOrSpaces(document.getElementById('DP_Position').value) ||
+    isEmptyOrSpaces(document.getElementById('TB_PrerequisiteTechnicalCertification').value)){
+      swal(
+      'Oops...',
+      'Please fill all the fields!',
+      'error')
+  }
+  else{
+    if(TrainingButton_Func == "Add"){
+      Add_Training();
+    }
+    else if(TrainingButton_Func == "Edit"){
+      Update_Training();
+    }
+  }
+
+
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+// OPEN CLOSE MODALS
+
+var TrainingButton_Func;
+function OpenTrainingForm_Clicked(){
+    TrainingButton_Func = "Add";
+    OpenTrainingForm();
+    // document.getElementById("lnk_OpenEntries").click();
+}
+
+function OpenTrainingForm(){
+  $('#Modal_TrainingForm').modal('open');
+}
+
+function CloseTrainingForm(){
+  $('#Modal_TrainingForm').modal('close');
+document.getElementById('DP_JobLevel').selectedIndex = 0;
+document.getElementById('DP_Position').selectedIndex = 0;
+document.getElementById("TB_PrerequisiteTechnicalCertification").value = "";
+}
+
+// TRAINING LIST MODAL
+
+
+//-----------------------------------------------------------------------------------------------------------------
+  // ADD TRAINING TO EMPLOYEE
+
+function Add_Training_To_Employee() {
+    if(Array_TrainingSelected_ID.length >= 1 && EmployeeSelected_Name != ""){
+
+		swal({
+		    title: "Add Training(s) to :"+EmployeeSelected_Name,
+		    text: Array_TrainingSelected_Name,
+		    type: "question",
+		    showCancelButton: true,
+		    confirmButtonColor: '#039be5',
+		    confirmButtonText: 'Yes, I am sure!',
+		    cancelButtonText: "No, cancel it!"
+		 }).then(
+		       function () { 
+		          Array_TrainingSelected_ID.length
+		          for(var i = 0; i <= Array_TrainingSelected_ID.length; i++){
+
+		            if(i != Array_TrainingSelected_ID.length){
+			            Insert_To_Training_Tracker(Array_TrainingSelected_Position[i],Array_TrainingSelected_Name[i],EmployeeSelected_Name,EmployeeSelected_ID,Array_TrainingSelected_ID[i]);
+		            }
+		            else{
+
+		            	setTimeout(function(){ ExecuteOrDelayUntilScriptLoaded(Get_Training_Completed, "sp.js"); }, 1000);
+
+						  swal({
+						  type: 'success',
+						  title: 'Training has ben Added',
+						  showConfirmButton: false,
+						  timer: 2000});
+
+
+		            }
+
+		          }
+
+
+
+		       },
+		       function () { return false; });
+
+    }
+    else
+    {
+						  swal({
+						  type: 'error',
+						  title: 'Please select an Employee / Training',
+						  showConfirmButton: false,
+						  timer: 1500});
+    }
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+var oListItem_Insert_To_Training_Tracker;
+function Insert_To_Training_Tracker(PositionTitle, Prerequisite, EmployeeName, EmployeeID, TrainingID){
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+
+  var itemCreateInfo = new SP.ListItemCreationInformation();
+  this.oListItem_Insert_To_Training_Tracker = oList.addItem(itemCreateInfo);
+
+    oListItem_Insert_To_Training_Tracker.set_item('LI_PositionTitle', PositionTitle);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_Prerequisite', Prerequisite);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_EmployeeName', EmployeeName);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_EmployeeID', EmployeeID);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TrainingID', TrainingID);
+
+    oListItem_Insert_To_Training_Tracker.update();
+    clientContext.load(oListItem_Insert_To_Training_Tracker);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Insert_To_Training_Tracker_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Insert_To_Training_Tracker_Succeeded(){
+//   swal({
+//   type: 'success',
+//   title: 'Training has ben Added',
+//   showConfirmButton: false,
+//   timer: 700
+// });
+
+
+
+}
+
+// REMOVE TRAINING FROM COMPLETED 
+function Remove_Training_From_Employee(Training){
+	var Training_ID = Training.id.split("-").pop();
+
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+  this.oListItem_Points = oList.getItemById(Training_ID);
+  oListItem_Points.deleteObject();
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.Remove_Training_From_Employee_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Remove_Training_From_Employee_Succeeded() {
+	ExecuteOrDelayUntilScriptLoaded(Get_Training_Completed, "sp.js");
+			  swal({
+			  type: 'success',
+			  title: 'Training has ben removed',
+			  showConfirmButton: false,
+			  timer: 700
+			});
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+// GET COMPLETED TRAINING
+var Get_StaffTraining_Items_Completed;
+function Get_Training_Completed(){
+
+		// console.log("Emploee ID --"+EmployeeSelected_ID);
+		if(Array_Completed_Training_ID.length != 0){
+		  for(var i = 0; i <= Array_Completed_Training_ID.length - 1; i++){
+		    document.getElementById(Array_Completed_Training_ID[i]).style.display = "block";
+
+		  }
+		  Array_Completed_Training_ID = [];
+		}
+
+
+
+        Get_StaffTraining_Items_Completed = "";
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml(      
+        '<View>'+
+          '<Query>'+
+          '<Where>'+
+          '<Eq>'+
+          '<FieldRef Name=\'LI_EmployeeID\'/>' + 
+          '<Value Type=\'Text\'>'+EmployeeSelected_ID+'</Value>'+
+          '</Eq>'+
+          '</Where>'+
+          '<RowLimit>'+
+          '</RowLimit>'+
+          '</Query>'+
+          '</View>');
+        this.Get_StaffTraining_Items_Completed = oList.getItems(camlQuery);
+        clientContext.load(Get_StaffTraining_Items_Completed);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_Completed_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+// var Array_Completed_Employee_ID = [];
+var Array_Completed_Training_ID = [];
+
+function Get_Training_Completed_Succeeded(){
+    var listItemsCollection = Get_StaffTraining_Items_Completed.getEnumerator();
+
+	    $('#UL_Completed_Tier1').empty();
+	    $('#UL_Completed_Tier2').empty();
+	    $('#UL_Completed_Tier3').empty();
+	    $('#UL_Completed_IT_Team_Lead').empty();
+	    $('#UL_Completed_SR_IT_Team_Lead').empty();
+	    $('#UL_Completed_IT_Manager').empty();
+	    $('#UL_Completed_SR_IT_Manager').empty();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      // Array_Completed_Employee_ID.push(listItem.get_item('LI_EmployeeID'));
+
+      Array_Completed_Training_ID.push("LI-"+listItem.get_item('LI_TrainingID'));
+      document.getElementById("LI-"+listItem.get_item('LI_TrainingID')).style.display = "none";
+
+      document.getElementById("CB-"+listItem.get_item('LI_TrainingID')).checked = false;
+
+        // STAFF TIER 1	
+        if(listItem.get_item('LI_PositionTitle') == "TIER 1 JR TECH SUPPORT"){
+	        $("#UL_Completed_Tier1").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+        // STAFF TIER 2
+        if(listItem.get_item('LI_PositionTitle') == "TIER 2 JR TECH SUPPORT"){
+	        $("#UL_Completed_Tier2").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+        // STAFF TIER 3
+        if(listItem.get_item('LI_PositionTitle') == "TIER 3 SR SYSTEM ADMIN / SR TECH SUPPORT"){
+	        $("#UL_Completed_Tier3").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+        // IT TEAM LEADER
+        if(listItem.get_item('LI_PositionTitle') == "IT TEAM LEADER"){
+	        $("#UL_Completed_IT_Team_Lead").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+        // SR IT TEAM LEADER
+        if(listItem.get_item('LI_PositionTitle') == "SR IT TEAM LEADER"){
+	        $("#UL_Completed_SR_IT_Team_Lead").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+        // IT MANAGER
+        if(listItem.get_item('LI_PositionTitle') == "IT MANAGER"){
+	        $("#UL_Completed_IT_Manager").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+        // SR IT MANAGER
+        if(listItem.get_item('LI_PositionTitle') == "SR IT MANAGER"){
+	        $("#UL_Completed_SR_IT_Manager").append(
+	          "<li class='collection-item' style='padding-left: 0px !important; padding-right: 0px !important'>"+
+
+	          "<div class='row'>"+
+
+	          "<div class = 'row' style='padding-right:15px !important'>"+
+
+	              "<div class='col s10'>"+
+	              "<span >"+listItem.get_item('LI_Prerequisite')+"</span>"+
+	              "</div>"+
+
+	              "<div class = 'col s1 '>"+
+	              "<a class='' style='cursor: pointer;' id='Completed-"+listItem.get_item('ID')+"' onclick='Remove_Training_From_Employee(this)'><i class='material-icons' style='color: #ef5350;'>backspace</i></a>"+
+	              "</div>"+
+
+	          "</div>"+
+
+	          "</div>"+
+	          "</li>"
+	        );
+        }
+
+    } 
+
+		            	Array_TrainingSelected_ID = [];
+		            	Array_TrainingSelected_Position = [];
+		            	Array_TrainingSelected_Name = [];
+
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------------------------------
+ </script>
+
+<body>
+
+<main>
+
+<!--  <div class="fixed-action-btn horizontal">
+
+    <a class="btn-floating btn-large waves-effect waves-light green z-depth-3 btn-large hoverable" onclick="OpenTrainingForm_Clicked()" >
+      <i class="large material-icons">add</i>h
+    </a>
+  </div> -->
+
+
+
+<div class="row card-panel grey lighten-3" >
+
+        <div class="col s2 card-panel" id="Div_IT_Members" style="padding-left: 0px !important ; padding-right: 0px !important">
+            <div class="light-blue white-text" style="height: 70px !important;font-size: 18px;font-weight: bold;text-align: center;vertical-align: middle;line-height: 70px; ">
+              IT MEMBERS
+            </div>
+            <table class="bordered highlight" id="TBL_IT_Members"></table>
+        </div>
+
+        <div class="col s8">
+
+  <div class="card ">
+    <div class="card-image waves-effect waves-block waves-light" style="display: none;">
+        <a class="dropdown-button btn-floating orange AlignButtonRight tooltipped activator z-depth-3" id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Managerial Training" onclick=""><i class="large material-icons">add</i></a>
+    </div>
+    <div class="card-content">
+
+<!--   <div class="card-content light-blue">
+        <span class="spancenter white-text activator" style="font-size: 18px;font-weight: bold;">TRAINING LIST</span>
+    </div> -->
+
+
+<div class="card-action " style="padding-left: 0px !important; padding-right: 0px !important;">
+
+<div class="card-content row" id=""  style="height: 100px !important">
+  <!--  <span>Selected Employee : </span> -->
+    <div class="col s4 grey  darken-1 ">
+      <h5 id="Span_SelectedEmployee" class="white-text CenterTextInSpan" style="font-weight: bold;">Selected Employee</h5>
+    </div>
+    <div class="col s5">
+      <a class="btn  light-blue waves-effect waves-light AlignButtonRight tooltipped z-depth-3" id="btn_SaveEmployeeTraining" data-position="bottom" data-delay="20" data-tooltip="Save Trainig as Completed" style="text-decoration: none" onclick="Add_Training_To_Employee()">Save<i class="large material-icons right">save</i></a>
+    </div>
+    
+    <div class="col s3">
+      <a class="btn  light-blue waves-effect waves-light AlignButtonRight tooltipped z-depth-3 activator" id="btn_SaveEmployeeTraining" data-position="bottom" data-delay="20" data-tooltip="Add To Employee Training" style="text-decoration: none" onclick="">Training List<i class="large material-icons right">list</i></a>
+    </div>
+
+</div>
+
+<div class="card-content row " id="Div_IT_Trainings" style="padding-left: 10px !important ; padding-right: 10px !important">
+
+<div class="col s4">
+   <div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+
+    </div>
+    <div class="card-content" style="padding-left: 5px !important ; padding-right: 5px !important">
+
+        <div class="row">
+          <div class="col s10">
+            <span class="card-title CenterTextInSpan grey-text text-darken-1 " style="font-weight: bold">STAFF LEVEL</span>
+          </div>
+<!--           <div class="col s2">
+              <a class="dropdown-button btn-floating light-green AlignButtonRight tooltipped activator z-depth-3" id="a_Add_Tier1" data-position="bottom" data-delay="20" data-tooltip="Add Staff Training" onclick=""><i class="large material-icons">add</i></a>
+          </div> -->
+        </div>
+
+        <div class="row" id="Div_Staff_Filler"></div>
+
+        <div class="row" id="Div_Staff_TrainingList" >
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text" style="font-weight: bold">TIER 1 JR TECH SUPPORT</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_Tier1"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">TIER 2 JR TECH SUPPORT</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_Tier2"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">TIER 3 SR SYSTEM ADMIN / SR TECH SUPPORT </h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_Tier3"></ul>
+            </div>
+          </div>
+        </div>
+
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4" id="span_staff_training_close">Add Staff Training<i class="material-icons right">close</i></span>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="col s4">
+   <div class="card">
+    <div class="card-image waves-effect waves-block waves-light">
+
+    </div>
+    <div class="card-content" style="padding-left: 5px !important ; padding-right: 5px !important">
+
+        <div class="row">
+
+          <div class="col s10">
+            <span class="card-title CenterTextInSpan grey-text text-darken-1" style="font-weight: bold">SUPERVISORY LEVEL</span>
+          </div>
+<!--           <div class="col s2">
+              <a class="dropdown-button btn-floating blue-grey AlignButtonRight tooltipped activator z-depth-3" id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Supervisory Training" onclick=""><i class="large material-icons">add</i></a>
+          </div> -->
+
+        </div>
+
+        <div class="row" id="Div_Supervisory_Filler"></div>
+
+        <div class="row" id="Div_Supervisory_TrainingList">
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">IT TEAM LEADER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_IT_TeamLead"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">SR IT TEAM LEADER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_SR_IT_TeamLead"></ul>
+            </div>
+          </div>
+        </div>
+        </div>
+
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+    </div>
+  </div>
+
+<div class="col s4">
+   <div class="card">
+
+
+    <div class="card-content" style="padding-left: 5px !important ; padding-right: 5px !important">
+
+        <div class="row ">
+
+          <div class="col s10">
+            <span class="card-title CenterTextInSpan grey-text text-darken-1" style="font-weight: bold">MANAGERIAL LEVEL</span>
+          </div>
+<!--           <div class="col s2">
+              <a class="dropdown-button btn-floating orange AlignButtonRight tooltipped activator z-depth-3" id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Managerial Training" onclick=""><i class="large material-icons">add</i></a>
+          </div> -->
+
+        </div>
+
+        <div class="row" id="Div_Manager_Filler"></div>
+
+        <div class="row" id="Div_Manager_TrainingList">
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">IT MANAGER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_IT_Manager"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">SR IT MANAGER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_SR_IT_Manager"></ul>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+
+</div>
+
+
+
+    </div>
+
+    </div>
+
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+      <!-- <h5 id="Span_SelectedEmployee" class="light-blue-text"></h5> -->
+      
+      <div class="row">
+            
+        <div class="row">
+              <h5 id="" class="CenterTextInSpan light-blue-text" style="font-weight: bold;">TRAINING LIST</h5>
+    <a class="btn waves-effect waves-light green z-depth-3 hoverable" style="text-decoration: none;" onclick="OpenTrainingForm_Clicked()" >
+      Add Training
+      <i class=" material-icons right">add</i>
+    </a>
+        </div>
+
+        <div class="row ">
+              
+<div class="col s4">
+   <div class="card">
+
+    <div class="card-content" style="padding-left: 5px !important ; padding-right: 5px !important">
+
+        <div class="row">
+          <div class="col s10">
+            <span class="spancenter CenterTextInSpan grey-text text-darken-1 " style="font-weight: bold;font-size: 24px">STAFF LEVEL</span>
+          </div>
+<!--           <div class="col s2">
+              <a class="dropdown-button btn-floating light-green AlignButtonRight tooltipped activator z-depth-3" id="a_Add_Tier1" data-position="bottom" data-delay="20" data-tooltip="Add Staff Training" onclick=""><i class="large material-icons">add</i></a>
+          </div> -->
+        </div>
+
+        <div class="row" id="Div_Staff_Filler"></div>
+
+        <div class="row" id="Div_Staff_TrainingList" >
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text" style="font-weight: bold">TIER 1 JR TECH SUPPORT</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_Tier1"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">TIER 2 JR TECH SUPPORT</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_Tier2"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">TIER 3 SYSTEM ADMIN / SR TECH SUPPORT </h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_Tier3"></ul>
+            </div>
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col s4">
+   <div class="card">
+
+    <div class="card-content" style="padding-left: 5px !important ; padding-right: 5px !important">
+
+        <div class="row">
+
+          <div class="col s10">
+            <span class="spancenter CenterTextInSpan grey-text text-darken-1" style="font-weight: bold;font-size: 24px">SUPERVISORY LEVEL</span>
+          </div>
+<!--           <div class="col s2">
+              <a class="dropdown-button btn-floating blue-grey AlignButtonRight tooltipped activator z-depth-3" id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Supervisory Training" onclick=""><i class="large material-icons">add</i></a>
+          </div> -->
+
+        </div>
+
+        <div class="row" id="Div_Supervisory_Filler"></div>
+
+        <div class="row" id="Div_Supervisory_TrainingList">
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">IT TEAM LEADER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_IT_TeamLead"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">SR IT TEAM LEADER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_SR_IT_TeamLead"></ul>
+            </div>
+          </div>
+        </div>
+        </div>
+
+    </div>
+
+  </div>
+
+<div class="col s4">
+   <div class="card">
+
+    <div class="card-content" style="padding-left: 5px !important ; padding-right: 5px !important">
+
+        <div class="row ">
+
+          <div class="col s10">
+            <span class="spancenter CenterTextInSpan grey-text text-darken-1" style="font-weight: bold;font-size: 24px">MANAGERIAL LEVEL</span>
+          </div>
+<!--           <div class="col s2">
+              <a class="dropdown-button btn-floating orange AlignButtonRight tooltipped activator z-depth-3" id="lnk_OpenEntries" data-position="bottom" data-delay="20" data-tooltip="Add Managerial Training" onclick=""><i class="large material-icons">add</i></a>
+          </div> -->
+
+        </div>
+
+        <div class="row" id="Div_Manager_Filler"></div>
+
+        <div class="row" id="Div_Manager_TrainingList">
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">IT MANAGER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_IT_Manager"></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <h6 class="light-blue-text " style="font-weight: bold">SR IT MANAGER</h6>
+            </div>
+            <div class="col s12">
+                <ul class="collection" id="UL_List_SR_IT_Manager"></ul>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+         
+
+
+        </div>
+
+        <div class="col s2 card-panel" id="Div_CompletedTrainings" style="padding-left: 0px !important ; padding-right: 0px !important;">
+            <div class="light-blue white-text" style="height: 70px !important;font-size: 18px;font-weight: bold;text-align: center;vertical-align: middle;line-height: 70px; ">
+              COMPLETED TRAININGS
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 10px;font-size:12px">TIER 1 JR TECH SUPPORT</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_Tier1"></ul>
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 10px;font-size:12px">TIER 2 JR TECH SUPPORT</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_Tier2"></ul>
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 5px;font-size:12px">TIER 3 SYSTEM ADMIN / SR TECH SUPPORT</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_Tier3"></ul>
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 5px;font-size:12px">IT TEAM LEADER</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_IT_Team_Lead"></ul>
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 5px;font-size:12px">SR IT TEAM LEADER</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_SR_IT_Team_Lead"></ul>
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 5px;font-size:12px">IT MANAGER</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_IT_Manager"></ul>
+            </div>
+
+            <div class="row " style="padding-top: 10px">
+	          <span class="light-blue-text" style="font-weight: bold;margin-left: 10px;padding-left: 5px;font-size:12px">SR IT MANAGER</span>
+            </div>
+
+            <div class="row">
+            	<ul class="collection" id="UL_Completed_SR_IT_Manager"></ul>
+            </div>
+
+        </div>
+    
+</div>
+
+</div>
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+</main>
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<!-- MODAL ADD TRAINING -->
+
+<div id="Modal_TrainingForm" class="modal ModalTopDistance">
+    <div id="Modal_TrainingFormContent" class="modal-content">
+            <div class="row">
+
+            <a class="btn-floating red AlignButtonRight" onclick="CloseTrainingForm()"><i class=" material-icons">close</i></a>
+
+            </div>
+
+            <div class="row"></div><div class="row"></div><div class="row">
+
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+
+
+                <div class="row">
+                    <div class="col s4"></div>
+                    <div class="col s4 card-panel">
+
+                      <div class="row">
+                        
+              <div class="row"></div><div class="row"></div><div class="row"></div>
+              <div class="row"></div><div class="row"></div><div class="row"></div>
+
+
+                          <div class="input-field">
+                              <select id="DP_JobLevel">
+                                <option value="" disabled selected>Choose a Job Level</option>
+                                  <option value="Staff">Staff</option>
+                                  <option value="Supervisory">Supervisory</option>
+                                  <option value="Managerial">Managerial</option>
+                              </select>
+                              <label>Job Level</label>
+                          </div>
+
+                          <div class="input-field">
+                              <select id="DP_Position">
+                                <option value="" disabled selected>Choose a Position</option>
+                                  <option value="Tier 1 Jr Tech Support">Tier 1 Jr Tech Support</option>
+                                  <option value="Tier 2 Jr Tech Support">Tier 2 Jr Tech Support</option>
+                                  <option value="Tier 3 Sr Tech Support">Tier 3 Sr Tech Support</option>
+                                  <option value="Tier 3 Sr System Admin">Tier 3 Sr System Admin</option>
+                                  <option value="IT Team Leader">IT Team Leader</option>
+                                  <option value="Sr IT Team Leader">Sr IT Team Leader</option>
+                                  <option value="IT Manager">IT Manager</option>
+                                  <option value="Sr IT Manager">Sr IT Manager</option>
+                              </select>
+                              <label>Position</label>
+                          </div>
+
+              <div class="row"></div><div class="row"></div><div class="row"></div>
+
+                          <div class="input-field row">
+                              <input id="TB_PrerequisiteTechnicalCertification" type="text" placeholder="">
+                              <label for="TB_PrerequisiteTechnicalCertification">Prerequisite Technical Certifications</label>
+                          </div>
+
+              <div class="row"></div><div class="row"></div><div class="row"></div>
+
+                        <div class="row">
+                          <a id="Btn_SaveTraining_Staff" class="waves-effect waves-light btn light-blue darken-1  AlignButtonRight hoverable" onclick="Validate_Add_Edit_Staff_Training_Form()">Save</a>
+                        </div>
+
+                      </div>
+
+                    </div>
+                </div>
+
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+                <div class="row"></div><div class="row"></div><div class="row"></div>
+
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+
+</html>
+

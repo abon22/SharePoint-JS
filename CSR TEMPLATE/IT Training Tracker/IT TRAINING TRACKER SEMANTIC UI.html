@@ -1,0 +1,2786 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <!-- SEMANTIC UI -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+
+  .AlignButtonRight{
+  float: right;
+}
+
+  .AlignButtonLeft{
+  float: left;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TrainingHeight { height:auto !important; }
+
+
+</style>
+
+ <script type="text/javascript">
+
+  $(document).ready(function() {
+
+$('input').keypress(function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+
+ var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+
+    // setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  $('.tabs').tabs();
+  // $(".button-collapse").sideNav();
+
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: false, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+$('.ui.dropdown')
+  .dropdown()
+;
+
+$('.ui.modal.fullscreen.TURNOVERDOCUMENT')
+  .modal()
+;
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+//---------------------------------------------------------------------------------------------------
+
+  $('#ModalNewEntry').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '15%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+  $('#ModalPoints').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '5%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+
+
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === 'complete') {
+      Filter_Trainings.init();
+    }
+  });
+
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === 'complete') {
+      Filter_Participants.init();
+    }
+  });
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === 'complete') {
+      Filter_Individual.init();
+    }
+  });
+
+
+
+//-------------------------------------------------------------------------------------------
+
+
+
+            $('#CB_SelectAll').on('change', function () {
+                Selected_Employee_ID = [];
+                Selected_Employee_Name = [];
+                if ($(this).prop('checked')) {
+                    $("input[name='CB_Participant']").each(function () {
+                        $(this).prop('checked', true).trigger('change');
+                    });
+                } else {
+                    $("input[name='CB_Participant']").each(function () {
+                        $(this).prop('checked', false).trigger('change');
+
+                    });
+                }
+            });
+
+
+document.getElementById("TR_EXAM_SCORE").hidden = true;
+document.getElementById("TR_EXAM_RESULT").hidden = true;
+$('#INPUT_EXAM_DATE').change(function() {
+  if($('#INPUT_EXAM_DATE').val() != ""){
+    document.getElementById("TR_EXAM_SCORE").hidden = false;
+    document.getElementById("TR_EXAM_RESULT").hidden = false;
+  }
+  else{
+    document.getElementById("TR_EXAM_SCORE").hidden = true;
+    document.getElementById("TR_EXAM_RESULT").hidden = true;
+    document.getElementById("INPUT_EXAM_SCORE").value = "";
+    $('.ui.selection.dropdown.item_status.col.s12.EXAM_RESULT').dropdown('restore defaults');
+
+  }
+});
+
+ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames_VIEW,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Training,'sp.js');
+// ExecuteOrDelayUntilScriptLoaded(Get_Trainings_Per_Quarter,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Overview,'sp.js');
+
+// document.getElementById("DIV_TRAINING_FORM").style.display = "none";
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+  
+
+ function isNumberKey(txt, evt) {
+
+  
+
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode == 46) {
+        //Check if the text already contains the . character
+        if (txt.value.indexOf('.') === -1) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        if (charCode > 31
+             && (charCode < 48 || charCode > 57))
+            return false;
+    }
+    return true;
+}
+
+
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+  var loginName;
+  var email;
+
+  function onSuccess(data, request){
+
+    loginName = data.d.Title;
+    email = data.d.Email;
+
+    
+  }
+
+  function onError(error) {
+    alert("error");
+  }
+
+  function isEmptyOrSpaces(str){
+      return str === null || str.match(/^ *$/) !== null;
+  }
+
+
+function selectRow(row)
+{
+    var firstInput = row.getElementsByTagName('input')[0];
+    firstInput.checked = !firstInput.checked;
+    firstInput.click();
+}
+
+// --------------------------------------------------------------------------------------------------------------
+// OPEN / CLOSE MODALS
+
+function Open_Modal_Trainings(){
+    $('#MODAL_TRAININGS')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('show');
+
+}
+function Close_Modal_Trainings(){
+    $('#MODAL_TRAININGS')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('hide');
+
+      Close_TrainingForm();
+
+}
+
+function Open_Modal_Individual(){
+    $('#MODAL_VIEW_INDIVIDUAL')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('show');
+}
+function Close_Modal_Individual(){
+    $('#MODAL_VIEW_INDIVIDUAL')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('hide');
+}
+
+
+function Open_Modal_Reports(){
+    $('#MODAL_REPORTS')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('show');
+}
+function Close_Modal_Reports(){
+    $('#MODAL_REPORTS')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('hide');
+}
+
+function Open_Modal_Overview(){
+    $('#MODAL_OVERVIEW')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('show');
+      ExecuteOrDelayUntilScriptLoaded(Get_Trainings_Per_Quarter,'sp.js');
+}
+function Close_Modal_Overview(){
+    $('#MODAL_OVERVIEW')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('hide');
+}
+
+
+// --------------------------------------------------------------------------------------------------------------
+
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+// CRUD - TRAININGS
+
+var TRAINING_FUNCTION = "";
+
+var V_TRAINING_ID = "";
+var V_JOBLEVEL = "";
+var V_POSITION = "";
+var V_TITLE = "";
+
+var oListItem_AddTraining;
+function Add_Training(){
+
+V_JOBLEVEL = document.getElementById("INPUT_JOBLEVEL").value;
+V_POSITION = document.getElementById("INPUT_POSITION").value;
+V_TITLE = document.getElementById("INPUT_TITLE").value;
+
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+
+  var itemCreateInfo = new SP.ListItemCreationInformation();
+  this.oListItem_AddTraining = oList.addItem(itemCreateInfo);
+
+    oListItem_AddTraining.set_item('LI_JobLevel', V_JOBLEVEL);
+    oListItem_AddTraining.set_item('LI_PositionTitle', V_POSITION);
+    oListItem_AddTraining.set_item('LI_Prerequisite', V_TITLE);
+
+    oListItem_AddTraining.update();
+    clientContext.load(oListItem_AddTraining);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Add_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Add_Training_Succeeded(){
+
+Close_TrainingForm();
+
+    ExecuteOrDelayUntilScriptLoaded(Get_Training,'sp.js');
+
+  swal({
+  type: 'success',
+  title: 'Training has ben Added',
+  showConfirmButton: false,
+  timer: 700
+});
+}
+
+var Get_Training_Items;
+function Get_Training(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Geq><FieldRef Name=\'ID\'/>' +
+        '<Value Type=\'Number\'>1</Value></Geq></Where></Query><RowLimit></RowLimit></View>');
+        this.Get_Training_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Training_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+
+var Array_Title = [];
+var Array_JobLevel = [];
+var Array_Position = [];
+var Array_ID = [];
+function Get_Training_Succeeded(){
+
+  for(var i=document.getElementById("TABLE_TRAININGS").rows.length;i>1;i--) {
+    document.getElementById("TABLE_TRAININGS").deleteRow(i-1);}
+
+    var listItemsCollection = Get_Training_Items.getEnumerator();
+
+
+    Array_Title = [];
+    Array_JobLevel = [];
+    Array_Position = [];
+    Array_ID = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      var var_ItemID = listItem.get_item('ID');
+      var var_JobLevel = listItem.get_item('LI_JobLevel');
+      var var_Position = listItem.get_item('LI_PositionTitle');
+      var var_Training = listItem.get_item('LI_Prerequisite');
+
+      Array_Title.push(var_Training);
+      Array_ID.push(var_ItemID);
+      Array_JobLevel.push(var_JobLevel);
+      Array_Position.push(var_Position);
+
+
+                                    $("#TABLE_TRAININGS").append("<tr id='TI-"+var_ItemID+"'>" +
+                                     "<td align='left' class=' CenterTextInSpan'>"+var_JobLevel+"</td>" +
+                                     "<td align='left' class=' CenterTextInSpan'>"+var_Position+"</td>"  +
+                                     "<td align='left' class=' '>"+var_Training+"</td>"  +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui icon top right pointing dropdown blue basic button left circular">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" id='+var_ItemID+' onclick="Edit_Training_Clicked(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" id='+var_ItemID+' onclick="Delete_Training_Clicked(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>");
+    }
+
+                $('.ui.icon.top.right.pointing.dropdown.blue.basic.button.left.circular')
+                  .dropdown({
+                    action: 'hide'
+                  });
+
+    // var Unique_Title = Array_Title.filter(onlyUnique).sort();
+
+    document.getElementById("Menu_TrainingTitle").innerHTML = "";
+
+    for(var i = 0; i <= Array_Title.length-1;i++){
+      $("#Menu_TrainingTitle").append(
+        "<div class='item' data-value='"+Array_ID[i]+"'>"+Array_Title[i]+"</div>"
+      );
+    }
+
+$('#DIV_FILTER_TITLE').change(function() {
+  Selected_Training_ID = "";
+  Selected_Training_Title = "";
+
+  Selected_Training_ID = $('#INPUT_FILTER_TITLE').val();
+  var Index = Array_ID.indexOf(parseInt(Selected_Training_ID));
+  Selected_Training_Title = Array_Title[Index];
+
+
+  $("#LBL_JOBLEVEL").empty();
+  $("#LBL_JOBLEVEL").append("JOB LEVEL : "+"<span class='ui blue label'>"+Array_JobLevel[Index]+"</span>");
+
+  $("#LBL_POSITION").empty();
+  $("#LBL_POSITION").append("POSITION : "+"<span class='ui blue label'>"+Array_Position[Index]+"</span>");
+
+  Selected_Employee_Name = [];
+  Selected_Employee_ID = [];
+
+
+
+  ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+
+
+});
+
+}
+
+function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+function New_Training(){
+TRAINING_FUNCTION = "Add";
+  document.getElementById("SPAN_TRAINING_OPERATION").innerText = "Add";
+  $('.ui.selection.dropdown.col.s12.JOBLEVEL').dropdown('restore defaults');
+  $('.ui.selection.dropdown.col.s12.POSITION').dropdown('restore defaults');  
+  document.getElementById("INPUT_TITLE").value = "";
+
+  if ($('#DIV_TRAINING_FORM').hasClass('hidden')) {
+      $('#DIV_TRAINING_FORM').transition('drop');
+  }
+}
+
+function Edit_Training_Clicked(Item){
+  V_TRAINING_ID = Item.id;
+  document.getElementById("SPAN_TRAINING_OPERATION").innerText = "Edit";
+  ExecuteOrDelayUntilScriptLoaded(Get_Training_To_Update, "sp.js");
+  TRAINING_FUNCTION = "Edit";
+}
+
+
+var Get_Training_Items;
+function Get_Training_To_Update(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Geq><FieldRef Name=\'ID\'/>' +
+        '<Value Type=\'Number\'>'+V_TRAINING_ID+'</Value></Geq></Where></Query><RowLimit>1</RowLimit></View>');
+        this.Get_Training_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Training_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_To_Update_Suceeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Training_To_Update_Suceeded(){
+  var listItemsCollection = Get_Training_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+  $('.ui.selection.dropdown.col.s12.JOBLEVEL').dropdown('set selected', listItem.get_item('LI_JobLevel'));
+  $('.ui.selection.dropdown.col.s12.POSITION').dropdown('set selected', listItem.get_item('LI_PositionTitle'));
+  document.getElementById("INPUT_TITLE").value = listItem.get_item('LI_Prerequisite');
+
+    if ($('#DIV_TRAINING_FORM').hasClass('hidden')) {
+        $('#DIV_TRAINING_FORM').transition('drop');
+    }
+
+    }
+    document.getElementById("MODAL_TRAININGS").scrollTop = 0;
+}
+
+function Update_Training(){
+
+  V_JOBLEVEL = document.getElementById("INPUT_JOBLEVEL").value;
+  V_POSITION = document.getElementById("INPUT_POSITION").value;
+  V_TITLE = document.getElementById("INPUT_TITLE").value;
+
+    var siteUrl = 'https://intranet.houseofit.com.au/';
+    var clientContext = new SP.ClientContext(siteUrl);
+    var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+
+    this.oListItem_UpdateTraining = oList.getItemById(V_TRAINING_ID);
+
+    oListItem_UpdateTraining.set_item('LI_JobLevel', V_JOBLEVEL);
+    oListItem_UpdateTraining.set_item('LI_PositionTitle', V_POSITION);
+    oListItem_UpdateTraining.set_item('LI_Prerequisite', V_TITLE)
+
+    oListItem_UpdateTraining.update();
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Update_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+
+function Update_Training_Succeeded(){
+  swal({
+  type: 'success',
+  title: 'Training Has Been Updated',
+  showConfirmButton: false,
+  timer: 700
+});
+
+ExecuteOrDelayUntilScriptLoaded(Get_Training,'sp.js');
+
+Close_TrainingForm();
+
+}
+
+
+function Delete_Training_Clicked(Item){
+
+  swal({
+    title: 'Delete Training?',
+    text: "You won't be able to revert this!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#1678c2',
+    cancelButtonColor: '#f26202',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+      Delete_Training(Item.id);
+  })
+
+}
+function Delete_Training(ID){
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+  this.oListItem_Points = oList.getItemById(ID);
+  oListItem_Points.deleteObject();
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.Delete_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));  
+}
+function Delete_Training_Succeeded(){
+  swal({
+  type: 'success',
+  title: 'Training Has Been Deleted',
+  showConfirmButton: false,
+  timer: 1000
+});
+ExecuteOrDelayUntilScriptLoaded(Get_Training, "sp.js"); 
+}
+
+
+function Close_TrainingForm(){
+
+  TRAINING_FUNCTION = "";
+
+
+    if ($('#DIV_TRAINING_FORM').hasClass('transition visible')) {
+      document.getElementById("DIV_TRAINING_FORM").style.display = "none";
+        $('#DIV_TRAINING_FORM').transition();
+    }
+
+  $('.ui.selection.dropdown.col.s12.JOBLEVEL').dropdown('restore defaults');
+  $('.ui.selection.dropdown.col.s12.POSITION').dropdown('restore defaults');  
+  document.getElementById("INPUT_TITLE").value = "";
+
+  V_TRAINING_ID = "";
+  V_JOBLEVEL = "";
+  V_POSITION = "";
+  V_TITLE = "";
+
+}
+
+function Save_Training(){
+
+  if(document.getElementById("INPUT_JOBLEVEL").value != "" || document.getElementById("INPUT_POSITION").value != "" || document.getElementById("INPUT_TITLE").value != ""){
+    if (TRAINING_FUNCTION == "Add") {
+      Add_Training();
+    }
+    else if (TRAINING_FUNCTION == "Edit") {
+      Update_Training();
+    }
+  }
+  else{
+      swal(
+      'Oops...',
+      'Please fill all the fields!',
+      'error');
+  }
+
+}
+
+  // FILTER TRAININGS TABLE
+  var Filter_Trainings = (function(Arr) {
+
+    var _input;
+
+    function _onInputEvent(e) {
+      _input = e.target;
+      var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+      Arr.forEach.call(tables, function(table) {
+        Arr.forEach.call(table.tBodies, function(tbody) {
+          Arr.forEach.call(tbody.rows, _filter);
+        });
+      });
+    }
+
+    function _filter(row) {
+      var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+      row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    }
+
+    return {
+      init: function() {
+        var inputs = document.getElementsByClassName('trainings-table-filter');
+        Arr.forEach.call(inputs, function(input) {
+          input.oninput = _onInputEvent;
+        });
+      }
+    };
+  })(Array.prototype);
+
+
+  // FILTER PARTICIPANTS TABLE
+  var Filter_Participants = (function(Arr) {
+
+    var _input;
+
+    function _onInputEvent(e) {
+      _input = e.target;
+      var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+      Arr.forEach.call(tables, function(table) {
+        Arr.forEach.call(table.tBodies, function(tbody) {
+          Arr.forEach.call(tbody.rows, _filter);
+        });
+      });
+    }
+
+    function _filter(row) {
+      var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+      row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    }
+
+    return {
+      init: function() {
+        var inputs = document.getElementsByClassName('participants-table-filter');
+        Arr.forEach.call(inputs, function(input) {
+          input.oninput = _onInputEvent;
+        });
+      }
+    };
+  })(Array.prototype);
+
+  // FILTER INDIVIDUAL VIEW TABLE
+  var Filter_Individual = (function(Arr) {
+
+    var _input;
+
+    function _onInputEvent(e) {
+      _input = e.target;
+      var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+      Arr.forEach.call(tables, function(table) {
+        Arr.forEach.call(table.tBodies, function(tbody) {
+          Arr.forEach.call(tbody.rows, _filter);
+        });
+      });
+    }
+
+    function _filter(row) {
+      var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+      row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    }
+
+    return {
+      init: function() {
+        var inputs = document.getElementsByClassName('individual-table-filter');
+        Arr.forEach.call(inputs, function(input) {
+          input.oninput = _onInputEvent;
+        });
+      }
+    };
+  })(Array.prototype);
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// GET IT EMPLOYEEES
+
+var IT_Employees_Name = [];
+var IT_Employees_ID = [];
+var IT_Employees_Type = [];
+
+var IT_Employees_Items;
+
+function Load_EmployeeNames() {
+  var siteUrl = 'https://intranet.houseofit.com.au/it/';
+  var clientContext = new SP.ClientContext(siteUrl);
+
+  // Department
+  var Employees = clientContext.get_web().get_lists().getByTitle("IT Members");
+  var camlQuery_Department = new SP.CamlQuery();
+      camlQuery_Department.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+      '<FieldRef Name=\'Status\'/>' +
+      '<Value Type=\'Text\'>'+"Active"+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '<OrderBy>'+
+      '<FieldRef Name=\'Title\' Ascending=\'true\' />'+
+      '</OrderBy>'+
+      '</Query>'+
+      '</View>');
+  this.IT_Employees_Items = Employees.getItems(camlQuery_Department);
+
+  clientContext.load(IT_Employees_Items);
+  clientContext.executeQueryAsync(Read_Employee_Succeeded, onQueryFailed);
+
+}
+
+function Read_Employee_Succeeded(sender, args) {
+
+    IT_Employees_Name = [];
+    IT_Employees_ID = [];
+    IT_Employees_Type = [];
+
+    Selected_Employee_Name = [];
+    Selected_Employee_ID = [];
+
+    var listItemsCollection = IT_Employees_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        IT_Employees_ID.push(listItem.get_item('Employee_ID'));
+        IT_Employees_Name.push(listItem.get_item('Title'));
+        IT_Employees_Type.push(listItem.get_item('Employee_Type'));
+    }
+
+ExecuteOrDelayUntilScriptLoaded(Get_Training_Participants,'sp.js');
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+// GET TRAINING PARTICIPANTS
+
+var GP_Employee_ID = [];
+var GP_Training_Date= [];
+var GP_Training_Date_To = [];
+var GP_TicketNumber = [];
+var GP_Exam_Date = [];
+var GP_Exam_Result = [];
+var GP_Exam_Score = [];
+var GP_Item_ID = [];
+
+var Selected_Training_ID = "";
+var Selected_Training_Title = "";
+
+var Participants_Items;
+function Get_Training_Participants(){
+
+    GP_Employee_ID = [];
+    GP_Training_Date= [];
+    GP_Training_Date_To = [];
+    GP_TicketNumber = [];
+    GP_Exam_Date = [];
+    GP_Exam_Result = [];
+    GP_Exam_Score = [];
+    GP_Item_ID = [];
+
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_TrainingID\'/>' +
+        '<Value Type=\'Text\'>'+Selected_Training_ID+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+        this.Participants_Items = oList.getItems(camlQuery);
+        clientContext.load(Participants_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_Participants_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Training_Participants_Succeeded(){
+    // for(var i=document.getElementById("TABLE_TRAINING_PARTICIPANTS").rows.length;i>1;i--) {
+    // document.getElementById("TABLE_TRAINING_PARTICIPANTS").deleteRow(i-1);}
+
+    var listItemsCollection = Participants_Items.getEnumerator();
+
+    var ITEM_ID;
+
+    document.getElementById("CB_SelectAll").checked = false;
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+      GP_Employee_ID.push(listItem.get_item('LI_EmployeeID'));
+      GP_Training_Date.push(listItem.get_item('LI_TrainingDate'));
+      GP_Training_Date_To.push(listItem.get_item('LI_TrainingDateTo'));
+      GP_TicketNumber.push(listItem.get_item('LI_TicketNumber'));
+      GP_Exam_Date.push(listItem.get_item('LI_ExamDate'));
+      GP_Exam_Result.push(listItem.get_item('LI_Result'));
+      GP_Exam_Score.push(listItem.get_item('LI_ExamScore'));
+      GP_Item_ID.push(listItem.get_item('ID'));
+    }
+
+    var Completed_Count = 0;
+    var Incomplete_Count = 0;
+    var Non_Participant_Count = 0;
+
+$("#TBODY_PARTICIPANTS").empty()
+      
+
+    for (var i = 0; i <= IT_Employees_ID.length-1; i++){
+
+
+      if(GP_Employee_ID.indexOf(IT_Employees_ID[i]) != -1){
+
+      //------------------------------------------------
+
+        var Item_Index = GP_Employee_ID.indexOf(IT_Employees_ID[i]);
+
+        var Status = "";
+        var Checkbox = "";
+        var Result = "<td align='left' class='CenterTextInSpan'>"+GP_Exam_Result[Item_Index]+"</td>";
+        var ExamDate = "<td align='left' class='CenterTextInSpan'>"+GP_Exam_Date[Item_Index]+"</td>";
+        var Score = "<td align='left' class='CenterTextInSpan'>"+GP_Exam_Score[Item_Index]+"%</td>";
+
+
+          if(GP_Exam_Result[Item_Index] == "Passed"){
+            Completed_Count++;
+            Checkbox = "<td class='CenterTextInSpan'><span><i class='material-icons teal-text'>check_box</i></span></td>";
+            Status = "<td class='c_status CenterTextInSpan'><span class='ui teal tag label'>Completed</span></td>";
+          }
+          else if(GP_Exam_Result[Item_Index] == "Failed"){
+            Incomplete_Count++;
+            Checkbox = "<td class='CenterTextInSpan'><span><i class='material-icons orange-text'>warning</i></span></td>";
+            Status = "<td class='c_status CenterTextInSpan'><span class='ui orange tag label'>Incomplete</span></td>";
+          }
+          else if(GP_Exam_Result[Item_Index] == null){
+            Completed_Count++;
+            Checkbox = "<td class='CenterTextInSpan'><span><i class='material-icons teal-text'>check_box</i></span></td>";
+            Status = "<td class='c_status CenterTextInSpan'><span class='ui teal tag label'>Completed</span></td>";
+            Result = "<td align='left' class='CenterTextInSpan'>N/A</td>";
+          }
+
+          if(GP_Exam_Date[Item_Index] == null){
+            ExamDate = "<td align='left' class='CenterTextInSpan'>N/A</td>"
+          }
+          if(GP_Exam_Score[Item_Index] == null){
+            Score = "<td align='left' class='CenterTextInSpan'>N/A</td>"
+          }
+
+      //------------------------------------------------
+
+       $("#TABLE_TRAINING_PARTICIPANTS tbody").append("<tr style='display: table-row;'>" +
+         Checkbox+
+         "<td align='left' class='CenterTextInSpan' > "+IT_Employees_ID[i]+"</td>" +
+         "<td align='left' class=' '>"+IT_Employees_Name[i]+"</td>" +
+         "<td align='left' class=''>"+IT_Employees_Type[i]+"</td>" +
+         "<td align='left' class='CenterTextInSpan'>"+GP_Training_Date[Item_Index]+"</td>" +
+         "<td align='left' class='CenterTextInSpan'>"+GP_Training_Date_To[Item_Index]+"</td>" +
+         "<td align='left' class='CenterTextInSpan'>"+GP_TicketNumber[Item_Index]+"</td>" +
+         ExamDate +
+          Result+
+         Score +
+         Status +
+         "<td class='CenterTextInSpan'>"+
+          '<div class="ui icon top right pointing dropdown blue basic button left circular">'+
+            '<i class="icon settings "></i>'+
+            '<div class="menu">'+
+              "<a class='item' id='Edit-"+GP_Item_ID[Item_Index]+"' onclick='Update_To_Training_Tracker_Clicked(this)'><i class='edit icon'></i> Edit</a>"+
+              "<a class='item' id='Delete-"+GP_Item_ID[Item_Index]+"' onclick='Remove_To_Training_Tracker(this)'><i class='delete icon'></i> Remove</a>"+
+            '</div>'+
+         "</td>"+
+         "</tr>");
+
+      }else{
+        //------------------------------------------------
+        Non_Participant_Count++;
+
+        $("#TABLE_TRAINING_PARTICIPANTS tbody").append("<tr style='display: table-row;'  onclick='selectRow(this)'>" +
+         "<td class='CenterTextInSpan '>"+
+            "<input type='checkbox' id='CB-"+IT_Employees_ID[i]+"' name='CB_Participant' onChange='CheckBox_OnChange(this)' value='"+IT_Employees_Name[i]+"' />"+
+            "<label for='CB-"+IT_Employees_ID[i]+"' class='grey-text text-darken-2 TrainingHeight' style='left: 10px !important'>&nbsp;</label>"+
+         "</td>"+
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan' > "+IT_Employees_ID[i]+"</td>" +
+         "<td style='cursor:pointer' align='left' class=' '>"+IT_Employees_Name[i]+"</td>" +
+         "<td style='cursor:pointer' align='left' class=''>"+IT_Employees_Type[i]+"</td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' align='left' class='CenterTextInSpan'></td>" +
+         "<td style='cursor:pointer' class='CenterTextInSpan'>"+
+         "</td>"+
+         "</tr>");
+
+        //------------------------------------------------
+
+      
+      }
+    }
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    document.getElementById("SPAN_COMPLETED_COUNT").innerText = Completed_Count;
+    document.getElementById("SPAN_INCOMPLETE_COUNT").innerText = Incomplete_Count;
+    document.getElementById("SPAN_NOT_PARTICIPANT_COUNT").innerText = Non_Participant_Count;
+    document.getElementById("SPAN_TOTAL_EMPLOYEES").innerText = $('#TABLE_TRAINING_PARTICIPANTS tr').length -1;
+   // console.log(GP_Employee_ID);
+
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+                $('.ui.icon.top.right.pointing.dropdown.blue.basic.button.left.circular')
+                  .dropdown({
+                    action: 'hide'
+                  });
+
+                  // console.log($('#TABLE_TRAINING_PARTICIPANTS tr').length);
+
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+// CHECKBOX ON CHANGE
+
+var Selected_Employee_ID = [];
+var Selected_Employee_Name = [];
+
+
+function CheckBox_OnChange(Checkbox){
+
+var TR_STYLE = $(Checkbox).closest('tr').attr("style");
+
+// if(evID == "display: table-row;"){
+//   if(Checkbox.checked == true){
+
+//       Selected_Employee_ID.push(Checkbox.id.split("-").pop());
+//       Selected_Employee_Name.push(Checkbox.value);
+
+//   }
+//   else if(Checkbox.checked == false){
+//       var a = Selected_Employee_Name.indexOf(Checkbox.value);
+//       if(a != -1) {Selected_Employee_Name.splice(a, 1);}
+
+//       var b = Selected_Employee_ID.indexOf(Checkbox.id.split("-").pop());
+//       if(b != -1) {Selected_Employee_ID.splice(b, 1);}
+
+//       // document.getElementById("CB_SelectAll").checked = false;
+//   }
+// }
+// else{
+//   Checkbox.checked = false;
+// }
+
+if(TR_STYLE == "display: table-row;"){
+  if(Checkbox.checked == true){
+
+      if(Selected_Employee_ID.indexOf(Checkbox.id.split("-").pop()) == -1){
+        Selected_Employee_ID.push(Checkbox.id.split("-").pop());
+        Selected_Employee_Name.push(Checkbox.value);
+      }
+
+
+  }
+  else if(Checkbox.checked == false){
+      var a = Selected_Employee_Name.indexOf(Checkbox.value);
+      if(a != -1) {Selected_Employee_Name.splice(a, 1);}
+
+      var b = Selected_Employee_ID.indexOf(Checkbox.id.split("-").pop());
+      if(b != -1) {Selected_Employee_ID.splice(b, 1);}
+
+      // document.getElementById("CB_SelectAll").checked = false;
+  }
+}
+else if(TR_STYLE == "display: none;"){
+  Checkbox.checked = false;
+}
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// OPEN SAVE PARTICIPANTS MODAL
+function Open_Modal_Add_Participants(){
+
+      if(Selected_Training_Title != ""){
+        if(Selected_Employee_ID.length > 0){
+          document.getElementById("INPUT_TRAINING_TITLE").value = Selected_Training_Title;
+          PARTICIPANT_FUNCTION = "Add";
+            $('#MODAL_ADD_PARTICIPANTS')
+            .modal({
+              closable  : false,
+              centered: false
+            })
+            .modal('show');
+
+// console.log(Selected_Training_Title);
+// console.log(Selected_Training_ID);
+// console.log(Selected_Employee_Name);
+// console.log(Selected_Employee_ID);
+
+        }
+        else{
+
+          swal(
+          'Oops...',
+          'No Participant Selected',
+          'error');
+        }
+      }
+      else{
+        swal(
+        'Oops...',
+        'Please Select a Training',
+        'error');
+      }
+
+}
+function Close_Modal_Add_Participants(){
+
+      document.getElementById("INPUT_TRAINING_DATE").value = "";
+      document.getElementById("INPUT_TRAINING_DATE_TO").value = "";
+      document.getElementById("INPUT_TICKET_NUMBER").value = "";
+      document.getElementById("INPUT_EXAM_DATE").value = "";
+      document.getElementById("INPUT_EXAM_SCORE").value = "";
+      $('.ui.selection.dropdown.item_status.col.s12.EXAM_RESULT').dropdown('restore defaults');
+
+      document.getElementById("TR_EXAM_SCORE").hidden = true;
+      document.getElementById("TR_EXAM_RESULT").hidden = true;
+
+      $('#MODAL_ADD_PARTICIPANTS')
+      .modal({
+        closable  : false,
+        centered: false
+      })
+      .modal('hide');
+
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+// CRUD- Training Tracker
+
+
+var oListItem_Insert_To_Training_Tracker;
+function Insert_To_Training_Tracker(Training_Name,
+Employee_Name,
+Employee_ID,
+Training_ID,
+Training_Date,
+Training_Date_TO,
+Ticket_Number,
+Exam_Date,
+Exam_Result,
+Exam_Score,
+TrainingMonth,
+TrainingYear){
+
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+
+  var itemCreateInfo = new SP.ListItemCreationInformation();
+  this.oListItem_Insert_To_Training_Tracker = oList.addItem(itemCreateInfo);
+
+    oListItem_Insert_To_Training_Tracker.set_item('LI_Prerequisite', Training_Name);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_EmployeeName', Employee_Name);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_EmployeeID', Employee_ID);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TrainingID', Training_ID);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TrainingDate', Training_Date);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TrainingDateTo', Training_Date_TO);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TicketNumber', Ticket_Number);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_ExamDate', Exam_Date);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_Result', Exam_Result);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_ExamScore', Exam_Score);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TrainingMonth', TrainingMonth);
+    oListItem_Insert_To_Training_Tracker.set_item('LI_TrainingYear', TrainingYear);
+
+    oListItem_Insert_To_Training_Tracker.update();
+    clientContext.load(oListItem_Insert_To_Training_Tracker);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Insert_To_Training_Tracker_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+function Insert_To_Training_Tracker_Succeeded(){
+  Insertion_Count++;
+}
+
+var Insertion_Count = 0;
+
+function Add_Training_Participants(){
+    Insertion_Count = 0;
+
+    var date_training = new Date(document.getElementById("INPUT_TRAINING_DATE").value);  //converts the string into date object
+    var month_training = date_training.getMonth()+1; 
+
+    var Training_Month =  months[parseInt(month_training)-1];
+    var Training_Year = date_training.getFullYear();
+
+      for(var i = 0; i <= Selected_Employee_ID.length;i++){
+          if(i != Selected_Employee_ID.length){
+            Insert_To_Training_Tracker(Selected_Training_Title,
+            Selected_Employee_Name[i],
+            Selected_Employee_ID[i],
+            Selected_Training_ID,
+            document.getElementById("INPUT_TRAINING_DATE").value,
+            document.getElementById("INPUT_TRAINING_DATE_TO").value,
+            document.getElementById("INPUT_TICKET_NUMBER").value,
+            document.getElementById("INPUT_EXAM_DATE").value,
+            document.getElementById("INPUT_RESULT").value,
+            document.getElementById("INPUT_EXAM_SCORE").value,
+            Training_Month,Training_Year);
+
+          }
+          else{     
+
+                  Selected_Employee_Name = [];
+                  Selected_Employee_ID = [];
+
+                  setTimeout(function(){
+
+                    Close_Modal_Add_Participants();
+                    swal({
+                        type: 'success',
+                        title: 'Participants has ben Added',
+                        showConfirmButton: false,
+                        timer: 800}).catch(swal.noop);
+                    ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+                    ExecuteOrDelayUntilScriptLoaded(Get_Overview,'sp.js');
+                    myChart.destroy();
+                    // ExecuteOrDelayUntilScriptLoaded(Get_Trainings_Per_Quarter,'sp.js');
+
+
+                  }, 800);
+
+
+          }
+      }
+}
+
+// REMOVE PARTICIPANT
+
+var Remove_Item;
+function Remove_To_Training_Tracker(Item){
+
+  swal({
+    title: 'Remove Participant?',
+    text: "You won't be able to revert this!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#1678c2',
+    cancelButtonColor: '#f26202',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+      var ID = Item.id.split("-").pop();
+      var siteUrl = 'https://intranet.houseofit.com.au/';
+      var clientContext = new SP.ClientContext(siteUrl);
+      var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+      this.Remove_Item = oList.getItemById(ID);
+      Remove_Item.deleteObject();
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.Remove_To_Training_Tracker_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+  })
+
+}
+function Remove_To_Training_Tracker_Succeeded() {
+
+    ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Get_Overview,'sp.js');
+    myChart.destroy();
+    // ExecuteOrDelayUntilScriptLoaded(Get_Trainings_Per_Quarter,'sp.js');
+
+        swal({
+        type: 'success',
+        title: 'Participant has ben removed',
+        showConfirmButton: false,
+        timer: 700
+      }).catch(swal.noop);
+
+}
+
+
+// UPDATE PARTICIPANT
+
+var To_Be_Updated_ID;
+function Update_To_Training_Tracker_Clicked(Item){
+  PARTICIPANT_FUNCTION = "Edit";
+  var Item_Index = GP_Item_ID.indexOf(parseInt(Item.id.split("-").pop()));
+  
+  To_Be_Updated_ID = Item.id.split("-").pop();
+
+  document.getElementById("INPUT_TRAINING_TITLE").value = Selected_Training_Title;
+  document.getElementById("INPUT_TRAINING_DATE").value = GP_Training_Date[Item_Index];
+  document.getElementById("INPUT_TRAINING_DATE_TO").value = GP_Training_Date_To[Item_Index];
+  document.getElementById("INPUT_TICKET_NUMBER").value = GP_TicketNumber[Item_Index];
+  document.getElementById("INPUT_EXAM_DATE").value = GP_Exam_Date[Item_Index];
+  $('#DIV_INPUT_RESULT').dropdown('set selected', GP_Exam_Result[Item_Index]);
+  document.getElementById("INPUT_EXAM_SCORE").value = GP_Exam_Score[Item_Index];
+
+  if(document.getElementById("INPUT_EXAM_SCORE").value != "" || 
+  document.getElementById("INPUT_EXAM_SCORE").value ||
+  document.getElementById("INPUT_RESULT").value){
+    document.getElementById("TR_EXAM_SCORE").hidden = false;
+    document.getElementById("TR_EXAM_RESULT").hidden = false;
+  }
+
+
+
+  $('#MODAL_ADD_PARTICIPANTS').modal({
+      closable  : false,
+      centered: false 
+      }).modal('show');
+
+}
+
+var Update_To_Training_Tracker_Items;
+function Update_To_Training_Tracker(Item){
+
+    var date_training = new Date(document.getElementById("INPUT_TRAINING_DATE").value);  //converts the string into date object
+    var month_training = date_training.getMonth()+1; 
+
+    var Training_Month =  months[parseInt(month_training)-1];
+    var Training_Year = date_training.getFullYear();
+
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+
+  this.Update_To_Training_Tracker_Items = oList.getItemById(To_Be_Updated_ID);
+
+    Update_To_Training_Tracker_Items.set_item('LI_TrainingDate', document.getElementById("INPUT_TRAINING_DATE").value);
+
+    Update_To_Training_Tracker_Items.set_item('LI_TrainingDateTo', document.getElementById("INPUT_TRAINING_DATE_TO").value);
+    Update_To_Training_Tracker_Items.set_item('LI_TicketNumber', document.getElementById("INPUT_TICKET_NUMBER").value);
+
+    Update_To_Training_Tracker_Items.set_item('LI_ExamDate', document.getElementById("INPUT_EXAM_DATE").value);
+    Update_To_Training_Tracker_Items.set_item('LI_Result', document.getElementById("INPUT_RESULT").value);
+    Update_To_Training_Tracker_Items.set_item('LI_ExamScore', document.getElementById("INPUT_EXAM_SCORE").value);
+    Update_To_Training_Tracker_Items.set_item('LI_TrainingMonth', Training_Month);
+    Update_To_Training_Tracker_Items.set_item('LI_TrainingYear', Training_Year);
+
+    Update_To_Training_Tracker_Items.update();
+    clientContext.load(Update_To_Training_Tracker_Items);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Update_To_Training_Tracker_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Update_To_Training_Tracker_Succeeded(){
+    Close_Modal_Add_Participants();
+      ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+      ExecuteOrDelayUntilScriptLoaded(Get_Overview,'sp.js');
+      myChart.destroy();
+      // ExecuteOrDelayUntilScriptLoaded(Get_Trainings_Per_Quarter,'sp.js');
+
+        swal({
+        type: 'success',
+        title: 'Participant Details Has Been Updated',
+        showConfirmButton: false,
+        timer: 700
+      }).catch(swal.noop);
+}
+
+
+var PARTICIPANT_FUNCTION = "";
+
+function ADD_EDIT(){
+    if(isEmptyOrSpaces(document.getElementById("INPUT_TRAINING_DATE").value) || 
+    isEmptyOrSpaces(document.getElementById("INPUT_TRAINING_DATE_TO").value)){
+      swal('Oops...','Please Enter The Start and End Date','error');
+    }
+    else{
+      if(document.getElementById("INPUT_EXAM_DATE").value == ""){
+          if(PARTICIPANT_FUNCTION == "Add"){
+            Add_Training_Participants();
+          }
+          else if(PARTICIPANT_FUNCTION == "Edit"){
+            Update_To_Training_Tracker();
+          }
+      }
+      else if(document.getElementById("INPUT_EXAM_DATE").value != ""){
+          if(document.getElementById("INPUT_EXAM_SCORE").value == "" || document.getElementById("INPUT_RESULT").value == ""){
+            swal('Oops...','Please Enter The Exam Score & Result','error');
+          }
+          else{
+            if(PARTICIPANT_FUNCTION == "Add"){
+              Add_Training_Participants();
+            }
+            else if(PARTICIPANT_FUNCTION == "Edit"){
+              Update_To_Training_Tracker();
+            }
+          }
+      }
+
+              // if(PARTICIPANT_FUNCTION == "Add"){
+              //   Add_Training_Participants();
+              // }
+              // else if(PARTICIPANT_FUNCTION == "Edit"){
+              //   Update_To_Training_Tracker();
+              // }
+
+    }
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+
+var Employees_Items;
+
+function Load_EmployeeNames_VIEW() {
+  var siteUrl = 'https://intranet.houseofit.com.au/it/';
+  var clientContext = new SP.ClientContext(siteUrl);
+
+  // Department
+  var Employees = clientContext.get_web().get_lists().getByTitle("IT Members");
+  var camlQuery_Department = new SP.CamlQuery();
+      camlQuery_Department.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+      '<FieldRef Name=\'Status\'/>' +
+      '<Value Type=\'Text\'>'+"Active"+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '</View>');
+  this.Employees_Items = Employees.getItems(camlQuery_Department);
+
+  clientContext.load(Employees_Items);
+  clientContext.executeQueryAsync(Load_EmployeeNames_VIEW_Succeeded, onQueryFailed);
+
+}
+
+function Load_EmployeeNames_VIEW_Succeeded(sender, args) {
+
+    var listItemsCollection = Employees_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        // $("#DIV_EMPLOYEE_LIST").append(
+        //       "<div class='item' id='"+listItem.get_item('Employee_ID')+"' onclick=''>"+
+        //         "<div class='content'>"+
+        //           "<div class='header'>"+listItem.get_item('Title')+"</div>"+
+        //           listItem.get_item('Employee_Type')+
+        //         "</div>"+
+        //       "</div>"
+        // );
+
+        $("#TABLE_INDIVIDUAL").append("<tr id='I-"+listItem.get_item('Employee_ID')+"' data-employee-name='"+listItem.get_item('Title')+"' onclick='Selected_Employee(this)'>" +
+         "<td align='left' class=' CenterTextInSpan'>"+listItem.get_item('Employee_ID')+"</td>" +
+         "<td align='left' class=' '>"+listItem.get_item('Title')+"</td>"  +
+         "<td align='left' class=''>"+listItem.get_item('Employee_Type')+"</td>"  +
+         "</tr>");
+
+    }
+
+}
+
+var View_Selected_EmployeeID = "";
+var View_Selected_Name = "";
+function Selected_Employee(Item){
+  // alert(Item.id.split("-").pop());
+View_Selected_EmployeeID = Item.id.split("-").pop();
+View_Selected_Name = $('#'+Item.id).data('employee-name')
+
+
+ExecuteOrDelayUntilScriptLoaded(View_Completed_Trainings,'sp.js');
+}
+
+var View_Completed_Items;
+
+function View_Completed_Trainings() {
+
+  var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+  var camlQuery = new SP.CamlQuery();
+  camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_EmployeeID\'/>' +
+  '<Value Type=\'Text\'>'+View_Selected_EmployeeID+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+  this.View_Completed_Items = oList.getItems(camlQuery);
+  clientContext.load(View_Completed_Items);
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.View_Completed_Trainings_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+
+}
+function View_Completed_Trainings_Succeeded(){
+
+    var listItemsCollection = View_Completed_Items.getEnumerator();
+    $("#TBODY_COMPLETED_TRAININGS").empty();
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        var Status = "";
+        var Result = "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_Result')+"</td>";
+        var ExamDate = "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_ExamDate')+"</td>";
+        var Score = "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_ExamScore')+"%</td>";
+
+
+        if(listItem.get_item('LI_Result') == "Passed"){
+          Status = "<td class='c_status CenterTextInSpan'><span class='ui teal tag label'>Completed</span></td>";
+        }
+        else if(listItem.get_item('LI_Result') == "Failed"){
+          Status = "<td class='c_status CenterTextInSpan'><span class='ui orange tag label'>Incomplete</span></td>";
+        }
+        else if(listItem.get_item('LI_Result') == null){
+          Status = "<td class='c_status CenterTextInSpan'><span class='ui teal tag label'>Completed</span></td>";
+          Result = "<td align='left' class='CenterTextInSpan'>N/A</td>";
+        }
+
+        if(listItem.get_item('LI_ExamDate') == null){
+          ExamDate = "<td align='left' class='CenterTextInSpan'>N/A</td>"
+        }
+        if(listItem.get_item('LI_ExamScore') == null){
+          Score = "<td align='left' class='CenterTextInSpan'>N/A</td>"
+        }
+
+
+        $("#TABLE_COMPLETED_TRAININGS tbody").append("<tr>" +
+         "<td align='left' class=''>"+listItem.get_item('LI_Prerequisite')+"</td>" +
+         "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_TrainingDate')+"</td>"  +
+         ExamDate  +
+         Score +
+         Result  +
+         Status+
+         "</tr>");
+
+    }
+
+        swal({
+        type: 'success',
+        title: View_Selected_Name,
+        showConfirmButton: false,
+        timer: 900
+      }).catch(swal.noop);
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// REPORTS
+var Trainings_Per_Quarter;
+var myChart;
+function Get_Trainings_Per_Quarter(){
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_TrainingYear\'/>' +
+        '<Value Type=\'Text\'>'+(new Date()).getFullYear()+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+        this.Trainings_Per_Quarter = oList.getItems(camlQuery);
+        clientContext.load(Trainings_Per_Quarter);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Trainings_Per_Quarter_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Trainings_Per_Quarter_Succeeded(){
+    var listItemsCollection = Trainings_Per_Quarter.getEnumerator();
+
+    var Array_First_Quarter = [];
+    var Array_Second_Quarter = [];
+    var Array_Third_Quarter = [];
+    var Array_Fourth_Quarter = [];
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        if(listItem.get_item('LI_TrainingMonth') == "January" || 
+          listItem.get_item('LI_TrainingMonth') == "February" || 
+          listItem.get_item('LI_TrainingMonth') == "March"){
+          // Array_First_Quarter.push(listItem.get_item('LI_TrainingMonth'));
+          Array_First_Quarter.push(listItem.get_item('LI_TrainingID'));
+
+        }
+        else if(listItem.get_item('LI_TrainingMonth') == "April" || 
+          listItem.get_item('LI_TrainingMonth') == "May" || 
+          listItem.get_item('LI_TrainingMonth') == "June"){
+          // Array_Second_Quarter.push(listItem.get_item('LI_TrainingMonth'));
+          Array_Second_Quarter.push(listItem.get_item('LI_TrainingID'));
+
+        }
+        else if(listItem.get_item('LI_TrainingMonth') == "July" || 
+          listItem.get_item('LI_TrainingMonth') == "August" || 
+          listItem.get_item('LI_TrainingMonth') == "September"){
+          // Array_Third_Quarter.push(listItem.get_item('LI_TrainingMonth'));
+          Array_Third_Quarter.push(listItem.get_item('LI_TrainingID'));
+        }
+        else if(listItem.get_item('LI_TrainingMonth') == "October" || 
+          listItem.get_item('LI_TrainingMonth') == "November" || 
+          listItem.get_item('LI_TrainingMonth') == "December"){
+          // Array_Fourth_Quarter.push(listItem.get_item('LI_TrainingMonth'));
+          Array_Fourth_Quarter.push(listItem.get_item('LI_TrainingID'));
+        }
+    }
+
+  // console.log(Array_First_Quarter);
+  // console.log(Array_Second_Quarter);
+  // console.log(Array_Third_Quarter);
+  // console.log(Array_Fourth_Quarter);
+
+  var Count_First_Quarter = Array_First_Quarter.filter(onlyUnique).sort();
+  var Count_Second_Quarte = Array_Second_Quarter.filter(onlyUnique).sort();
+  var Count_Third_Quarter = Array_Third_Quarter.filter(onlyUnique).sort();
+  var Count_Fourth_Quarter = Array_Fourth_Quarter.filter(onlyUnique).sort();
+
+
+var ctx = document.getElementById("CANVAS_Quarterly");
+
+myChart = new Chart(ctx, {
+    type: 'bar',
+    title:'TRAININGS PER QUARTER',
+    data: {
+        labels: ["1ST QUARTER", "2ND QUARTER", "3RD QUARTER", "4TH QUARTER"],
+        datasets: [{
+            label: 'TRAININGS',
+            // data: [],
+            data: [Count_First_Quarter.length, Count_Second_Quarte.length, Count_Third_Quarter.length, Count_Fourth_Quarter.length],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',              
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    stepSize: 1,
+                    beginAtZero:true
+                }
+            }]
+        },
+        title: {
+        display: true,
+        text: 'NUMBER OF TRAININGS PER QUARTER'
+      },
+      legend: { display: false }
+    }
+
+});
+
+
+
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+var Overview_Items;
+
+function Get_Overview() {
+
+  var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+  var camlQuery = new SP.CamlQuery();
+  camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_TrainingYear\'/>' +
+  '<Value Type=\'Text\'>'+(new Date()).getFullYear()+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+  this.Overview_Items = oList.getItems(camlQuery);
+  clientContext.load(Overview_Items);
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Overview_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+
+function Get_Overview_Succeeded(){
+    var listItemsCollection = Overview_Items.getEnumerator();
+
+    var Array_1st_quarter_TrainingID = [];
+    var Array_1st_quarter_TrainingTitle = [];
+    var Array_1st_quarter_ID = [];
+    var Array_1st_quarter_Name = [];
+    var Array_1st_quarter_TrainingDate = [];
+    var Array_1st_quarter_ExamDate = [];
+    var Array_1st_quarter_Result = [];
+    var Array_1st_quarter_Score = [];
+
+    var Array_2nd_quarter_TrainingID = [];
+    var Array_2nd_quarter_TrainingTitle = [];
+    var Array_2nd_quarter_ID = [];
+    var Array_2nd_quarter_Name = [];
+    var Array_2nd_quarter_TrainingDate = [];
+    var Array_2nd_quarter_ExamDate = [];
+    var Array_2nd_quarter_Result = [];
+    var Array_2nd_quarter_Score = [];
+
+    var Array_3rd_quarter_TrainingID = [];
+    var Array_3rd_quarter_TrainingTitle = [];
+    var Array_3rd_quarter_ID = [];
+    var Array_3rd_quarter_Name = [];
+    var Array_3rd_quarter_TrainingDate = [];
+    var Array_3rd_quarter_ExamDate = [];
+    var Array_3rd_quarter_Result = [];
+    var Array_3rd_quarter_Score = [];
+
+    var Array_4th_quarter_TrainingID = [];
+    var Array_4th_quarter_TrainingTitle = [];
+    var Array_4th_quarter_ID = [];
+    var Array_4th_quarter_Name = [];
+    var Array_4th_quarter_TrainingDate = [];
+    var Array_4th_quarter_ExamDate = [];
+    var Array_4th_quarter_Result = [];
+    var Array_4th_quarter_Score = [];
+
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        if(listItem.get_item('LI_TrainingMonth') == "January" || 
+          listItem.get_item('LI_TrainingMonth') == "February" || 
+          listItem.get_item('LI_TrainingMonth') == "March"){
+            Array_1st_quarter_TrainingID.push(listItem.get_item('LI_TrainingID'));
+            Array_1st_quarter_TrainingTitle.push(listItem.get_item('LI_Prerequisite'));
+            Array_1st_quarter_ID.push(listItem.get_item('LI_EmployeeID'));
+            Array_1st_quarter_Name.push(listItem.get_item('LI_EmployeeName'));
+            Array_1st_quarter_TrainingDate.push(listItem.get_item('LI_TrainingDate'));
+            Array_1st_quarter_ExamDate.push(listItem.get_item('LI_ExamDate'));
+            Array_1st_quarter_Result.push(listItem.get_item('LI_Result'));
+            Array_1st_quarter_Score.push(listItem.get_item('LI_ExamScore')); 
+        }
+        else if(listItem.get_item('LI_TrainingMonth') == "April" || 
+          listItem.get_item('LI_TrainingMonth') == "May" || 
+          listItem.get_item('LI_TrainingMonth') == "June"){
+            Array_2nd_quarter_TrainingID.push(listItem.get_item('LI_TrainingID'));
+            Array_2nd_quarter_TrainingTitle.push(listItem.get_item('LI_Prerequisite'));
+            Array_2nd_quarter_ID.push(listItem.get_item('LI_EmployeeID'));
+            Array_2nd_quarter_Name.push(listItem.get_item('LI_EmployeeName'));
+            Array_2nd_quarter_TrainingDate.push(listItem.get_item('LI_TrainingDate'));
+            Array_2nd_quarter_ExamDate.push(listItem.get_item('LI_ExamDate'));
+            Array_2nd_quarter_Result.push(listItem.get_item('LI_Result'));
+            Array_2nd_quarter_Score.push(listItem.get_item('LI_ExamScore'));
+        }
+        else if(listItem.get_item('LI_TrainingMonth') == "July" || 
+          listItem.get_item('LI_TrainingMonth') == "August" || 
+          listItem.get_item('LI_TrainingMonth') == "September"){
+            Array_3rd_quarter_TrainingID.push(listItem.get_item('LI_TrainingID'));
+            Array_3rd_quarter_TrainingTitle.push(listItem.get_item('LI_Prerequisite'));
+            Array_3rd_quarter_ID.push(listItem.get_item('LI_EmployeeID'));
+            Array_3rd_quarter_Name.push(listItem.get_item('LI_EmployeeName'));
+            Array_3rd_quarter_TrainingDate.push(listItem.get_item('LI_TrainingDate'));
+            Array_3rd_quarter_ExamDate.push(listItem.get_item('LI_ExamDate'));
+            Array_3rd_quarter_Result.push(listItem.get_item('LI_Result'));
+            Array_3rd_quarter_Score.push(listItem.get_item('LI_ExamScore')); 
+        }
+        else if(listItem.get_item('LI_TrainingMonth') == "October" || 
+          listItem.get_item('LI_TrainingMonth') == "November" || 
+          listItem.get_item('LI_TrainingMonth') == "December"){
+            Array_4th_quarter_TrainingID.push(listItem.get_item('LI_TrainingID'));
+            Array_4th_quarter_TrainingTitle.push(listItem.get_item('LI_Prerequisite'));
+            Array_4th_quarter_ID.push(listItem.get_item('LI_EmployeeID'));
+            Array_4th_quarter_Name.push(listItem.get_item('LI_EmployeeName'));
+            Array_4th_quarter_TrainingDate.push(listItem.get_item('LI_TrainingDate'));
+            Array_4th_quarter_ExamDate.push(listItem.get_item('LI_ExamDate'));
+            Array_4th_quarter_Result.push(listItem.get_item('LI_Result'));
+            Array_4th_quarter_Score.push(listItem.get_item('LI_ExamScore'));  
+        }
+
+    }
+
+
+// console.log("-----------------------------------------");
+// console.log("FIRST QUARTER");
+// console.log(Array_1st_quarter_TrainingID);
+// console.log(Array_1st_quarter_TrainingTitle);
+// console.log(Array_1st_quarter_ID);
+// console.log(Array_1st_quarter_Name);
+// console.log(Array_1st_quarter_TrainingDate);
+// console.log(Array_1st_quarter_ExamDate);
+// console.log(Array_1st_quarter_Result);
+// console.log(Array_1st_quarter_Score);
+// console.log("-----------------------------------------");
+// console.log("+++++++++++++++++++++++++++++++++++++++++");
+// console.log("SECOND QUARTER");
+// console.log(Array_2nd_quarter_TrainingID);
+// console.log(Array_2nd_quarter_TrainingTitle);
+// console.log(Array_2nd_quarter_ID);
+// console.log(Array_2nd_quarter_Name);
+// console.log(Array_2nd_quarter_TrainingDate);
+// console.log(Array_2nd_quarter_ExamDate);
+// console.log(Array_2nd_quarter_Result);
+// console.log(Array_2nd_quarter_Score);
+// console.log("+++++++++++++++++++++++++++++++++++++++++");
+// console.log("/////////////////////////////////////////");
+// console.log("THIRD QUARTER");
+// console.log(Array_3rd_quarter_TrainingID);
+// console.log(Array_3rd_quarter_TrainingTitle);
+// console.log(Array_3rd_quarter_ID);
+// console.log(Array_3rd_quarter_Name);
+// console.log(Array_3rd_quarter_TrainingDate);
+// console.log(Array_3rd_quarter_ExamDate);
+// console.log(Array_3rd_quarter_Result);
+// console.log(Array_3rd_quarter_Score);
+// console.log("/////////////////////////////////////////");
+// console.log("#########################################");
+// console.log("FOURTH QUARTER");
+// console.log(Array_4th_quarter_TrainingID);
+// console.log(Array_4th_quarter_TrainingTitle);
+// console.log(Array_4th_quarter_ID);
+// console.log(Array_4th_quarter_Name);
+// console.log(Array_4th_quarter_TrainingDate);
+// console.log(Array_4th_quarter_ExamDate);
+// console.log(Array_4th_quarter_Result);
+// console.log(Array_4th_quarter_Score);
+// console.log("#########################################");
+
+
+$("#DIV_FIRST_QUARTER_CONTENT").empty();
+$("#DIV_SECOND_QUARTER_CONTENT").empty();
+$("#DIV_THIRD_QUARTER_CONTENT").empty();
+$("#DIV_FOURTH_QUARTER_CONTENT").empty();
+
+// FIRST QUARTER
+for(var i = 0; i <= Array_1st_quarter_TrainingID.length-1;i++){
+    if($('#TABLE_FIRST_'+Array_1st_quarter_TrainingID[i]).length){
+          if(Array_1st_quarter_Result[i] == "Passed"){
+               $("#TABLE_FIRST_"+Array_1st_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_1st_quarter_ID[i]+"</td>"+
+                "<td>"+Array_1st_quarter_Name[i]+"</td>"+
+                "<td>"+Array_1st_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_1st_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_1st_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+          else if(Array_1st_quarter_Result[i] == "Failed"){
+               $("#TABLE_FIRST_"+Array_1st_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_1st_quarter_ID[i]+"</td>"+
+                "<td>"+Array_1st_quarter_Name[i]+"</td>"+
+                "<td>"+Array_1st_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_1st_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_1st_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+    }
+    else{
+          if(Array_1st_quarter_Result[i] == "Passed"){
+            Result = "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>";
+
+              $("#DIV_FIRST_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_1st_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_FIRST_"+Array_1st_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_1st_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_1st_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_1st_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_1st_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_1st_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+          else if(Array_1st_quarter_Result[i] == "Failed"){
+              $("#DIV_FIRST_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_1st_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_FIRST_"+Array_1st_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_1st_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_1st_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_1st_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_1st_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_1st_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+
+    }
+}
+
+// SECOND QUARTER
+for(var i = 0; i <= Array_2nd_quarter_TrainingID.length-1;i++){
+    if($('#TABLE_SECOND_'+Array_2nd_quarter_TrainingID[i]).length){
+          if(Array_2nd_quarter_Result[i] == "Passed"){
+               $("#TABLE_SECOND_"+Array_2nd_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_2nd_quarter_ID[i]+"</td>"+
+                "<td>"+Array_2nd_quarter_Name[i]+"</td>"+
+                "<td>"+Array_2nd_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_2nd_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_2nd_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+          else if(Array_2nd_quarter_Result[i] == "Failed"){
+               $("#TABLE_SECOND_"+Array_2nd_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_2nd_quarter_ID[i]+"</td>"+
+                "<td>"+Array_2nd_quarter_Name[i]+"</td>"+
+                "<td>"+Array_2nd_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_2nd_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_2nd_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+    }
+    else{
+          if(Array_2nd_quarter_Result[i] == "Passed"){
+            Result = "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>";
+
+              $("#DIV_SECOND_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_2nd_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_SECOND_"+Array_2nd_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_2nd_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_2nd_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_2nd_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_2nd_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_2nd_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+          else if(Array_2nd_quarter_Result[i] == "Failed"){
+              $("#DIV_SECOND_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_2nd_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_SECOND_"+Array_2nd_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_2nd_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_2nd_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_2nd_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_2nd_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_2nd_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+
+    }
+}
+
+// THIRD QUARTER
+for(var i = 0; i <= Array_3rd_quarter_TrainingID.length-1;i++){
+    if($('#TABLE_THIRD_'+Array_3rd_quarter_TrainingID[i]).length){
+          if(Array_3rd_quarter_Result[i] == "Passed"){
+               $("#TABLE_THIRD_"+Array_3rd_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_3rd_quarter_ID[i]+"</td>"+
+                "<td>"+Array_3rd_quarter_Name[i]+"</td>"+
+                "<td>"+Array_3rd_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_3rd_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_3rd_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+          else if(Array_3rd_quarter_Result[i] == "Failed"){
+               $("#TABLE_THIRD_"+Array_3rd_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_3rd_quarter_ID[i]+"</td>"+
+                "<td>"+Array_3rd_quarter_Name[i]+"</td>"+
+                "<td>"+Array_3rd_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_3rd_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_3rd_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+    }
+    else{
+          if(Array_3rd_quarter_Result[i] == "Passed"){
+            Result = "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>";
+
+              $("#DIV_THIRD_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_3rd_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_THIRD_"+Array_3rd_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_3rd_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_3rd_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_3rd_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_3rd_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_3rd_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+          else if(Array_3rd_quarter_Result[i] == "Failed"){
+              $("#DIV_THIRD_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_3rd_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_THIRD_"+Array_3rd_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_3rd_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_3rd_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_3rd_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_3rd_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_3rd_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+
+    }
+}
+
+// FOURTH QUARTER
+for(var i = 0; i <= Array_4th_quarter_TrainingID.length-1;i++){
+    if($('#TABLE_FOURTH_'+Array_4th_quarter_TrainingID[i]).length){
+          if(Array_4th_quarter_Result[i] == "Passed"){
+               $("#TABLE_FOURTH_"+Array_4th_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_4th_quarter_ID[i]+"</td>"+
+                "<td>"+Array_4th_quarter_Name[i]+"</td>"+
+                "<td>"+Array_4th_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_4th_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_4th_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+          else if(Array_4th_quarter_Result[i] == "Failed"){
+               $("#TABLE_FOURTH_"+Array_4th_quarter_TrainingID[i-1]).append(
+                "<tr>"+
+                "<td>"+Array_4th_quarter_ID[i]+"</td>"+
+                "<td>"+Array_4th_quarter_Name[i]+"</td>"+
+                "<td>"+Array_4th_quarter_TrainingDate[i]+"</td>"+
+                "<td>"+Array_4th_quarter_ExamDate[i]+"</td>"+
+                "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                "<td class=' CenterTextInSpan'>"+Array_4th_quarter_Score[i]+"%</td>"+
+                "<tr>");
+          }
+    }
+    else{
+          if(Array_4th_quarter_Result[i] == "Passed"){
+            Result = "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>";
+
+              $("#DIV_FOURTH_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_4th_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_FOURTH_"+Array_4th_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_4th_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_4th_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_4th_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_4th_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui green tag label'>Passed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_4th_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+          else if(Array_4th_quarter_Result[i] == "Failed"){
+              $("#DIV_FOURTH_QUARTER_CONTENT").append(
+                  "<div class='ui vertical segment'>"+
+                        "<h5 class='ui header'>"+
+                          Array_4th_quarter_TrainingTitle[i]+
+                        "</h5>"+
+                        "<table class='ui celled fixed table' id='TABLE_FOURTH_"+Array_4th_quarter_TrainingID[i]+"'>"+
+                          "<thead>"+
+                              "<th>ID</th>"+
+                              "<th>Employee Name</th>"+
+                              "<th>Training Date</th>"+
+                              "<th>Exam Date</th>"+
+                              "<th class=' CenterTextInSpan'>Exam Result</th>"+
+                              "<th class=' CenterTextInSpan'>Score</th>"+
+                          "</thead>"+
+                          "<tbody>"+
+                            "<tr>"+
+                            "<td>"+Array_4th_quarter_ID[i]+"</td>"+
+                            "<td>"+Array_4th_quarter_Name[i]+"</td>"+
+                            "<td>"+Array_4th_quarter_TrainingDate[i]+"</td>"+
+                            "<td>"+Array_4th_quarter_ExamDate[i]+"</td>"+
+                            "<td class=' CenterTextInSpan'><span class='ui red tag label'>Failed</span></td>"+
+                            "<td class=' CenterTextInSpan'>"+Array_4th_quarter_Score[i]+"%</td>"+
+                            "<tr>"+
+                          "</tbody>"+
+                        "</table>"+
+                    "</div>");
+          }
+
+    }
+}
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function printDiv(divID) {
+            //Get the HTML of div
+            var divElements = document.getElementById(divID).innerHTML;
+            //Get the HTML of whole page
+            var oldPage = document.body.innerHTML;
+
+            //Reset the page's HTML with div's HTML only
+            document.body.innerHTML =
+              "<html><head><title></title></head><body>" +
+              divElements + "</body>";
+
+            //Print Page
+            window.print();
+
+            //Restore orignal HTML
+            document.body.innerHTML = oldPage;
+
+
+        }
+
+//-----------------------------------------------------------------------------------------------------------------
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+ </script>
+
+<body>
+
+<main>
+
+<div class="row card-panel z-depth-0 grey lighten-3">
+  <div class="row card-panel " style="padding-left: 0px !important; padding-right: 0px !important;padding-top: 0px">
+      <div style="margin-left: 0px !important;margin-right: 0px !important;margin-top: 0px !important;height: 7px !important" class="light-blue z-depth-0"></div>
+
+      <div class="row card-panel z-depth-0">
+       
+                    <div class="ui labeled icon top right pointing dropdown primary button left AlignButtonRight">
+                      <i class="cogs icon"></i>
+                      <span>Menu</span>
+                        <div class="menu">
+                          <div class="item grey-text text-darken-3" onclick="Open_Modal_Trainings()" >
+                            <i class="cog icon"></i>
+                            Manage Trainings
+                          </div>
+                          <div class="item grey-text text-darken-3" onclick="Open_Modal_Individual()">
+                            <i class="users icon"></i>
+                            IT Employees
+                          </div>
+<!--                           <div class="item grey-text text-darken-3" onclick="Open_Modal_Reports()">
+                            <i class="chart bar icon"></i>
+                            Reports
+                          </div> -->
+                          <div class="item grey-text text-darken-3" onclick="Open_Modal_Overview()">
+                            <i class="eye icon"></i>
+                            Report
+                          </div>
+                        </div>
+
+                    </div>
+                    
+        <h2 class="ui header">
+          <i class="tasks icon" ></i>
+          <div class="content"  id="Title">
+            I.T TRAINING TRACKER
+            <div class="sub header">Technical Skills</div>
+          </div>
+        </h2>
+
+<div class="row"></div><div class="row"></div>
+
+ <div class="row">
+          <div class="ui compact menu ">
+            <span class="item">
+              <i class="icon users"></i> Total Employees
+              <span class="floating ui blue label" id="SPAN_TOTAL_EMPLOYEES">0</span>
+            </span>
+            <span class="item">
+              <i class="icon users"></i> Completed
+              <span class="floating ui teal label" id="SPAN_COMPLETED_COUNT">0</span>
+            </span>
+            <span class="item">
+              <i class="icon users"></i> Incomplete
+              <span class="floating ui orange label" id="SPAN_INCOMPLETE_COUNT">0</span>
+            </span>
+            <span class="item">
+              <i class="icon users"></i> Non Participant
+              <span class="floating ui grey label" id="SPAN_NOT_PARTICIPANT_COUNT">0</span>
+            </span>
+          </div>
+
+ </div>
+
+
+        <div class="row">
+
+            <div class="ui raised segment">
+
+        <div class="row">
+          <div class="col s8">
+        <table>
+              <tr >
+                  <td width="120px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700; font-size: 13px !important">TRAINING TITLE :</label>
+                  </td>
+                  <td style="" > 
+                    <div class="ui fluid search selection dropdown col s8" id="DIV_FILTER_TITLE" style="margin-left: 10px !important;">
+                      <input type="hidden" id="INPUT_FILTER_TITLE" >
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select Training Title</div>
+                        <div class="menu" id="Menu_TrainingTitle"></div>
+                     </div>
+                  </td>
+                  <td>
+                    <div class="ui left pointing label medium" id="LBL_JOBLEVEL">
+                      JOB LEVEL
+                    </div>
+                    <div class="ui left pointing label medium" id="LBL_POSITION">
+                      POSITION
+                    </div>
+                  </td>
+                </tr>
+        </table>
+          </div>
+          <div class="col s4">
+            <table>
+              <tr>
+                <td>
+                    <div class="ui search AlignButtonLeft col s12">
+                        <div class="ui icon input spancenter col s12 right">
+                            <input class="prompt grey-text text-darken-2 participants-table-filter "   type="search2" placeholder="Search Here..." data-table="order-table-Participants" >
+                            <i class="search icon" style="margin-right: 10px !important"></i>
+                        </div>
+                    </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="row"> 
+
+        <div class="col s12">
+          <a class="ui button right basic blue" onclick="Open_Modal_Add_Participants()">
+            <i class="icon plus"></i>
+            ADD TO LIST
+          </a>  
+        </div>
+
+        </div>
+
+                <table class="ui  selectable table order-table-Participants" id="TABLE_TRAINING_PARTICIPANTS">
+                  <thead>
+                      <th  width="50px" class="CenterTextInSpan">
+                          <input type='checkbox' id="CB_SelectAll" onChange="" value=""/>
+                          <label for="CB_SelectAll" class='grey-text text-darken-2 TrainingHeight' style="left: 10px !important">&nbsp;</label>
+                      </th>
+                      <th width="130px" class="CenterTextInSpan">ID</th>
+                      <th >NAME</th>
+                      <th>TYPE</th>
+                      <th class="CenterTextInSpan">DATE FROM</th>
+                      <th class="CenterTextInSpan">DATE TO</th>
+                      <th class="CenterTextInSpan">TICKET #</th>
+                      <th class="CenterTextInSpan">EXAM DATE</th>
+                      <th class="CenterTextInSpan">RESULT</th>
+                      <th class="CenterTextInSpan">SCORE</th>
+                      <th class="CenterTextInSpan">TRAINING STATUS</th>
+                      <th  width="50px" class="CenterTextInSpan"></th>
+                </thead>
+                  <tbody id="TBODY_PARTICIPANTS">
+
+                  </tbody>
+                </table>
+              </div>
+        </div>
+
+
+</div>
+
+        
+</div>
+</div>
+
+</main>
+
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="ui tiny test modal " id="MODAL_DELETE_PROMPT">
+    <div class="header">
+      Delete Item
+    </div>
+    <div class="content">
+      <p>Are you sure you want to delete this item?</p>
+    </div>
+    <div class="actions">
+      <div class="ui negative button">
+        No
+      </div>
+      <div class="ui positive right labeled icon button">
+        Yes
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+ <!--MODAL ASSET TYPE SEMANTIC-UI -->
+<div class="ui large modal" id="MODAL_TRAININGS">
+    <div class="header">
+      Manage Trainings
+      <a onclick="Close_Modal_Trainings()">
+        <i class="close icon right"></i>
+      </a>
+      
+    </div>
+    <div class="content">
+      <div class="row ">
+
+          <div id="DIV_TRAINING_FORM" class="hidden" style="display: none">
+            
+        <table class="ui definition table" id="TABLE_TRAINING_FORM" >
+          <tbody>
+            <tr>
+              <td>TRAINING TITLE</td>
+              <td>
+                      <div class="ui input col s12" >
+                        <input type="text2" placeholder="Enter Training Title" id="INPUT_TITLE">
+                      </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="two wide column">JOB LEVEL</td>
+              <td>
+                      <div class="ui input col s12"" >
+                        <div class="ui selection dropdown col s12 JOBLEVEL">
+                          <input type="hidden" name="Status" id="INPUT_JOBLEVEL">
+                          <i class="dropdown icon"></i>
+                          <div class="default text">Select Job Level</div>
+                          <div class="menu">
+                            <div class="item" data-value="Staff">Staff</div>
+                            <div class="item" data-value="Supervisory">Supervisory</div>
+                            <div class="item" data-value="Managerial">Managerial</div>
+                          </div>
+                        </div>
+                      </div>
+              </td>
+            </tr>
+            <tr>
+              <td>POSITION LEVEL</td>
+              <td>
+                <div class="ui input col s12" >
+                        <div class="ui selection dropdown col s12 POSITION">
+                          <input type="hidden" name="Status" id="INPUT_POSITION">
+                          <i class="dropdown icon"></i>
+                          <div class="default text">Select Position Level</div>
+                          <div class="menu">
+                            <div class="item" data-value="Tier 1 Jr Tech Support">Tier 1 Jr Tech Support</div>
+                            <div class="item" data-value="Tier 2 Jr Tech Support">Tier 2 Jr Tech Support</div>
+                            <div class="item" data-value="Tier 3 Sr Tech Support">Tier 3 Sr Tech Support</div>
+                            <div class="item" data-value="Tier 3 Sr System Admin">Tier 3 Sr System Admin</div>
+                            <div class="item" data-value="IT Team Leader">IT Team Leader</div>
+                            <div class="item" data-value="Sr IT Team Leader">Sr IT Team Leader</div>
+                            <div class="item" data-value="IT Manager">IT Manager</div>
+                            <div class="item" data-value="Sr IT Manager">Sr IT Manager</div>
+                          </div>
+                        </div>
+                      </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+
+        <a class="ui button right basic blue" onclick="Save_Training()">
+          <i class="icon save" id="BTN_SaveTraining"></i>
+          <span id="SPAN_TRAINING_OPERATION">Add</span>
+        </a>
+
+        <a class="ui button right basic red" onclick="Close_TrainingForm()">
+          Cancel
+        </a>
+
+        <div class="row"></div>
+
+        <div class="ui divider"></div>
+
+
+          </div>  
+
+        <div class="row">
+
+
+          <a class="ui button basic left green" onclick="New_Training()">
+            <i class="icon plus" id="BTN_SaveTraining"></i>
+            New
+          </a>
+
+                    <div class="ui search right ">
+                        <div class="ui icon input spancenter">
+                            <input class="prompt grey-text text-darken-2 trainings-table-filter"   type="search2" placeholder="Search Here..." style="width: 400px !important;" data-table="order-table-Trainings" >
+                            <i class="search icon" style="margin-right: 10px !important"></i>
+                        </div>
+                    </div>
+        </div>
+
+        <table class="ui table celled striped order-table-Trainings" id="TABLE_TRAININGS">
+                      <thead align="middle">
+                        <th class="CenterTextInSpan">JOB LEVEL</th>
+                        <th class="CenterTextInSpan">POSITION LEVEL</th>
+                        <th class="CenterTextInSpan">TITLE</th>
+                        <th  width="50px"></th>
+                      </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="ui modal tiny" id="MODAL_ADD_PARTICIPANTS">
+    
+    <div class="header">
+      TRAINING FORM
+    </div>
+    <div class="content">
+      <div class="row">
+        
+              <table class="celled">
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">TRAINING TITLE :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Enter Description or Task" id="INPUT_TRAINING_TITLE" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">START DATE :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >             
+                          <input type = "text2" class = "datepicker" placeholder="Select Date" id="INPUT_TRAINING_DATE">  
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">END DATE :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >             
+                          <input type = "text2" class = "datepicker" placeholder="Select Date" id="INPUT_TRAINING_DATE_TO">  
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">TICKET NUMBER :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >             
+                          <input type = "text2" placeholder="Enter Ticket Number" id="INPUT_TICKET_NUMBER">  
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">EXAM DATE :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >             
+                          <input type = "text2" class = "datepicker" placeholder="Select Date" id="INPUT_EXAM_DATE">  
+                    </div>
+                  </td>
+                </tr>  
+                <tr id="TR_EXAM_SCORE" >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">EXAM SCORE :</label>
+                  </td>
+                  <td>
+                    <div class="ui right labeled input col s12" >
+                      <input type="text2" placeholder="Enter Exam Score" id="INPUT_EXAM_SCORE" onkeypress="return isNumberKey(this, event);">
+                        <div class="ui basic label">
+                          %
+                        </div>
+                    </div>
+                  </td>
+                </tr>       
+                <tr id="TR_EXAM_RESULT" >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">RESULT :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <div class="ui selection dropdown item_status col s12 EXAM_RESULT" id="DIV_INPUT_RESULT" >
+                        <input type="hidden" name="Status" id="INPUT_RESULT">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select Status</div>
+                        <div class="menu">
+                          <div class="item" data-value="Passed">Passed</div>
+                          <div class="item" data-value="Failed">Failed</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+      </div>
+    </div>
+    <div class="actions">
+    
+      <a class="ui primary button" onclick="ADD_EDIT()">
+      Save
+    </a>
+
+    <a class="ui button" onclick="Close_Modal_Add_Participants()">
+      Cancel
+    </a>
+
+
+
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+ <!-- COMPLETED TRAINING PER EMPLOYEE -->
+<div class="ui modal fullscreen" id="MODAL_VIEW_INDIVIDUAL">
+    <div class="header">
+      INDIVIDUAL EMPLOYEE's TRAININGS
+      <a onclick="Close_Modal_Individual()">
+        <i class="close icon right"></i>
+      </a>
+      
+    </div>
+    <div class="content row">
+        <div class="col s4">
+            <div class="ui search AlignButtonLeft col s12">
+                <div class="ui icon input spancenter col s12 right">
+                    <input class="prompt grey-text text-darken-2 individual-table-filter " type="search2" placeholder="Search Here..." data-table="order-table-Individual" >
+                    <i class="search icon" style="margin-right: 10px !important"></i>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+            <table class="ui table single line selectable  order-table-Individual" id="TABLE_INDIVIDUAL">
+                <thead>
+                  <tr align="">
+                    <th class="CenterTextInSpan">ID</th>
+                    <th class="">NAME</th>
+                    <th class="">TYPE</th>
+                  </tr>
+                <thead>
+            </table>
+        </div>
+        <div class="col s8">
+
+            <div class="row">
+              
+            </div>
+
+            <div class="row">
+                <table class="ui table celled order-table-Individual" id="TABLE_COMPLETED_TRAININGS">
+                    <thead>
+                      <tr align="">
+                        <th class="">TRAINING TITLE</th>
+                        <th class="CenterTextInSpan">TRAINING DATE</th>
+                        <th class="CenterTextInSpan">EXAM DATE</th>
+                        <th class="CenterTextInSpan">EXAM RESULT</th>
+                        <th class="CenterTextInSpan">EXAM SCORE</th>
+                        <th class="CenterTextInSpan">TRAINING STATUS</th>
+                      </tr>
+                    <thead>
+                      <tbody id="TBODY_COMPLETED_TRAININGS"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+ <!-- MODAL REPORTS-->
+<div class="ui modal large" id="MODAL_REPORTS">
+    <div class="header">
+      QUARTERLY REPORT
+      <a onclick="Close_Modal_Reports()">
+        <i class="close icon right"></i>
+      </a>
+      
+    </div>
+<!--     <div class="content row">
+
+      <div class="card-panel row z-depth-2">
+        <canvas id="CANVAS_Quarterly" height="80"></canvas>
+      </div>
+
+    </div> -->
+</div>
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+ <!-- MODAL OVERVIEW-->
+<div class="ui modal fullscreen" id="MODAL_OVERVIEW">
+    <div class="header">
+      OVERVIEW
+      <a onclick="Close_Modal_Overview()">
+        <i class="close icon right"></i>
+      </a>
+      
+    </div>
+    <div class="content row" id="DIV_Overview_Content">
+<!-- <input value="Print Item" onclick="javascript:printDiv(&#39;DIV_PRINT&#39;)" type="image" onmouseover="this.style.backgroundColor=&#39;#d6e1f3&#39;" onmouseout="this.style.backgroundColor=&#39;white&#39;" src="/SiteAssets/print-icon.png" style="color: white; background-color: white; border: white;"/>  -->
+<div id="DIV_PRINT">
+        
+    <div class="content row">
+
+      <div class="ui segment">
+        <canvas id="CANVAS_Quarterly" height="80"></canvas>
+      </div>
+
+    </div>
+
+        <div class="ui segment">
+          <h2 class="ui right floated header">First Quarter</h2>
+          <div class="ui clearing divider"></div>
+            <div id="DIV_FIRST_QUARTER_CONTENT">
+          </div>
+
+        </div>
+
+        <div class="ui segment">
+          <h2 class="ui right floated header">Second Quarter</h2>
+          <div class="ui clearing divider"></div>
+            <div id="DIV_SECOND_QUARTER_CONTENT"></div>
+        </div>
+
+        <div class="ui segment">
+          <h2 class="ui right floated header">Third Quarter</h2>
+          <div class="ui clearing divider"></div>
+            <div id="DIV_THIRD_QUARTER_CONTENT">
+          </div>
+
+        </div>
+
+        <div class="ui segment">
+          <h2 class="ui right floated header">Fourth Quarter</h2>
+          <div class="ui clearing divider"></div>
+            <div id="DIV_FOURTH_QUARTER_CONTENT"></div>
+        </div>
+
+</div>
+
+
+</div>
+</div>
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+
+<!-- SEMANTIC UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+
+</html>
+

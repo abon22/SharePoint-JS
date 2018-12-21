@@ -1,0 +1,1194 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <!-- SEMANTIC UI -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+
+  .AlignButtonRight{
+  float: right;
+}
+
+  .AlignButtonLeft{
+  float: left;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TrainingHeight { height:auto !important; }
+
+</style>
+
+ <script type="text/javascript">
+
+  $(document).ready(function() {
+
+$('input').keypress(function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+
+ var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+
+    // setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  $('.tabs').tabs();
+  // $(".button-collapse").sideNav();
+
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: false, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+$('.ui.dropdown')
+  .dropdown()
+;
+
+$('.ui.modal.fullscreen.TURNOVERDOCUMENT')
+  .modal()
+;
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+//---------------------------------------------------------------------------------------------------
+
+  $('#ModalNewEntry').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '15%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+  $('#ModalPoints').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '5%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+
+
+//-------------------------------------------------------------------------------------------
+
+// ExecuteOrDelayUntilScriptLoaded(Get_All_Items, "sp.js");
+
+// ExecuteOrDelayUntilScriptLoaded(Get_Departments,'sp.js');
+// ExecuteOrDelayUntilScriptLoaded(Get_Positions,'sp.js');
+
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+  var loginName;
+  var email;
+
+  function onSuccess(data, request){
+
+    loginName = data.d.Title;
+    email = data.d.Email;
+
+    if(loginName != "Fernando Durano Singson Jr."  && loginName != "Victor Surita"  && loginName != "Dianna Rose Gabayan" && loginName != "Nino Rey Cresencio" && loginName != "Jeanne Mamalo" && loginName != "Artem Soukhomlinov" && loginName != "Mithi Sandalo" && loginName != "Mithi Juacel Sandalo" ){
+
+      ExecuteOrDelayUntilScriptLoaded(Get_CreatedBy,'sp.js');
+      ExecuteOrDelayUntilScriptLoaded(Get_Recipient_ID,'sp.js');
+
+      document.getElementById("Div_AllItems").style.display = "none";
+
+    }
+    else{
+
+        ExecuteOrDelayUntilScriptLoaded(Get_All_Items, "sp.js");
+        ExecuteOrDelayUntilScriptLoaded(Get_CreatedBy,'sp.js');
+        ExecuteOrDelayUntilScriptLoaded(Get_Recipient_ID,'sp.js');
+
+    }
+
+  }
+
+  function onError(error) {
+    alert("error");
+  }
+
+
+// --------------------------------------------------------------------------------------------------------------
+// GET ITEMS BY CREATED BY
+
+var Check_CreatedBy_Items;
+function Get_CreatedBy() {
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList = clientContext.get_web().get_lists().getByTitle('Employee Turnover Document');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+        '<FieldRef Name=\'Author\'/>' +
+        '<Value Type=\'User\'>'+loginName+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '<RowLimit>'+
+      '</RowLimit>'+
+      '</View>');
+    this.Check_CreatedBy_Items = oList.getItems(camlQuery);
+    clientContext.load(Check_CreatedBy_Items);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_CreatedBy_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+var var_Recipient_ID = "";
+var var_Employee_ID = "";
+function Get_CreatedBy_Succeeded() {
+    var listItemsCollection = Check_CreatedBy_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+
+     var_Recipient_ID = listItem.get_item('LI_RecipientID');
+     var_Employee_ID = listItem.get_item('LI_EmployeeID');
+
+    }
+
+       ExecuteOrDelayUntilScriptLoaded(Get_Employee_TurnoverDocuments,'sp.js');
+
+}
+
+// --------------------------------------------------------------------------------------------------------------
+// GET ITEMS BY RECIPIENT ID
+
+var Get_RecipientID_Items;
+function Get_Recipient_ID() {
+var username = email.split("@");
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+        '<FieldRef Name=\'LI_Username\'/>' +
+        '<Value Type=\'Text\'>'+username[0]+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '<RowLimit>'+
+      '</RowLimit>'+
+      '</View>');
+    this.Get_RecipientID_Items = oList.getItems(camlQuery);
+    clientContext.load(Get_RecipientID_Items);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Recipient_ID_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+var var_Recipient_ID = "";
+var var_Employee_ID = "";
+function Get_Recipient_ID_Succeeded() {
+    var listItemsCollection = Get_RecipientID_Items.getEnumerator();
+
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      var_Recipient_ID = listItem.get_item('LI_EmployeeID');
+    }
+
+    if(var_Recipient_ID != ""){
+
+      ExecuteOrDelayUntilScriptLoaded(Get_Recipient_TurnoverDocuments,'sp.js');
+    }
+}
+
+// --------------------------------------------------------------------------------------------------------------
+// GET DEPARTMENTS
+
+var Department_List_Items;
+var Array_Department = [];
+
+function Get_Departments(){
+  context = SP.ClientContext.get_current();
+  var Departments = context.get_web().get_lists().getByTitle("Department");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Department_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Department_List_Items);
+  context.executeQueryAsync(Get_Departments_Succeeded, onQueryFailed);
+}
+function Get_Departments_Succeeded(){
+    var listItemsCollection = Department_List_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+
+      $("#Menu_Departments").append(
+        "<div class='item' data-value="+listItem.get_item('Title')+">"+listItem.get_item('Title')+"</div>"
+      );
+
+    }
+
+}
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+// --------------------------------------------------------------------------------------------------------------
+// GET POSITIONS
+
+var Position_List_Items;
+var Array_Position = [];
+
+function Get_Positions(){
+  context = SP.ClientContext.get_current();
+  var Departments = context.get_web().get_lists().getByTitle("Position");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Position_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Position_List_Items);
+  context.executeQueryAsync(Get_Positions_Succeeded, onQueryFailed);
+}
+function Get_Positions_Succeeded(){
+    var listItemsCollection = Position_List_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+
+      $("#Menu_Position").append(
+        "<div class='item' data-value="+listItem.get_item('Title')+">"+listItem.get_item('Title')+"</div>"
+      );
+
+    }
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+// GET CURRENT USERNAME
+var Employee_Username = "";
+function GetCurrentUsername()
+{
+var ctxt = new SP.ClientContext('https://intranet.houseofit.com.au/');
+this.website = ctxt.get_web();
+this.currentUser = website.get_currentUser();
+ctxt.load(currentUser);
+ctxt.executeQueryAsync(Function.createDelegate(this, this.onSucceess_GetUser), Function.createDelegate(this, this.onFail));
+}
+function onSucceess_GetUser(sender, args)
+ {
+ // alert(currentUser.get_loginName());
+ var full_username = currentUser.get_loginName();
+ var current_username = full_username.split("\\");
+  Employee_Username = current_username[1];
+  ExecuteOrDelayUntilScriptLoaded(View_Employee_Points_Individual, "sp.js");
+  // ExecuteOrDelayUntilScriptLoaded(get_username_from_List, "sp.js");
+}
+
+var emp_targetListItem;
+function get_username_from_List(){
+
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('LND Participants');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_Username\'/>' +
+        '<Value Type=\'Text\'>'+Employee_Username+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+        this.emp_targetListItem = oList.getItems(camlQuery);
+      clientContext.load(emp_targetListItem);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.get_username_from_List_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+var ref_id = 0;
+function get_username_from_List_Succeeded(){
+  // alert(Employee_Username);
+    var enumerator = emp_targetListItem.getEnumerator();
+
+    while (enumerator.moveNext()) {
+        var listItem = enumerator.get_current();
+        ref_id = listItem.get_item("ID");
+    }
+    if(ref_id != 0){
+        // console.log("employee have records :"+listItem.get_item("ID"));
+
+
+    }
+    else{
+        // console.log("wa lang sa :"+listItem.get_item("ID"));
+    }
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+// GET LIST OF TURNOVER DOCUMENTS
+
+var Get_All_Items_List_Items;
+
+function Get_All_Items(){
+  context = SP.ClientContext.get_current();
+  var Departments = context.get_web().get_lists().getByTitle("Employee Turnover Document");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Get_All_Items_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Get_All_Items_List_Items);
+  context.executeQueryAsync(Get_All_Items_Succeeded, onQueryFailed);
+}
+function Get_All_Items_Succeeded(){
+    var listItemsCollection = Get_All_Items_List_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        var Status = listItem.get_item('LI_TurnoverStatus');
+        if(Status == null){Status = "Incomplete";}
+
+        var Acknowledgement = listItem.get_item('LI_Acknowledgement');
+        var Acknowledged = "";
+        if(Acknowledgement == "Acknowledged"){Acknowledged = "<td class='c_status CenterTextInSpan'><span class='ui teal horizontal label'>ACKNOWLEDGED</span></td>";}
+        else{Acknowledged = "<td class='c_status CenterTextInSpan'><span class='ui orange horizontal label'>NOT YET</span></td>";}
+
+          if(Status == "Complete"){
+
+                                    $("#TABLE_TurnoverItems_All").append("<tr>" +
+                                     "<td align='left' class='c_description ' > "+listItem.get_item('LI_EmployeeName')+"</td>" +
+                                     "<td align='left' class='c_date '>"+listItem.get_item('LI_RecipientName')+"</td>" +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui green tag label'>"+Status+"</span></td>"  +
+                                     Acknowledged +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                            '<a class="circular ui icon button" id='+listItem.get_item('ID')+' onclick="View_TurnoverDocument_Clicked(this)">'+
+                                             ' <i class="icon file alternate outline"></i>'+
+                                            '</a>'+
+                                     "</td>"+
+
+                                     "</tr>");
+
+          }
+          else{
+                                    $("#TABLE_TurnoverItems_All").append("<tr>" +
+                                     "<td align='left' class='c_description ' > "+listItem.get_item('LI_EmployeeName')+"</td>" +
+                                     "<td align='left' class='c_date '>"+listItem.get_item('LI_RecipientName')+"</td>" +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui red tag label'>"+Status+"</span></td>"  +
+                                     Acknowledged +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                            '<a class="circular ui icon button" id='+listItem.get_item('ID')+' onclick="View_TurnoverDocument_Clicked(this)">'+
+                                             ' <i class="icon file alternate outline"></i>'+
+                                            '</a>'+
+                                     "</td>"+
+
+                                     "</tr>");
+          }
+
+    }
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+var SelectedID;
+function View_TurnoverDocument_Clicked(obj) {
+SelectedID = obj.id;
+  // window.open("https://intranet.houseofit.com.au/Lists/Employee%20Turnover%20Document/EditForm.aspx?ID="+obj.id,"_self")
+ExecuteOrDelayUntilScriptLoaded(View_TurnoverDocument,'sp.js');
+
+  $('.ui.modal.large.TURNOVERDOCUMENT')
+    .modal({
+      closable  : true,
+      centered: false
+    })
+    .modal('show');
+}
+
+var View_TurnoverDocument_Items;
+function View_TurnoverDocument() {
+
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('Employee Turnover Document');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'ID\'/>' +
+        '<Value Type=\'Number\'>'+SelectedID+'</Value></Eq></Where></Query><RowLimit>1</RowLimit></View>');
+        this.View_TurnoverDocument_Items = oList.getItems(camlQuery);
+      clientContext.load(View_TurnoverDocument_Items);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.View_TurnoverDocument_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+}
+function View_TurnoverDocument_Succeeded() {
+
+      var listItemsCollection = View_TurnoverDocument_Items.getEnumerator();
+
+
+      var v_col_description;
+      var v_col_date;
+      var v_remarks;
+      var v_status;
+
+      var v_document;
+      var v_location;
+
+      var v_col_description_array;
+      var v_col_date_array;
+      var v_remarks_array;
+      var v_status_array;
+
+      var v_document_array;
+      var v_location_array;
+
+      var Acknowledgement;
+      var TurnoverStatus;
+
+    for(var i=document.getElementById("TABLE_TurnoverItems_View").rows.length;i>1;i--) {
+    document.getElementById("TABLE_TurnoverItems_View").deleteRow(i-1);}
+
+    for(var i=document.getElementById("TABLE_KeyDocuments").rows.length;i>1;i--) {
+    document.getElementById("TABLE_KeyDocuments").deleteRow(i-1);}
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      document.getElementById("Input_E_Name").value = listItem.get_item('LI_EmployeeName');
+      document.getElementById("Input_E_ID").value = listItem.get_item('LI_EmployeeID');
+      document.getElementById("Input_E_Department").value = listItem.get_item('LI_Department');
+      document.getElementById("Input_E_Contact").value = listItem.get_item('LI_ContactNumber');
+      document.getElementById("Input_E_Position").value = listItem.get_item('LI_PositionTitle');
+      document.getElementById("Input_E_Email").value = listItem.get_item('LI_PersonalEmail');
+      document.getElementById("Input_R_Name").value = listItem.get_item('LI_RecipientName');
+      document.getElementById("Input_R_ID").value = listItem.get_item('LI_RecipientID');
+      document.getElementById("Input_R_Email").value = listItem.get_item('LI_RecipientEmail');
+
+      // document.getElementById("Btn_EditItem").id = listItem.get_item('ID');
+      document.getElementById("Btn_EditItem").href = ""
+      document.getElementById("Btn_EditItem").href = "https://intranet.houseofit.com.au/Lists/Employee%20Turnover%20Document/EditForm.aspx?ID="+listItem.get_item('ID');
+
+
+          Acknowledgement = listItem.get_item('LI_Acknowledgement');
+          TurnoverStatus = listItem.get_item('LI_TurnoverStatus');
+
+          if(Acknowledgement == "Acknowledged" && TurnoverStatus == "Complete"){
+            document.getElementById("Div_Acknowledgement").style.display = "block";
+          }
+          else{
+            document.getElementById("Div_Acknowledgement").style.display = "none";
+          }
+
+
+
+      v_col_description = listItem.get_item('LI_Description');
+      v_col_date = listItem.get_item('LI_Date');
+      v_remarks = listItem.get_item('LI_Remarks');
+      v_status = listItem.get_item('LI_Status');
+
+      v_document = listItem.get_item('LI_Document');
+      v_location = listItem.get_item('LI_Location');
+
+      var Status;
+
+      if(v_col_description != null){
+        v_col_description_array = v_col_description.split(";");
+        v_col_date_array = v_col_date.split(";");
+        v_remarks_array = v_remarks.split(";");
+        v_status_array = v_status.split(";");
+
+        for(i=0; i<=v_col_description_array.length-1;i++){
+          Status = v_status_array[i];
+            if(Status == "Complete"){
+                                            $("#TABLE_TurnoverItems_View").append("<tr>" +
+                                             "<td align='left' class='c_description ' > "+v_col_description_array[i]+"</td>" +
+                                             "<td align='left' class='c_date CenterTextInSpan'>"+v_col_date_array[i]+"</td>" +
+                                             "<td align='left' class='c_remarks CenterTextInSpan'>"+v_remarks_array[i]+"</td>"  +
+                                             "<td class='c_status CenterTextInSpan'><span class='ui green tag label'>"+v_status_array[i]+"</span></td>"  +
+                                             "</tr>");
+            }
+            else if(Status == "In Progress"){
+                                            $("#TABLE_TurnoverItems_View").append("<tr>" +
+                                             "<td align='left' class='c_description ' > "+v_col_description_array[i]+"</td>" +
+                                             "<td align='left' class='c_date CenterTextInSpan'>"+v_col_date_array[i]+"</td>" +
+                                             "<td align='left' class='c_remarks CenterTextInSpan'>"+v_remarks_array[i]+"</td>"  +
+                                             "<td class='c_status CenterTextInSpan'><span class='ui orange tag label'>"+v_status_array[i]+"</span></td>"  +
+                                             "</tr>");
+            }
+            else if(Status == "To Be Done"){
+                                            $("#TABLE_TurnoverItems_View").append("<tr>" +
+                                             "<td align='left' class='c_description ' > "+v_col_description_array[i]+"</td>" +
+                                             "<td align='left' class='c_date CenterTextInSpan'>"+v_col_date_array[i]+"</td>" +
+                                             "<td align='left' class='c_remarks CenterTextInSpan'>"+v_remarks_array[i]+"</td>"  +
+                                             "<td class='c_status CenterTextInSpan'><span class='ui red tag label'>"+v_status_array[i]+"</span></td>"  +
+                                             "</tr>");
+            }
+
+        }
+
+      }
+
+      if(v_document != null){
+         v_document_array = v_document.split(";");
+         v_location_array = v_location.split(";");
+
+        for(i=0; i<=v_document_array.length-1;i++){
+
+                                    $("#TABLE_KeyDocuments").append("<tr >" +
+                                    "<td align='left' class='CenterTextInSpan'><i class='file outline icon'></td>" +
+                                     "<td align='left' class='c_document ' > "+v_document_array[i]+"</td>" +
+                                     "<td align='left' class='c_location'>"+v_location_array[i]+"</td>" +
+                                     "</tr>");
+
+        }
+
+      }
+
+      }
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// GET SPECIFIC EMPLOYEE'S TURNOVER DOCUMENT
+
+var Employee_TurnoverDocuments_Items;
+
+function Get_Employee_TurnoverDocuments(){
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('Employee Turnover Document');
+      var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+        '<FieldRef Name=\'Author\'/>' +
+        '<Value Type=\'User\'>'+loginName+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '<RowLimit>'+
+      '</RowLimit>'+
+      '</View>');
+        this.Employee_TurnoverDocuments_Items = oList.getItems(camlQuery);
+      clientContext.load(Employee_TurnoverDocuments_Items);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Employee_TurnoverDocuments_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Employee_TurnoverDocuments_Succeeded(){
+    var listItemsCollection = Employee_TurnoverDocuments_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        var Status = listItem.get_item('LI_TurnoverStatus');
+        if(Status == null){Status = "Incomplete";}
+
+        var Acknowledgement = listItem.get_item('LI_Acknowledgement');
+        var Acknowledged = "";
+        if(Acknowledgement == "Acknowledged"){
+          Acknowledged = "<td class='c_status CenterTextInSpan'><span class='ui teal horizontal label'>ACKNOWLEDGED</span></td>";
+        }
+        else{
+          Acknowledged = "<td class='c_status CenterTextInSpan'><span class='ui orange horizontal label'>NOT YET</span></td>";
+        }
+          if(Status == "Complete"){
+
+                                    $("#TABLE_TurnoverItems").append("<tr>" +
+                                     "<td align='left' class='c_description ' > "+listItem.get_item('LI_EmployeeName')+"</td>" +
+                                     "<td align='left' class='c_date '>"+listItem.get_item('LI_RecipientName')+"</td>" +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui green tag label'>"+Status+"</span></td>"  +
+                                     Acknowledged +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                            '<a class="circular ui icon button" id='+listItem.get_item('ID')+' onclick="View_TurnoverDocument_Clicked(this)">'+
+                                             ' <i class="icon file alternate outline"></i>'+
+                                            '</a>'+
+                                     "</td>"+
+
+                                     "</tr>");
+
+          }
+          else{
+                                    $("#TABLE_TurnoverItems").append("<tr>" +
+                                     "<td align='left' class='c_description ' > "+listItem.get_item('LI_EmployeeName')+"</td>" +
+                                     "<td align='left' class='c_date '>"+listItem.get_item('LI_RecipientName')+"</td>" +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui red tag label'>"+Status+"</span></td>"  +
+                                     Acknowledged +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                            '<a class="circular ui icon button" id='+listItem.get_item('ID')+' onclick="View_TurnoverDocument_Clicked(this)">'+
+                                             ' <i class="icon file alternate outline"></i>'+
+                                            '</a>'+
+                                     "</td>"+
+
+                                     "</tr>");
+          }
+
+    }
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// GET RECIPIENT ITEMS
+
+var Recipient_Items;
+
+function Get_Recipient_TurnoverDocuments(){
+
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('Employee Turnover Document');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_RecipientEmail\'/>' +
+        '<Value Type=\'Text\'>'+email+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+        this.Recipient_Items = oList.getItems(camlQuery);
+      clientContext.load(Recipient_Items);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Recipient_TurnoverDocuments_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+function Get_Recipient_TurnoverDocuments_Succeeded(){
+    var listItemsCollection = Recipient_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        var Status = listItem.get_item('LI_TurnoverStatus');
+        if(Status == null){Status = "Incomplete";}
+
+        var Acknowledgement = listItem.get_item('LI_Acknowledgement');
+        var Acknowledged = "";
+        if(Acknowledgement == "Acknowledged"){
+          Acknowledged = "<td class='c_status CenterTextInSpan'><span class='ui teal horizontal label'>ACKNOWLEDGED</span></td>";
+        }
+        else{
+          Acknowledged = "<td class='c_status CenterTextInSpan'><span class='ui orange horizontal label'>NOT YET</span></td>";
+        }
+          if(Status == "Complete"){
+
+                                    $("#TABLE_TurnoverItems_Received").append("<tr>" +
+                                     "<td align='left' class='c_description ' > "+listItem.get_item('LI_EmployeeName')+"</td>" +
+                                     "<td align='left' class='c_date '>"+listItem.get_item('LI_RecipientName')+"</td>" +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui green tag label'>"+Status+"</span></td>"  +
+                                     Acknowledged +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                            '<a class="circular ui icon button" id='+listItem.get_item('ID')+' onclick="View_TurnoverDocument_Clicked(this)">'+
+                                             ' <i class="icon file alternate outline"></i>'+
+                                            '</a>'+
+                                     "</td>"+
+
+                                     "</tr>");
+
+          }
+          else{
+                                    $("#TABLE_TurnoverItems_Received").append("<tr>" +
+                                     "<td align='left' class='c_description ' > "+listItem.get_item('LI_EmployeeName')+"</td>" +
+                                     "<td align='left' class='c_date '>"+listItem.get_item('LI_RecipientName')+"</td>" +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui red tag label'>"+Status+"</span></td>"  +
+                                     Acknowledged +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                            '<a class="circular ui icon button" id='+listItem.get_item('ID')+' onclick="View_TurnoverDocument_Clicked(this)">'+
+                                             ' <i class="icon file alternate outline"></i>'+
+                                            '</a>'+
+                                     "</td>"+
+
+                                     "</tr>");
+          }
+
+    }
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function Edit_Item_Clicked(obj) {
+  // alert(obj.id);
+  window.open("https://intranet.houseofit.com.au/Lists/Employee%20Turnover%20Document/EditForm.aspx?ID="+obj.id,"_self");
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+ </script>
+
+<body>
+
+<main>
+
+<div class="row card-panel z-depth-0 grey lighten-3" id="Admin_View">
+  <div class="col s2"></div>
+  <div class="col s8 card-panel" style="padding-left: 0px !important; padding-right: 0px !important;padding-top: 0px">
+      <div style="margin-left: 0px !important;margin-right: 0px !important;margin-top: 0px !important;height: 7px !important" class="light-blue z-depth-0"></div>
+
+      <div class="row card-panel z-depth-0">
+
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+
+        <h2 class="ui header">
+          <i class="file alternate icon" style="color: grey"></i>
+          <div class="content" style="color: grey">
+            Turnover Documents
+
+          </div>
+        </h2>
+
+        <div class="row">
+          <a class="ui compact positive labeled icon button right floated" href="https://intranet.houseofit.com.au/SitePages/Turnover%20Document.aspx">
+            <i class="plus square outline icon"></i>
+            New
+          </a>
+        </div>
+
+        <div class="row">
+
+            <div class="ui raised segment">
+
+              <span class="ui blue ribbon label" id="Span_MyTurnover">SENT</span>
+
+                <table class="ui celled table" id="TABLE_TurnoverItems">
+                  <thead>
+                    <tr align="middle">
+                      <th >CREATED BY</th>
+                      <th >RECIPIENT</th>
+                      <th >STATUS</th>
+                      <th >ACKNOWLEDGED</th>
+                      <th  width="50px">VIEW</th>
+                    </tr>
+                </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+        </div>
+
+<div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row" id="Div_Received">
+
+            <div class="ui raised segment">
+
+              <span class="ui orange ribbon label" id="Span_MyTurnover">RECEIVED</span>
+
+                <table class="ui celled table" id="TABLE_TurnoverItems_Received">
+                  <thead>
+                    <tr align="middle">
+                      <th >CREATED BY</th>
+                      <th >RECIPIENT</th>
+                      <th >STATUS</th>
+                      <th >ACKNOWLEDGED</th>
+                      <th  width="50px">VIEW</th>
+                    </tr>
+                </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+        </div>
+
+<div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row" id="Div_AllItems">
+
+            <div class="ui raised segment">
+
+              <span class="ui teal ribbon label" id="Span_MyTurnover">ALL </span>
+
+                <table class="ui celled table" id="TABLE_TurnoverItems_All">
+                  <thead>
+                    <tr align="middle">
+                      <th >CREATED BY</th>
+                      <th >RECIPIENT</th>
+                      <th >STATUS</th>
+                      <th >ACKNOWLEDGED</th>
+                      <th  width="50px">VIEW</th>
+                    </tr>
+                </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+              </div>
+        </div>
+
+</div>
+
+
+      </div>
+  </div>
+
+
+</div>
+</main>
+
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+<!-- MODAL VIEW DOCUMENT -->
+<div class="ui modal large TURNOVERDOCUMENT">
+
+    <div class="header">
+        <h2 class="ui header">
+          <i class="file alternate icon" style="color: grey"></i>
+          <div class="content" style="color: grey">
+            Turnover Document
+
+          </div>
+        </h2>
+    </div>
+    <div class="content">
+      <div class="row card-panel z-depth-0">
+
+      <a class="ui compact primary labeled icon button right floated" name="btn_Edit_Turnover" id="Btn_EditItem" >
+        <i class="pencil alternate icon"></i>
+        Edit
+      </a>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment ">
+              <div class="row">
+                <span class="ui red ribbon label">EMPLOYEE</span>
+              </div>
+
+              <div class="row">
+
+              <table class="celled">
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">NAME :</label>
+                  </td>
+                  <td >
+
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Name" id="Input_E_Name" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">EMPLOYEE ID :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Employee ID" id="Input_E_ID" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">DEPARTMENT :</label>
+                  </td>
+                  <td >
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Department" id="Input_E_Department" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">CONTACT # :</label>
+                  </td>
+                  <td>
+
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Contact Number" id="Input_E_Contact" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">POSITION :</label>
+                  </td>
+                  <td >
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Position Title" id="Input_E_Position" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">PERSONAL EMAIL :</label>
+                  </td>
+                  <td>
+
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Personal Email" id="Input_E_Email" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              </div>
+
+              </div>
+
+        </div>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment ">
+              <div class="row">
+                <span class="ui teal ribbon label">RECIPIENT</span>
+              </div>
+
+              <div class="row">
+
+              <table class="celled">
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">NAME :</label>
+                  </td>
+                  <td >
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Recipient's Name" id="Input_R_Name" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">EMPLOYEE ID :</label>
+                  </td>
+                  <td>
+
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Employee ID" id="Input_R_ID" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">COMPANY EMAIL :</label>
+                  </td>
+                  <td >
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Company Email" id="Input_R_Email" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+
+                </tr>
+              </table>
+
+              </div>
+
+              </div>
+
+        </div>
+
+
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment">
+              <span class="ui orange  ribbon label">ITEMS TO TURNOVER</span>
+
+          <table class="ui celled table" id="TABLE_TurnoverItems_View">
+            <thead>
+              <tr align="middle">
+                <th >DESCRIPTION / TASK</th>
+                <th >DATE</th>
+                <th >REMARKS</th>
+                <th width="150px">STATUS</th>
+              </tr>
+          </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+              </div>
+        </div>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment">
+              <span class="ui blue  ribbon label">KEY DOCUMENTS & LOCATION</span>
+
+
+          <table class="ui celled  table" id="TABLE_KeyDocuments">
+            <thead>
+              <tr>
+                <th width="50px"></th>
+                <th >FILE/DOCUMENT</th>
+                <th >LOCATION</th>
+              </tr>
+          </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+              </div>
+        </div>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row" id="Div_Acknowledgement" >
+
+            <div class="ui raised segment">
+              <span class="ui purple ribbon label">RECIPIENT ACKNOWLEDGEMENT</span>
+
+              <table class="celled">
+
+                <tr >
+
+                  <td width="140px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">ACKNOWLEDGEMENT :</label>
+                  </td>
+                  <td>
+                    <div class="ui" id="Div_InputAcknowledge_Done" >
+                        <label class="green-text " style="font-size: 15px !important;font-weight: 500 !important;">This turnover document was already acknowledged by the recipient</label>
+                    </div>
+                  </td>
+                </tr>
+
+              </table>
+
+              </div>
+        </div>
+
+</div>
+
+</div>
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- SEMANTIC UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+
+</html>

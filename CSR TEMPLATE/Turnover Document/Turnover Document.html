@@ -1,0 +1,1403 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <!-- SEMANTIC UI -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+
+  .AlignButtonRight{
+  float: right;
+}
+
+  .AlignButtonLeft{
+  float: left;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TrainingHeight { height:auto !important; }
+
+</style>
+
+ <script type="text/javascript">
+
+  $(document).ready(function() {
+
+$('input').keypress(function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+
+ var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+
+
+    // setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  $('.tabs').tabs();
+  // $(".button-collapse").sideNav();
+
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: false, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+$('.ui.dropdown')
+  .dropdown()
+;
+
+
+$('.ui.modal.tiny.ITEMS')
+  .modal()
+;
+
+
+$('#Div_Department').change(function() {
+E_Department = $('#Input_E_Department').val();
+});
+
+
+$('#Div_Position').change(function() {
+E_Position = $('#Input_E_Position').val();
+});
+
+
+$('#Div_Recipient').change(function() {
+R_Name = $('#Input_R_Name').val();
+var index = Array_RecipientName.indexOf($('#Input_R_Name').val());
+
+document.getElementById("Input_R_ID").value = Array_RecipientID[index];
+document.getElementById("Input_R_Email").value = Array_RecipientEmail[index];
+
+});
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+//---------------------------------------------------------------------------------------------------
+
+  $('#ModalNewEntry').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '15%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+  $('#ModalPoints').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '5%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+
+
+//-------------------------------------------------------------------------------------------
+
+
+// ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames,'sp.js');
+// ExecuteOrDelayUntilScriptLoaded(Get_Training, "sp.js");
+
+ExecuteOrDelayUntilScriptLoaded(Get_Departments,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Get_Positions,'sp.js');
+ExecuteOrDelayUntilScriptLoaded(Load_All_Employees,'sp.js');
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+
+
+  var loginName;
+  function onSuccess(data, request){
+
+    loginName = data.d.Title;
+    document.getElementById("Input_E_Name").value = loginName;
+
+    // if(loginName != "Fernando Durano Singson Jr." && loginName != "Victor Surita"  && loginName != "Victor Surita" && loginName != "Dianna Rose Gabayan" && loginName != "Nino Rey Cresencio" && loginName != "Jeanne Mamalo" && loginName != "Artem Soukhomlinov" && loginName != "Mithi Sandalo" && loginName != "Mithi Juacel Sandalo" && loginName != "Scott Osgood"){
+    //   // document.getElementById("Div_Activities").style.display = "none";
+    //   document.getElementById("Div_EmployeeView").style.display = "block";
+    //   document.getElementById("Btn_AddActivity").style.display = "none";
+    // }
+    // else{
+    //   // document.getElementById("Div_EmployeeView").style.display = "none";
+    //   // document.getElementById("Div_Activities").style.display = "block";
+
+
+    // }
+  }
+
+  function onError(error) {
+    alert("error");
+  }
+
+
+// --------------------------------------------------------------------------------------------------------------
+// GET DEPARTMENTS
+
+var Department_List_Items;
+var Array_Department = [];
+
+function Get_Departments(){
+  context = SP.ClientContext.get_current();
+  var Departments = context.get_web().get_lists().getByTitle("Department");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Department_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Department_List_Items);
+  context.executeQueryAsync(Get_Departments_Succeeded, onQueryFailed);
+}
+function Get_Departments_Succeeded(){
+    var listItemsCollection = Department_List_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+
+      $("#Menu_Departments").append(
+        "<div class='item' data-value='"+listItem.get_item('Title')+"'>"+listItem.get_item('Title')+"</div>"
+      );
+
+    }
+
+}
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+// --------------------------------------------------------------------------------------------------------------
+// GET POSITIONS
+
+var Position_List_Items;
+var Array_Position = [];
+
+function Get_Positions(){
+  context = SP.ClientContext.get_current();
+  var Departments = context.get_web().get_lists().getByTitle("Position");
+  var camlQuery_Department = SP.CamlQuery.createAllItemsQuery();
+  this.Position_List_Items = Departments.getItems(camlQuery_Department);
+
+  context.load(Position_List_Items);
+  context.executeQueryAsync(Get_Positions_Succeeded, onQueryFailed);
+}
+function Get_Positions_Succeeded(){
+    var listItemsCollection = Position_List_Items.getEnumerator();
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        Array_Department.push(listItem.get_item('Title'));
+
+      $("#Menu_Position").append(
+        "<div class='item' data-value='"+listItem.get_item('Title')+"'>"+listItem.get_item('Title')+"</div>"
+      );
+
+    }
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------
+// GET CURRENT USERNAME 
+var Employee_Username = "";
+function GetCurrentUsername()
+{
+var ctxt = new SP.ClientContext('https://intranet.houseofit.com.au/');
+this.website = ctxt.get_web();
+this.currentUser = website.get_currentUser();
+ctxt.load(currentUser);
+ctxt.executeQueryAsync(Function.createDelegate(this, this.onSucceess_GetUser), Function.createDelegate(this, this.onFail));
+}
+function onSucceess_GetUser(sender, args)
+ {
+ // alert(currentUser.get_loginName());
+ var full_username = currentUser.get_loginName();
+ var current_username = full_username.split("\\");
+  Employee_Username = current_username[1];
+  ExecuteOrDelayUntilScriptLoaded(View_Employee_Points_Individual, "sp.js");
+  // ExecuteOrDelayUntilScriptLoaded(get_username_from_List, "sp.js");
+}
+
+var emp_targetListItem;
+function get_username_from_List(){
+      
+      var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+      var oList = clientContext.get_web().get_lists().getByTitle('LND Participants');
+      var camlQuery = new SP.CamlQuery();
+      camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_Username\'/>' + 
+        '<Value Type=\'Text\'>'+Employee_Username+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+        this.emp_targetListItem = oList.getItems(camlQuery);
+      clientContext.load(emp_targetListItem);
+      clientContext.executeQueryAsync(Function.createDelegate(this, this.get_username_from_List_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+var ref_id = 0;
+function get_username_from_List_Succeeded(){
+  // alert(Employee_Username);
+    var enumerator = emp_targetListItem.getEnumerator();
+
+    while (enumerator.moveNext()) {
+        var listItem = enumerator.get_current();  
+        ref_id = listItem.get_item("ID");
+    }
+    if(ref_id != 0){
+        // console.log("employee have records :"+listItem.get_item("ID"));
+
+        
+    }
+    else{
+        // console.log("wa lang sa :"+listItem.get_item("ID"));
+    }
+
+}
+
+
+var Check_CreatedBy_Itemsl;
+function Get_CreatedBy() {
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList = clientContext.get_web().get_lists().getByTitle('Employee Turnover Document');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+        '<FieldRef Name=\'Author\'/>' + 
+        '<Value Type=\'User\'>'+loginName+'</Value>'+
+      '</Eq>'+  
+      '</Where>'+
+      '</Query>'+
+      '<RowLimit>'+
+      '</RowLimit>'+
+      '</View>');
+    this.Check_CreatedBy_Itemsl = oList.getItems(camlQuery);
+    clientContext.load(Check_CreatedBy_Itemsl);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_CreatedBy_Succeeded), Function.createDelegate(this, this.onQueryFailed)); 
+}
+function Get_CreatedBy_Succeeded() {
+
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------------
+  // GET EMPLOYEES NAME
+
+var Department_Employees_Items;
+var Array_RecipientID = [];
+var Array_RecipientName = [];
+var Array_RecipientEmail = [];
+
+function Load_All_Employees(){
+
+    var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+    var oList = clientContext.get_web().get_lists().getByTitle('Employee Profile');
+    var camlQuery = new SP.CamlQuery();
+    camlQuery.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+        '<FieldRef Name=\'LI_Separated\'/>' + 
+        '<Value Type=\'Text\'>'+"Active"+'</Value>'+
+      '</Eq>'+  
+      '</Where>'+
+        '<OrderBy>'+
+        '<FieldRef Name=\'LI_FirstName\' Ascending=\'true\' />'+
+        '</OrderBy>'+
+      '</Query>'+
+      '<RowLimit>'+
+      '</RowLimit>'+
+      '</View>');
+    this.Department_Employees_Items = oList.getItems(camlQuery);
+    clientContext.load(Department_Employees_Items);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.Load_All_Employees_Succeeded), Function.createDelegate(this, this.onQueryFailed));  
+}
+
+function Load_All_Employees_Succeeded(sender, args) {
+    var listItemsCollection = Department_Employees_Items.getEnumerator();
+
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        
+      var var_ID = listItem.get_item('LI_EmployeeID');  
+      var var_FirstName = listItem.get_item('LI_FirstName');
+      var var_MiddleName = listItem.get_item('LI_MiddleName');
+      var var_LastName = listItem.get_item('LI_LastName');
+      var var_Suffix = listItem.get_item('LI_Suffix');
+      var var_Department = listItem.get_item('LI_Department');
+
+      Array_RecipientID.push(listItem.get_item('LI_EmployeeID'));
+
+      if(var_Suffix == null){var_Suffix = "";}
+      Name = var_FirstName +" "+var_LastName+" "+var_Suffix;
+
+      Array_RecipientName.push(Name);
+      Array_RecipientEmail.push(listItem.get_item('LI_CompanyEmail'));
+
+      $("#Menu_Recipient").append(
+        "<div id="+var_ID+" class='item' data-value='"+Name+"'>"+Name+"</div>"
+      );
+    }
+
+          
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------------
+  // SHOW MODAL
+
+function Add_Items_Clicked() {
+  TurnonverItem_Function = "Add";
+  $('.ui.modal.tiny.ITEMS')
+    .modal({
+      closable  : false,
+      centered: false
+    })
+    .modal('show')
+  ;
+
+}
+
+function Close_Add_Items_Clicked() {
+  $('.ui.modal.tiny.ITEMS')
+    .modal('hide');
+
+  document.getElementById("Input_Description").value = "";
+  document.getElementById("Input_TurnoverDate").value = "";
+  document.getElementById("Input_Remarks").value = "";
+  $('.ui.dropdown.item_status').dropdown('restore defaults');
+
+}
+
+function Add_Documents_Clicked() {
+KeyDocument_Function = "Add";
+  $('.ui.modal.tiny.DOCUMENTS')
+    .modal({
+      closable  : false,
+      centered: false
+    })
+    .modal('show');
+}
+
+function Close_Add_Documents_Clicked() {
+  $('.ui.modal.tiny.DOCUMENTS')
+    .modal('hide');
+
+  document.getElementById("Input_Document").value = "";
+  document.getElementById("Input_Location").value = "";
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function isEmptyOrSpaces(str){
+    return str === null || str.match(/^ *$/) !== null;
+}
+
+function Append_To_Table_TurnoverItems() {
+  
+  var Description = document.getElementById("Input_Description").value;
+  var TurnoverDate = document.getElementById("Input_TurnoverDate").value;
+  var Remarks = document.getElementById("Input_Remarks").value;
+  var Status = document.getElementById("Input_Status").value;
+
+if(Description == "" || TurnoverDate == "" || Remarks == "" || Status == ""){
+
+      swal(
+      'Oops...',
+      'Please fill all the fields!',
+      'error');
+
+}
+else{
+
+  if(TurnonverItem_Function == "Edit"){
+
+  var Row;
+
+    if(Status == "Complete"){
+     Row = "<tr id='TI-"+RowID+"'>" +
+                                     "<td align='left' id='TaskID-"+Description+"' class='c_description ' > "+Description+"</td>" +
+                                     "<td align='left' class='c_date CenterTextInSpan'>"+TurnoverDate+"</td>" +
+                                     "<td align='left' class='c_remarks CenterTextInSpan'>"+Remarks+"</td>"  +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui green tag label'>"+Status+"</span></td>"  +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_TurnoverItem(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_TurnoverItem(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>";
+    }
+    else if(Status == "In Progress"){
+
+      Row = "<tr id='TI-"+RowID+"'>" +
+                                     "<td align='left' class='c_description ' > "+Description+"</td>" +
+                                     "<td align='left' class='c_date CenterTextInSpan'>"+TurnoverDate+"</td>" +
+                                     "<td align='left' class='c_remarks CenterTextInSpan'>"+Remarks+"</td>"  +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui orange tag label'>"+Status+"</span></td>"  +
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                       
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_TurnoverItem(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_TurnoverItem(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>";
+    }
+    else if(Status == "To Be Done"){
+      Row = "<tr id='TI-"+RowID+"'>" +
+                                     "<td align='left' class='c_description ' > "+Description+"</td>" +
+                                     "<td align='left' class='c_date CenterTextInSpan'>"+TurnoverDate+"</td>" +
+                                     "<td align='left' class='c_remarks CenterTextInSpan'>"+Remarks+"</td>"  +
+                                     "<td class='c_status CenterTextInSpan' ><span class='ui red tag label'>"+Status+"</span></td>"  +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_TurnoverItem(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_TurnoverItem(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>";
+  }
+
+  $("tr#"+TurnonverItem_Ojbect.parentNode.parentNode.parentNode.parentNode.id).replaceWith(Row);
+
+  }
+  else if (TurnonverItem_Function == "Add"){
+
+  var trs = document.getElementsByTagName("tr");
+  var RowID = 0;
+  while (RowID<trs.length)
+  {
+      trs[RowID].id = "TI-"+RowID;
+      RowID++;
+  }
+
+    if(Status == "Complete"){
+                                    $("#TABLE_TurnoverItems").append("<tr id='TI-"+RowID+"'>" +
+                                     "<td align='left' id='TaskID-"+Description+"' class='c_description ' > "+Description+"</td>" +
+                                     "<td align='left' class='c_date CenterTextInSpan'>"+TurnoverDate+"</td>" +
+                                     "<td align='left' class='c_remarks CenterTextInSpan'>"+Remarks+"</td>"  +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui green tag label'>"+Status+"</span></td>"  +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_TurnoverItem(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_TurnoverItem(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>");
+    }
+    else if(Status == "In Progress"){
+                                    $("#TABLE_TurnoverItems").append("<tr id='TI-"+RowID+"'>" +
+                                     "<td align='left' class='c_description ' > "+Description+"</td>" +
+                                     "<td align='left' class='c_date CenterTextInSpan'>"+TurnoverDate+"</td>" +
+                                     "<td align='left' class='c_remarks CenterTextInSpan'>"+Remarks+"</td>"  +
+                                     "<td class='c_status CenterTextInSpan'><span class='ui orange tag label'>"+Status+"</span></td>"  +
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                       
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_TurnoverItem(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_TurnoverItem(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>");
+    }
+    else if(Status == "To Be Done"){
+                                    $("#TABLE_TurnoverItems").append("<tr id='TI-"+RowID+"'>" +
+                                     "<td align='left' class='c_description ' > "+Description+"</td>" +
+                                     "<td align='left' class='c_date CenterTextInSpan'>"+TurnoverDate+"</td>" +
+                                     "<td align='left' class='c_remarks CenterTextInSpan'>"+Remarks+"</td>"  +
+                                     "<td class='c_status CenterTextInSpan' ><span class='ui red tag label'>"+Status+"</span></td>"  +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_TurnoverItem(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_TurnoverItem(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>");
+    }   
+  }
+
+                $('.ui.circular.icon.dropdown.button')
+                  .dropdown({
+                    action: 'hide'
+                  })
+                ;
+
+Close_Add_Items_Clicked();
+
+}
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+var TurnonverItem_Function;
+var TurnonverItem_Ojbect;
+
+function Delete_TurnoverItem(obj) {
+  var row = obj.parentNode.parentNode.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+
+}
+
+function Edit_TurnoverItem(obj) {
+  var RowID = obj.parentNode.parentNode.parentNode.parentNode.id;
+
+  TurnonverItem_Function = "Edit";
+  TurnonverItem_Ojbect = obj;
+
+      var currentTR = $(obj).closest('tr');
+      var ti_description = currentTR.find("td.c_description").text();
+      var ti_date = currentTR.find("td.c_date").text();
+      var ti_remarks = currentTR.find("td.c_remarks").text();
+      var ti_status = currentTR.find("td.c_status").text();
+
+      document.getElementById("Input_Description").value = ti_description;
+      document.getElementById("Input_TurnoverDate").value = ti_date;
+      document.getElementById("Input_Remarks").value = ti_remarks;
+      // document.getElementById("Input_Status").value = ti_status;
+      $('.ui.selection.dropdown.item_status.col.s12').dropdown('set selected', ti_status);
+      
+  $('.ui.modal.tiny.ITEMS')
+    .modal({
+      closable  : false,
+      centered: false
+    })
+    .modal('show')
+  ;
+
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+function Append_To_Table_KeyDocuments(){
+
+  var Document = document.getElementById("Input_Document").value;
+  var Location = document.getElementById("Input_Location").value;
+
+  if(Document == "" || Location == ""){
+      swal(
+      'Oops...',
+      'Please fill all the fields!',
+      'error');
+  }
+  else{
+
+    if(KeyDocument_Function == "Add"){
+    var trs = document.getElementsByTagName("tr");
+    var RowID = 0;
+    while (RowID<trs.length)
+    {
+        trs[RowID].id = "KD-"+RowID;
+        RowID++;
+    }
+
+                                    $("#TABLE_KeyDocuments").append("<tr id='KD-"+RowID+"'>" +
+                                    "<td align='left' class='CenterTextInSpan'><i class='file outline icon'></td>" +
+                                     "<td align='left' class='c_document ' > "+Document+"</td>" +
+                                     "<td align='left' class='c_location'>"+Location+"</td>" +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_KeyDocument(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_KeyDocument(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>");
+
+                  $('.ui.circular.icon.dropdown.button')
+                    .dropdown({
+                      action: 'hide'
+                    })
+                  ;
+
+    }
+    else if(KeyDocument_Function == "Edit"){
+      var Edit_Tr;
+
+
+      var Row = "<tr id='KD-"+RowID+"'>" +
+                                    "<td align='left' class='CenterTextInSpan'><i class='file outline icon'></td>" +
+                                     "<td align='left' class='c_document ' > "+Document+"</td>" +
+                                     "<td align='left' class='c_location'>"+Location+"</td>" +
+
+                                     "<td class='CenterTextInSpan'>"+
+                                      '<div class="ui circular icon dropdown button">'+
+                                        '<i class="icon settings "></i>'+
+                                        '<div class="menu">'+
+                                          '<a class="item" href="#link1" onclick="Edit_KeyDocument(this)"><i class="edit icon"></i> Edit</a>'+
+                                          '<a class="item" href="#link2" onclick="Delete_KeyDocument(this)"><i class="delete icon"></i> Remove</a>'+
+                                        '</div>'+
+                                     "</td>"+
+
+                                     "</tr>"
+
+      $("tr#"+KeyDocument_Ojbect.parentNode.parentNode.parentNode.parentNode.id).replaceWith(Row);
+
+    }  
+Close_Add_Documents_Clicked();
+  }
+    
+
+}
+
+var KeyDocument_Function;
+var KeyDocument_Ojbect;
+
+function Delete_KeyDocument(obj) {
+  var row = obj.parentNode.parentNode.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+
+}
+
+function Edit_KeyDocument(obj) {
+  var RowID = obj.parentNode.parentNode.parentNode.parentNode.id;
+
+  KeyDocument_Function = "Edit";
+  KeyDocument_Ojbect = obj;
+
+      var currentTR = $(obj).closest('tr');
+      var kd_document = currentTR.find("td.c_document").text();
+      var kd_location = currentTR.find("td.c_location").text();
+
+      document.getElementById("Input_Document").value = kd_document;
+      document.getElementById("Input_Location").value = kd_location;
+
+  $('.ui.modal.tiny.DOCUMENTS')
+    .modal({
+      closable  : false,
+      centered: false
+    })
+    .modal('show')
+  ;
+
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// TURNOVER ITEMS VARIABLES
+var col_description = "";
+var col_date = "";
+var col_remarks = "";
+var col_status = "";
+
+// KEY DOCUMENTS VARIABLES
+var col_document = "";
+var col_location = "";
+
+function getColumn(table_id, col) {
+    var tab = document.getElementById(table_id);
+    var n = tab.rows.length;
+    var i, tr, td;
+    var s="";
+
+    // First check that col is not less then 0
+    if (col < 0) {
+        return null;
+    }
+
+    for (i = 1; i < n; i++) {
+        tr = tab.rows[i];
+        if (tr.cells.length > col) { // Check that cell exists before you try
+            td = tr.cells[col];      // to access it.
+            if(s != ""){
+              s += ';' + td.innerText;
+            }
+            else{
+              s = td.innerText;
+            }
+            
+        } // Here you could say else { return null; } if you want it to fail
+          // when requested column is out of bounds. It depends.
+    }
+    return s;
+}
+
+function get_columns(){
+  col_description = getColumn("TABLE_TurnoverItems", 0);
+  col_date = getColumn("TABLE_TurnoverItems", 1);
+  col_remarks = getColumn("TABLE_TurnoverItems", 2);
+  col_status = getColumn("TABLE_TurnoverItems", 3);
+
+  col_document = getColumn("TABLE_KeyDocuments", 1);
+  col_location = getColumn("TABLE_KeyDocuments", 2);
+
+  // console.log(col_description + "\n"+col_date + "\n"+col_remarks + "\n"+col_status);
+  // console.log("-----------------------------------------");
+  // console.log(col_document + "\n"+col_location);
+
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// ADD TURNOVER DOCUMENT
+
+var New_TurnOverDocument_Item;
+
+var E_Department = "";
+var E_Position = "";
+var R_Name = "";
+
+function New_TurnOverDocument(){
+
+    console.log($('#Input_E_Department').dropdown('get value'));
+
+  col_description = getColumn("TABLE_TurnoverItems", 0);
+  col_date = getColumn("TABLE_TurnoverItems", 1);
+  col_remarks = getColumn("TABLE_TurnoverItems", 2);
+  col_status = getColumn("TABLE_TurnoverItems", 3);
+
+  col_document = getColumn("TABLE_KeyDocuments", 1);
+  col_location = getColumn("TABLE_KeyDocuments", 2);
+
+  if(isEmptyOrSpaces(document.getElementById("Input_E_Name").value) ||
+    isEmptyOrSpaces(document.getElementById("Input_E_ID").value) ||
+    isEmptyOrSpaces(E_Department) ||
+    isEmptyOrSpaces(document.getElementById("Input_E_Contact").value) ||
+    isEmptyOrSpaces(E_Position) ||
+    isEmptyOrSpaces(document.getElementById("Input_E_Email").value) ||
+    isEmptyOrSpaces(document.getElementById("Input_E_Email").value) ||
+    isEmptyOrSpaces(R_Name) ||
+    isEmptyOrSpaces(col_description) ||
+    isEmptyOrSpaces(col_date) ||
+    isEmptyOrSpaces(col_remarks) ||
+    isEmptyOrSpaces(col_status) ||
+    isEmptyOrSpaces(col_document) ||
+    isEmptyOrSpaces(col_location)){
+      swal(
+      'Oops...',
+      'Please fill all the fields!',
+      'error');
+  }
+  else{
+
+  var siteUrl = 'https://intranet.houseofit.com.au/';
+  var clientContext = new SP.ClientContext(siteUrl);
+  var oList = clientContext.get_web().get_lists().getByTitle('Employee Turnover Document');
+
+  var itemCreateInfo = new SP.ListItemCreationInformation();
+  this.New_TurnOverDocument_Item = oList.addItem(itemCreateInfo);
+
+    New_TurnOverDocument_Item.set_item('LI_EmployeeName', document.getElementById("Input_E_Name").value);
+    New_TurnOverDocument_Item.set_item('LI_EmployeeID', document.getElementById("Input_E_ID").value);
+    New_TurnOverDocument_Item.set_item('LI_Department', E_Department);
+    New_TurnOverDocument_Item.set_item('LI_ContactNumber', document.getElementById("Input_E_Contact").value);
+    New_TurnOverDocument_Item.set_item('LI_PositionTitle', E_Position);
+    New_TurnOverDocument_Item.set_item('LI_PersonalEmail', document.getElementById("Input_E_Email").value);
+    New_TurnOverDocument_Item.set_item('LI_RecipientName', R_Name);
+    New_TurnOverDocument_Item.set_item('LI_RecipientID', document.getElementById("Input_R_ID").value);
+    New_TurnOverDocument_Item.set_item('LI_RecipientEmail', document.getElementById("Input_R_Email").value);
+    New_TurnOverDocument_Item.set_item('LI_Description', col_description);
+    New_TurnOverDocument_Item.set_item('LI_Date', col_date);
+    New_TurnOverDocument_Item.set_item('LI_Remarks', col_remarks);
+    New_TurnOverDocument_Item.set_item('LI_Status', col_status);
+    New_TurnOverDocument_Item.set_item('LI_Document', col_document);
+    New_TurnOverDocument_Item.set_item('LI_Location', col_location);
+
+    New_TurnOverDocument_Item.update();
+    clientContext.load(New_TurnOverDocument_Item);
+    clientContext.executeQueryAsync(Function.createDelegate(this, this.New_TurnOverDocument_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+  }
+
+}
+
+function New_TurnOverDocument_Succeeded(){
+
+  window.open("https://intranet.houseofit.com.au/SitePages/Turnover%20Document%20Tracker.aspx?WikiPageMode=Edit&InitialTabId=Ribbon.EditingTools.CPEditTab&VisibilityContext=WSSWikiPage&","_self");
+
+                swal({
+                type: 'success',
+                title: 'Participants has ben Added',
+                showConfirmButton: false,
+                timer: 500});
+
+
+
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+function Cancel() {
+  window.open("https://intranet.houseofit.com.au/SitePages/Turnover%20Document%20Tracker.aspx?WikiPageMode=Edit&InitialTabId=Ribbon.EditingTools.CPEditTab&VisibilityContext=WSSWikiPage&","_self");
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+ </script>
+
+<body>
+
+<main>
+
+<div class="row card-panel z-depth-0 grey lighten-3" id="Admin_View">
+  <div class="col s2"></div>
+
+  <div class="col s8 card-panel" style="padding-left: 0px !important; padding-right: 0px !important;padding-top: 0px">
+    <div style="margin-left: 0px !important;margin-right: 0px !important;margin-top: 0px !important;height: 7px !important" class="light-blue z-depth-0"></div>
+    <img src="https://intranet.houseofit.com.au/SiteAssets/Logo/Hoit_Logo_TurnoverDocument_form.png
+">
+      
+
+      <div class="row card-panel z-depth-0">
+        
+        <div class="row">
+        <h2 class="ui header right floated">
+          <i class="file alternate icon" style="color: grey"></i>
+          <div class="content" style="color: grey">
+            Turnover Document
+
+          </div>
+        </h2> 
+        </div>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment ">
+              <div class="row">
+                <span class="ui red ribbon label">EMPLOYEE</span>
+              </div>
+              
+              <div class="row">
+
+              <table class="celled">
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">NAME :</label>
+                  </td>
+                  <td style="padding-right: 25px !important">
+                    
+                    <div class="ui input col s12 " >
+                      <input type="text2" placeholder="Name" id="Input_E_Name" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">EMPLOYEE ID :</label>
+                  </td>
+                  <td>
+                    
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Employee ID" id="Input_E_ID">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">DEPARTMENT :</label>
+                  </td>
+                  <td style="padding-right: 45px !important"> 
+                    <div class="ui fluid search selection dropdown DP_DEPARTMENT col s12" id="Div_Department" style="margin-left: 10px !important;">
+                      <input type="hidden" id="Input_E_Department" >
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Department</div>
+                        <div class="menu" id="Menu_Departments"></div>
+                     </div>
+                  </td>
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">CONTACT # :</label>
+                  </td>
+                  <td>
+                    
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Contact Number" id="Input_E_Contact">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">POSITION :</label>
+                  </td>
+                  <td style="padding-right: 45px !important">
+                    <div class="ui fluid search selection dropdown POSITION col s12" id="Div_Position" style="margin-left: 10px !important;">
+                      <input type="hidden" id="Input_E_Position" >
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Position Title</div>
+                        <div class="menu" id="Menu_Position"></div>
+                     </div>
+                  </td>
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">PERSONAL EMAIL :</label>
+                  </td>
+                  <td>
+                    
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Personal Email" id="Input_E_Email">
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              </div>  
+                
+              </div>
+
+        </div>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment ">
+              <div class="row">
+                <span class="ui teal ribbon label">RECIPIENT</span>
+              </div>
+              
+              <div class="row">
+
+              <table class="celled">
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">NAME :</label>
+                  </td>
+                  <td style="padding-right: 25px !important">
+                    
+                    <div class="ui fluid search selection dropdown DP_Reciptient col s12" id="Div_Recipient" style="margin-left: 10px !important;">
+                      <input type="hidden" id="Input_R_Name" >
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Recipient's Name</div>
+                        <div class="menu" id="Menu_Recipient"></div>
+                     </div>
+
+                  </td>
+
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">EMPLOYEE ID :</label>
+                  </td>
+                  <td>
+                    
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Employee ID" id="Input_R_ID" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+                </tr>
+
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">COMPANY EMAIL :</label>
+                  </td>
+                  <td >
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Company Email" id="Input_R_Email" readonly class="grey lighten-3">
+                    </div>
+                  </td>
+
+                </tr>
+
+              </table>
+
+              </div>  
+                
+              </div>
+
+        </div>
+
+
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment">
+              <span class="ui orange  ribbon label">ITEMS TO TURNOVER</span>
+
+                <div class="row">
+              <a class="ui  button right floated ADD_ITEMS" onclick="Add_Items_Clicked()">
+                <i class="icon plus"></i>
+                Add
+              </a>
+            </div>
+
+          <table class="ui celled table" id="TABLE_TurnoverItems">
+            <thead>
+              <tr align="middle">
+                <th >DESCRIPTION / TASK</th>
+                <th >DATE</th>
+                <th >REMARKS</th>
+                <th style="width: 150px !important;">STATUS</th>
+                <th  width="50px"></th>
+              </tr>
+          </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+              </div>
+        </div>
+
+        <div class="row"></div><div class="row"></div><div class="row"></div>
+
+        <div class="row">
+
+            <div class="ui raised segment">
+              <span class="ui blue  ribbon label">KEY DOCUMENTS & LOCATION</span>
+
+                <div class="row">
+              <a class="ui  button right floated" onclick="Add_Documents_Clicked()">
+                <i class="icon plus"></i>
+                Add
+              </a>
+            </div>
+
+          <table class="ui celled  table" id="TABLE_KeyDocuments">
+            <thead>
+              <tr>
+                <th width="50px"></th>
+                <th >FILE/DOCUMENT</th>
+                <th >LOCATION</th>
+                <th width="50px"></th>
+              </tr>
+          </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+              </div>
+        </div>
+
+<div class="row"></div><div class="row"></div><div class="row"></div>
+
+<div class="row">
+
+
+  <a class="ui button right floated" onclick="Cancel()">
+    Cancel
+  </a>
+
+  <a class="ui primary button right floated" onclick="New_TurnOverDocument()">
+    Submit
+  </a>
+</div>
+
+</div>
+
+
+
+        
+      </div>
+  </div>
+
+
+  <div class="col s2"></div>
+</div>
+</main>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="ui modal tiny ITEMS">
+    
+    <div class="header">
+      ITEMS TO TURNOVER
+    </div>
+    <div class="content">
+      <div class="row">
+        
+              <table class="celled">
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">DESCRIPTION / TASK :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Enter Description or Task Name" id="Input_Description">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">DATE :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >             
+                                  <input type = "text2" class = "datepicker" placeholder="Select Date" id="Input_TurnoverDate">  
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">REMARKS :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Enter Remarks" id="Input_Remarks">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="100px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">STATUS :</label>
+                  </td>
+                  <td>
+                    <div class="ui input" >
+                      <div class="ui selection dropdown item_status col s12" style="margin-left: 10px !important;" >
+                        <input type="hidden" name="Status" id="Input_Status">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select Status</div>
+                        <div class="menu">
+                          <div class="item" data-value="Complete">Complete</div>
+                          <div class="item" data-value="In Progress">In Progress</div>
+                          <div class="item" data-value="To Be Done">To Be Done</div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+      </div>
+    </div>
+    <div class="actions">
+<!--       <div class="ui buttons">
+        <a class="ui button" onclick="Cancel_Add_Items_Clicked()">Cancel</a>
+        <div class="or"></div>
+        <div class="ui positive button" onclick="Append_To_Table_TurnoverItems()">OK</div>
+      </div> -->
+
+<a class="ui button" onclick="Close_Add_Items_Clicked()">
+  Cancel
+</a>
+
+<a class="ui primary button" onclick="Append_To_Table_TurnoverItems()">
+  OK
+</a>
+
+
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+<div class="ui modal tiny DOCUMENTS">
+    
+    <div class="header">
+      KEY DOCUMENTS
+    </div>
+    <div class="content">
+      <div class="row">
+        
+              <table class="celled">
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">FILE/DOCUMENT :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Enter Description or Task" id="Input_Document">
+                    </div>
+                  </td>
+                </tr>
+                <tr >
+                  <td width="110px">
+                    <label class="grey-text text-darken-2" style="font-weight: 700">LOCATION :</label>
+                  </td>
+                  <td>
+                    <div class="ui input col s12" >
+                      <input type="text2" placeholder="Enter File Location/Path/URL" id="Input_Location">
+                    </div>
+                  </td>
+                </tr>
+
+              </table>
+
+      </div>
+    </div>
+    <div class="actions">
+<!--     <div class="ui buttons">
+      <a class="ui button" onclick="Cancel_Add_Documents_Clicked()">Cancel</a>
+      <div class="or"></div>
+      <a class="ui positive button" onclick="Append_To_Table_KeyDocuments()">OK</a>
+    </div> -->
+
+    <a class="ui button" onclick="Close_Add_Documents_Clicked()">
+      Cancel
+    </a>
+
+    <a class="ui primary button" onclick="Append_To_Table_KeyDocuments()">
+      OK
+    </a>
+
+    </div>
+</div>
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- SEMANTIC UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+
+</html>
+

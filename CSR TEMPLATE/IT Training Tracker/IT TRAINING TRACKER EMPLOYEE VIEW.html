@@ -1,0 +1,587 @@
+<script type="text/javascript" src="/SiteAssets/Scripts/jquery.min.js"></script><script src="/SiteAssets/sputility.min.js"></script><script type="text/javascript" src="/SiteAssets/Scripts/jquery.timeago.js"></script><script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.runtime.js"></script>
+<script type="text/javascript" src="../LND%20Point%20System/_layouts/15/sp.js"></script></script>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="layout" />
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/css/materialize.css"  media="screen,projection"/>
+
+      <!-- SEMANTIC UI -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet" type="text/css" />
+
+
+
+      <!-- SWEET ALERT -->
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.css" rel="stylesheet"/>
+
+      <link href="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/animate.css" rel="stylesheet">
+
+
+<style type="text/css">
+
+  .AlignButtonRight{
+  float: right;
+}
+
+  .AlignButtonLeft{
+  float: left;
+}
+
+.ModalTopDistance{
+  top:2% !important;
+}
+
+i.icon-blue {
+    color: #03a9f4;
+}
+
+.myChartDiv {
+  max-height: 540px;
+}
+
+#sideNavBox {
+display: none;
+}
+#contentBox {
+margin-left: 20px;
+}
+.ms-fullscreenmode #contentBox
+{
+    margin-left: 0;
+}
+
+.CenterTextInSpan {
+  text-align: center !important;
+}
+
+.spancenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.TrainingHeight { height:auto !important; }
+
+</style>
+
+ <script type="text/javascript">
+
+  $(document).ready(function() {
+
+$('input').keypress(function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+
+ var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+
+    // setTimeout('window.location.reload();', 120000);
+
+  $('select').material_select();
+  $('.collapsible').collapsible();
+  $('.tooltipped').tooltip({delay: 30});
+  $('.modal').modal();
+  $('.tabs').tabs();
+  // $(".button-collapse").sideNav();
+
+
+ $('.timepicker').pickatime({
+    default: 'now', // Set default time
+    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+    twelvehour: true, // Use AM/PM or 24-hour format
+    donetext: 'OK', // text for done-button
+    cleartext: 'Clear', // text for clear-button
+    canceltext: 'Cancel', // Text for cancel-button
+    autoclose: true, // automatic close timepicker
+    ampmclickable: true, // make AM PM clickable
+    aftershow: function(){} //Function for after opening timepicker
+  });
+
+   $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 100, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: true,
+    format: 'mm/dd/yyyy',
+  });
+
+  $('.button-collapse').sideNav({
+      menuWidth: 600, // Default is 240
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true// Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
+
+
+  $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: false, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'right', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    }
+  );
+
+
+$('.ui.dropdown')
+  .dropdown()
+;
+
+$('.ui.modal.fullscreen.TURNOVERDOCUMENT')
+  .modal()
+;
+
+document.getElementById("ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv").remove();
+document.getElementById("DeltaPlaceHolderPageTitleInTitleArea").style.display = "none";
+// ExecuteOrDelayUntilScriptLoaded(checkuserprofile,'sp.js');
+
+
+//---------------------------------------------------------------------------------------------------
+
+  $('#ModalNewEntry').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '15%', // Starting top style attribute
+      endingTop: '10%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+  $('#ModalPoints').modal({
+      dismissible: false, // Modal can be dismissed by clicking outside of the modal
+      opacity: .5, // Opacity of modal background
+      inDuration: 300, // Transition in duration
+      outDuration: 200, // Transition out duration
+      startingTop: '0%', // Starting top style attribute
+      endingTop: '5%', // Ending top style attribute
+      ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+         $('select').material_select();
+        
+      },
+      complete: function() { } // Callback for Modal close
+    }
+  );
+
+
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === 'complete') {
+      Filter_Trainings.init();
+    }
+  });
+
+  document.addEventListener('readystatechange', function() {
+    if (document.readyState === 'complete') {
+      Filter_Individual.init();
+    }
+  });
+
+
+
+//-------------------------------------------------------------------------------------------
+
+// ExecuteOrDelayUntilScriptLoaded(Load_EmployeeNames_VIEW,'sp.js');
+// ExecuteOrDelayUntilScriptLoaded(Get_Training,'sp.js');
+
+
+            $('#CB_SelectAll').on('change', function () {
+                Selected_Employee_ID = [];
+                Selected_Employee_Name = [];
+                if ($(this).prop('checked')) {
+                	console.log();
+
+                    $("input[name='CB_Participant']").each(function () {
+                        $(this).prop('checked', true).trigger('change');
+                    });
+                } else {
+                    $("input[name='CB_Participant']").each(function () {
+                        $(this).prop('checked', false).trigger('change');
+
+                    });
+                }
+            });
+
+
+// document.getElementById("DIV_TRAINING_FORM").style.display = "none";
+
+}); //---------------------------------------END OF DOCUMENT READY FUNCTION----------------------------------------------------------
+  
+var months = [ "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December" ];
+
+  var loginName;
+  var email;
+
+  function onSuccess(data, request){
+
+    loginName = data.d.Title;
+    email = data.d.Email;
+
+    ExecuteOrDelayUntilScriptLoaded(Get_Emplyoee_ID,'sp.js');
+    ExecuteOrDelayUntilScriptLoaded(Get_Training,'sp.js');
+
+  }
+
+  function onError(error) {
+    alert("error");
+  }
+
+function onQueryFailed(sender, args) {
+
+    alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------
+var Get_ID_Item;
+function Get_Emplyoee_ID() {
+  var siteUrl = 'https://intranet.houseofit.com.au/it/';
+  var clientContext = new SP.ClientContext(siteUrl);
+
+  var IT_Employees = clientContext.get_web().get_lists().getByTitle("IT Members");
+  var camlQuery_Department = new SP.CamlQuery();
+      camlQuery_Department.set_viewXml(
+      '<View>'+
+      '<Query>'+
+      '<Where>'+
+      '<Eq>'+
+      '<FieldRef Name=\'Email\'/>' +
+      '<Value Type=\'Text\'>'+email+'</Value>'+
+      '</Eq>'+
+      '</Where>'+
+      '</Query>'+
+      '<RowLimit>1</RowLimit>'+
+      '</View>');
+  this.Get_ID_Item = IT_Employees.getItems(camlQuery_Department);
+
+  clientContext.load(Get_ID_Item);
+  clientContext.executeQueryAsync(Get_Emplyoee_ID_Succeeded, onQueryFailed);
+
+}
+var Selected_Employee_ID = "";
+function Get_Emplyoee_ID_Succeeded(sender, args) {
+    var listItemsCollection = Get_ID_Item.getEnumerator();
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+        console.log(listItem.get_item('Employee_ID'));
+        Selected_Employee_ID = listItem.get_item('Employee_ID');
+    }
+
+    ExecuteOrDelayUntilScriptLoaded(View_Completed_Trainings,'sp.js');
+    
+}
+
+
+
+
+  function isEmptyOrSpaces(str){
+      return str === null || str.match(/^ *$/) !== null;
+  }
+
+
+  // FILTER TRAININGS TABLE
+  var Filter_Trainings = (function(Arr) {
+
+    var _input;
+
+    function _onInputEvent(e) {
+      _input = e.target;
+      var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+      Arr.forEach.call(tables, function(table) {
+        Arr.forEach.call(table.tBodies, function(tbody) {
+          Arr.forEach.call(tbody.rows, _filter);
+        });
+      });
+    }
+
+    function _filter(row) {
+      var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+      row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    }
+
+    return {
+      init: function() {
+        var inputs = document.getElementsByClassName('trainings-table-filter');
+        Arr.forEach.call(inputs, function(input) {
+          input.oninput = _onInputEvent;
+        });
+      }
+    };
+  })(Array.prototype);
+
+  // FILTER INDIVIDUAL VIEW TABLE
+  var Filter_Individual = (function(Arr) {
+
+    var _input;
+
+    function _onInputEvent(e) {
+      _input = e.target;
+      var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
+      Arr.forEach.call(tables, function(table) {
+        Arr.forEach.call(table.tBodies, function(tbody) {
+          Arr.forEach.call(tbody.rows, _filter);
+        });
+      });
+    }
+
+    function _filter(row) {
+      var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
+      row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    }
+
+    return {
+      init: function() {
+        var inputs = document.getElementsByClassName('individual-table-filter');
+        Arr.forEach.call(inputs, function(input) {
+          input.oninput = _onInputEvent;
+        });
+      }
+    };
+  })(Array.prototype);
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+var View_Completed_Items;
+
+function View_Completed_Trainings() {
+
+  var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+  var oList = clientContext.get_web().get_lists().getByTitle('IT Training Tracker');
+  var camlQuery = new SP.CamlQuery();
+  camlQuery.set_viewXml('<View><Query><Where><Eq><FieldRef Name=\'LI_EmployeeID\'/>' +
+  '<Value Type=\'Text\'>'+Selected_Employee_ID+'</Value></Eq></Where></Query><RowLimit></RowLimit></View>');
+  this.View_Completed_Items = oList.getItems(camlQuery);
+  clientContext.load(View_Completed_Items);
+  clientContext.executeQueryAsync(Function.createDelegate(this, this.View_Completed_Trainings_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+
+
+}
+function View_Completed_Trainings_Succeeded(){
+
+    var listItemsCollection = View_Completed_Items.getEnumerator();
+    $("#TBODY_COMPLETED_TRAININGS").empty();
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+        var Status = "";
+        if(listItem.get_item('LI_Result') == "Passed"){
+          Status = "<td class='c_status CenterTextInSpan'><span class='ui teal tag label'>Completed</span></td>";
+        }
+        else if(listItem.get_item('LI_Result') == "Failed"){
+          Status = "<td class='c_status CenterTextInSpan'><span class='ui orange tag label'>Incomplete</span></td>";
+        }
+
+        $("#TABLE_COMPLETED_TRAININGS tbody").append("<tr>" +
+         "<td align='left' class=''>"+listItem.get_item('LI_Prerequisite')+"</td>" +
+         "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_TrainingDate')+"</td>"  +
+         "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_ExamDate')+"</td>"  +
+         "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_Result')+"</td>"  +
+         "<td align='left' class='CenterTextInSpan'>"+listItem.get_item('LI_ExamScore')+"%</td>"  +
+         Status+
+         "</tr>");
+
+    }
+
+        swal({
+        type: 'success',
+        title: 'Completed Traings Has Been Loaded',
+        showConfirmButton: false,
+        timer: 700
+      }).catch(swal.noop);
+
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+var Get_Training_Items;
+function Get_Training(){
+
+        var clientContext = new SP.ClientContext('https://intranet.houseofit.com.au/');
+        var oList = clientContext.get_web().get_lists().getByTitle('IT Training List');
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml('<View><Query><Where><Geq><FieldRef Name=\'ID\'/>' +
+        '<Value Type=\'Number\'>1</Value></Geq></Where></Query><RowLimit></RowLimit></View>');
+        this.Get_Training_Items = oList.getItems(camlQuery);
+        clientContext.load(Get_Training_Items);
+        clientContext.executeQueryAsync(Function.createDelegate(this, this.Get_Training_Succeeded), Function.createDelegate(this, this.onQueryFailed));
+}
+
+function Get_Training_Succeeded(){
+
+  for(var i=document.getElementById("TABLE_TRAININGS").rows.length;i>1;i--) {
+    document.getElementById("TABLE_TRAININGS").deleteRow(i-1);}
+
+    var listItemsCollection = Get_Training_Items.getEnumerator();
+
+
+    while (listItemsCollection.moveNext()) {
+      var listItem = listItemsCollection.get_current();
+
+      var var_ItemID = listItem.get_item('ID');
+      var var_JobLevel = listItem.get_item('LI_JobLevel');
+      var var_Position = listItem.get_item('LI_PositionTitle');
+      var var_Training = listItem.get_item('LI_Prerequisite');
+
+	    $("#TABLE_TRAININGS").append("<tr id='TI-"+var_ItemID+"'>" +
+	     "<td align='left' class='CenterTextInSpan'>"+var_JobLevel+"</td>" +
+	     "<td align='left' class='CenterTextInSpan'>"+var_Position+"</td>" +
+	     "<td align='left' class='CenterTextInSpan'>"+var_Training+"</td>" +
+
+	     "</tr>");
+    }
+
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+ </script>
+
+<body>
+
+<main>
+
+<div class="row card-panel z-depth-0 grey lighten-3">
+  <div class="row card-panel " style="padding-left: 0px !important; padding-right: 0px !important;padding-top: 0px">
+      <div style="margin-left: 0px !important;margin-right: 0px !important;margin-top: 0px !important;height: 7px !important" class="light-blue z-depth-0"></div>
+
+      <div class="row card-panel z-depth-0">
+       
+        <h2 class="ui header">
+          <i class="tasks icon" ></i>
+          <div class="content"  id="Title">
+            I.T TRAINING TRACKER
+            <div class="sub header">Technical Skills</div>
+          </div>
+        </h2>
+
+ <div class="row"></div><div class="row"></div><div class="row"></div>
+
+<div class="row">
+
+<div class="ui column grid">
+  <div class="column">
+    <div class="ui raised segment">
+            <div class="row">
+            	<span class="ui blue ribbon label">ATTENDED TRAININGS</span>
+            </div>
+	    	<div class="row">
+	    		<div class="col s8"></div>
+	    		<div class="col s4">
+                    <div class="ui search right col s12">
+		                <div class="ui icon input spancenter col s12 right">
+		                    <input class="prompt grey-text text-darken-2 individual-table-filter " type="search2" placeholder="Search Here..." data-table="order-table-Individual" >
+		                    <i class="search icon" style="margin-right: 10px !important"></i>
+		                </div>
+                    </div>
+	    		</div>
+	    	</div>
+            <table class="ui table celled order-table-Individual" id="TABLE_COMPLETED_TRAININGS">
+                <thead>
+                  <tr align="">
+                    <th class="">TRAINING TITLE</th>
+                    <th class="CenterTextInSpan">TRAINING DATE</th>
+                    <th class="CenterTextInSpan">EXAM DATE</th>
+                    <th class="CenterTextInSpan">EXAM RESULT</th>
+                    <th class="CenterTextInSpan">EXAM SCORE</th>
+                    <th class="CenterTextInSpan">TRAINING STATUS</th>
+                  </tr>
+                <thead>
+                  <tbody id="TBODY_COMPLETED_TRAININGS"></tbody>
+            </table>
+
+            <div class="row"></div><div class="ui divider"></div><div class="row"></div>
+
+            <div class="row">
+            	<span class="ui orange ribbon label">TRAININGS LIST</span>
+            </div>
+	    	<div class="row">
+	    		<div class="col s8"></div>
+	    		<div class="col s4">
+                    <div class="ui search right col s12">
+                        <div class="ui icon input spancenter col s12">
+                            <input class="prompt grey-text text-darken-2 trainings-table-filter"   type="search2" placeholder="Search Here..." data-table="order-table-Trainings" >
+                            <i class="search icon" style="margin-right: 10px !important"></i>
+                        </div>
+                    </div>
+	    		</div>
+	    	</div>
+
+	        <table class="ui table celled striped order-table-Trainings" id="TABLE_TRAININGS">
+              <thead>
+                <th class="CenterTextInSpan">JOB LEVEL</th>
+                <th class="CenterTextInSpan">POSITION LEVEL</th>
+                <th class="CenterTextInSpan">TITLE</th>
+              </thead>
+	        </table>
+    </div>
+  </div>
+</div>
+
+</div>
+
+        
+</div>
+</div>
+
+</main>
+
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+  <!--SCRIPT-->
+
+    <script type = "text/javascript" src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/js/materialize.min.js"></script>
+
+    <script src="https://intranet.houseofit.com.au/SiteAssets/Logo/MaterialDesign/SweetAlert2/sweetalert2.js"></script>
+
+<!-- SEMANTIC UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
+<!-- CHARTS JS -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+
+</body>
+
+</html>
+
